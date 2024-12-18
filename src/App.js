@@ -1,26 +1,53 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DashboardContent from "./DashboardContent";
-import Login from "./components/Login";
-import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // داشبورد به‌عنوان لایه اصلی
-import ReportsContent from "./ReportsContent";
+import React, { Component } from "react";
+import Users from "./components/users";
+import User from "./components/user";
+import Login from "./components/login";
+import Register from "./components/register";
+import Home from "./components/home";
+import NotFound from "./components/notFound";
+import ProtecedRoute from "./components/protectedRote";
+import Logout from "./components/logout";
+import Product from "./components/Product";
+import LoginForm from "./components/loginForm";
+import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // Import مسیر جدید
+import { Routes, Route } from "react-router-dom";
 
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        {/* اینجا DashboardLayoutBasic به‌عنوان لایه پایه قرار دارد */}
-        <Route path="/" element={<DashboardLayoutBasic />}>
-
-
+class App extends Component {
+  render() {
+    return (
+      <>
+      
+        <DashboardLayoutBasic>
+        <div className="container mt-3">
+        
+        <Routes>
+          <Route path="/user/:userId" element={<User />} />
+          <Route path="/users" element={<Users />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/loginForm" element={<LoginForm />} />
+          
+          {/* مسیر جدید برای DashboardLayoutBasic */}
+          <Route path="/dashboard-layout" element={<DashboardLayoutBasic />} />
 
-
-        </Route>
-      </Routes>
-    </Router>
-  );
+          <Route
+            path="/"
+            element={
+              <ProtecedRoute>
+                <Home />
+              </ProtecedRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        </div>
+        </DashboardLayoutBasic>
+      
+      </>
+    );
+  }
 }
 
 export default App;
