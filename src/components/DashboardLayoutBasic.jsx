@@ -2,66 +2,64 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
-import { AppProvider } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import { useNavigate, Routes, Route } from "react-router-dom"; // مسیریابی
-import Login from "./login";
-// تعریف NAVIGATION
-const NAVIGATION = [
-  { kind: "header", title: "Main items" },
-  { segment: "dashboard", title: "Dashboard", icon: <DashboardIcon /> },
-  { segment: "orders", title: "Orders", icon: <ShoppingCartIcon /> },
-  { segment: "login", title: "login", icon: <ShoppingCartIcon /> },
-  { kind: "divider" },
-  { kind: "header", title: "Analytics" },
-  { segment: "reports", title: "Reports", icon: <BarChartIcon /> },
-  { segment: "integrations", title: "Integrations", icon: <LayersIcon /> },
-];
+import { Link, Outlet } from "react-router-dom"; // استفاده از Outlet برای نمایش محتوای صفحه
 
-// تم دمو
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: { light: true, dark: true },
-});
+// کامپوننت ناوبری
+const NavigationLinks = () => (
+  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", p: 2 }}>
+    <Link to="/dashboard" style={{ textDecoration: "none", color: "inherit", marginBottom: 8 }}>
+      <DashboardIcon />
+      <Typography variant="body1" sx={{ ml: 1, display: "inline" }}>
+        Dashboard
+      </Typography>
+    </Link>
 
-// محتوای صفحات
-const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
+    <Link to="/orders" style={{ textDecoration: "none", color: "inherit", marginBottom: 8 }}>
+      <ShoppingCartIcon />
+      <Typography variant="body1" sx={{ ml: 1, display: "inline" }}>
+        Orders
+      </Typography>
+    </Link>
+
+    <Link to="/login" style={{ textDecoration: "none", color: "inherit", marginBottom: 8 }}>
+      <ShoppingCartIcon />
+      <Typography variant="body1" sx={{ ml: 1, display: "inline" }}>
+        Login
+      </Typography>
+    </Link>
+
+    <Link to="/reports" style={{ textDecoration: "none", color: "inherit", marginBottom: 8 }}>
+      <BarChartIcon />
+      <Typography variant="body1" sx={{ ml: 1, display: "inline" }}>
+        Reports
+      </Typography>
+    </Link>
+
+    <Link to="/integrations" style={{ textDecoration: "none", color: "inherit" }}>
+      <LayersIcon />
+      <Typography variant="body1" sx={{ ml: 1, display: "inline" }}>
+        Integrations
+      </Typography>
+    </Link>
+  </Box>
+);
 
 function DashboardLayoutBasic(props) {
   const { window } = props;
 
   return (
-    <AppProvider navigation={NAVIGATION} theme={demoTheme} window={window}>
-      <DashboardLayout>
-        <Box
-          sx={{
-            py: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          {/* تعریف مسیرها */}
-          <Routes>
-            <Route path="/" element={<DashboardContent />} />
-            <Route path="/dashboard" element={<DashboardContent />} />
-            <Route path="/orders" element={<DashboardContent />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/reports" element={<DashboardContent />} />
-            <Route path="/integrations" element={<DashboardContent />} />
-          </Routes>
-        </Box>
-      </DashboardLayout>
-    </AppProvider>
+    <Box>
+      {/* نمایش لینک‌ها */}
+      <NavigationLinks />
+      {/* اینجا محتوای مسیرهای مختلف نمایش داده می‌شود */}
+      <Box sx={{ padding: 3 }}>
+        <Outlet /> {/* اینجا محتوای مسیر انتخابی نمایش داده می‌شود */}
+      </Box>
+    </Box>
   );
 }
 
