@@ -11,7 +11,7 @@ import LayersIcon from "@mui/icons-material/Layers";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { useNavigate, Routes, Route } from "react-router-dom"; // مسیریابی
-import Login  from "./login";
+import Login from "./login";
 // تعریف NAVIGATION
 const NAVIGATION = [
   { kind: "header", title: "Main items" },
@@ -34,10 +34,6 @@ const demoTheme = createTheme({
 
 // محتوای صفحات
 const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
-const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
-const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
-const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
-
 
 function DashboardLayoutBasic(props) {
   const { window } = props;
@@ -58,10 +54,10 @@ function DashboardLayoutBasic(props) {
           <Routes>
             <Route path="/" element={<DashboardContent />} />
             <Route path="/dashboard" element={<DashboardContent />} />
-            <Route path="/orders" element={<OrdersContent />} />
+            <Route path="/orders" element={<DashboardContent />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/reports" element={<ReportsContent />} />
-            <Route path="/integrations" element={<IntegrationsContent />} />
+            <Route path="/reports" element={<DashboardContent />} />
+            <Route path="/integrations" element={<DashboardContent />} />
           </Routes>
         </Box>
       </DashboardLayout>
