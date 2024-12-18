@@ -10,14 +10,15 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import { useNavigate, Routes, Route } from "react-router-dom"; // مسیریابی
+import { Link,Outlet, Routes, Route } from "react-router-dom"; // مسیریابی
+import { useDemoRouter } from '@toolpad/core/internal';
 import Login from "./login";
 // تعریف NAVIGATION
 const NAVIGATION = [
   { kind: "header", title: "Main items" },
   { segment: "dashboard", title: "Dashboard", icon: <DashboardIcon /> },
   { segment: "orders", title: "Orders", icon: <ShoppingCartIcon /> },
-  { segment: "login", title: "login", icon: <ShoppingCartIcon /> },
+  { segment: "login", title: "login", icon: <ShoppingCartIcon /> ,Link:"login" },
   { kind: "divider" },
   { kind: "header", title: "Analytics" },
   { segment: "reports", title: "Reports", icon: <BarChartIcon /> },
@@ -25,24 +26,19 @@ const NAVIGATION = [
 ];
 
 // تم دمو
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: { light: true, dark: true },
-});
+
 
 // محتوای صفحات
-const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
-const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
-const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
-const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
+// const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
+// const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
+// const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
+// const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
 
 function DashboardLayoutBasic(props) {
   const { window } = props;
-
+ const router = useDemoRouter('/dashboard');
   return (
-    <AppProvider navigation={NAVIGATION} theme={demoTheme} window={window}>
+    <AppProvider navigation={NAVIGATION}  window={window}>
       <DashboardLayout>
         <Box
           sx={{
@@ -53,15 +49,19 @@ function DashboardLayoutBasic(props) {
             textAlign: "center",
           }}
         >
+
+          <Outlet/>
+ 
+          
           {/* تعریف مسیرها */}
-          <Routes>
+          {/* <Routes>
             <Route path="/" element={<DashboardContent />} />
             <Route path="/dashboard" element={<DashboardContent />} />
             <Route path="/orders" element={<OrdersContent />} />
             <Route path="/login" element={<Login />} />
             <Route path="/reports" element={<ReportsContent />} />
             <Route path="/integrations" element={<IntegrationsContent />} />
-          </Routes>
+          </Routes> */}
         </Box>
       </DashboardLayout>
     </AppProvider>

@@ -16,35 +16,30 @@ class App extends Component {
   render() {
     return (
       <>
-      
-        <DashboardLayoutBasic>
-        <div className="container mt-3">
-        
         <Routes>
-          <Route path="/user/:userId" element={<User />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/loginForm" element={<LoginForm />} />
-          
-          {/* مسیر جدید برای DashboardLayoutBasic */}
-          <Route path="/dashboard-layout" element={<DashboardLayoutBasic />} />
+          <Route path="/" element={<DashboardLayoutBasic />}>
+            <Route path="/user/:userId" element={<User />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/loginForm" element={<LoginForm />} />
 
-          <Route
-            path="/"
-            element={
-              <ProtecedRoute>
-                <Home />
-              </ProtecedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
+            {/* مسیر جدید برای DashboardLayoutBasic */}
+            <Route path="/dashboard-layout" element={<DashboardLayoutBasic />} />
+
+            <Route
+              path="/"
+              element={
+                <ProtecedRoute>
+                  <Home />
+                </ProtecedRoute>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
-        </div>
-        </DashboardLayoutBasic>
-      
       </>
     );
   }
