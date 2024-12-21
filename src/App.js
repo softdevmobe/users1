@@ -1,17 +1,7 @@
-import React, { Component } from "react";
-import Users from "./components/users";
-import User from "./components/user";
-import Login from "./components/login";
-import Register from "./components/register";
-import Home from "./components/home";
-import NotFound from "./components/notFound";
-import ProtecedRoute from "./components/protectedRote";
-import Logout from "./components/logout";
-import Product from "./components/Product";
-import LoginForm from "./components/loginForm";
-import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // مسیر اصلاح‌شده
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
 
+<<<<<<< HEAD
 class App extends Component {
   render() {
     return (
@@ -33,6 +23,28 @@ class App extends Component {
 
     );
   }
+=======
+function Home() {
+  return <h2>Home Page</h2>;
+}
+
+function About() {
+  return <h2>About Page</h2>;
+}
+
+function App() {
+  return (
+    <div>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </div>
+  );
+>>>>>>> 8cfe78a6836a78ee69a6d3ec45f5abe17f11d63c
 }
 
 export default App;
