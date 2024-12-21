@@ -1,83 +1,38 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import { AppProvider } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import { createTheme } from "@mui/material/styles";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
-
-// تعریف NAVIGATION
-const NAVIGATION = [
-  { segment: "dashboard", title: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
-  { segment: "orders", title: "Orders", icon: <ShoppingCartIcon />, link: "/orders" },
-  { segment: "reports", title: "Reports", icon: <BarChartIcon />, link: "/reports" },
-  { segment: "integrations", title: "Integrations", icon: <LayersIcon />, link: "/integrations" },
-];
-
-// تم دمو
-const demoTheme = createTheme({
-  cssVariables: {
-    colorSchemeSelector: "data-toolpad-color-scheme",
-  },
-  colorSchemes: { light: true, dark: true },
-});
-
-function DashboardLayoutBasic({ children, window }) {
-  return (
-    <AppProvider navigation={NAVIGATION} theme={demoTheme} window={window}>
-      <DashboardLayout>
-        {/* محتوای اصلی که از parent می‌آید */}
-        <Box
-          sx={{
-            py: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          {children}
-        </Box>
-      </DashboardLayout>
-    </AppProvider>
-  );
-}
-
-DashboardLayoutBasic.propTypes = {
-  children: PropTypes.node,
-  window: PropTypes.func,
-};
-
-export default DashboardLayoutBasic;
-
-
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DashboardLayoutBasic from "./DashboardLayoutBasic";
-import Typography from "@mui/material/Typography";
-
-// محتوای صفحات
-const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
-const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
-const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
-const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
-
-function App() {
-  return (
-    <Router>
-      <DashboardLayoutBasic>
-        <Routes>
-          <Route path="/dashboard" element={<DashboardContent />} />
-          <Route path="/orders" element={<OrdersContent />} />
-          <Route path="/reports" element={<ReportsContent />} />
-          <Route path="/integrations" element={<IntegrationsContent />} />
-        </Routes>
-      </DashboardLayoutBasic>
-    </Router>
-  );
-}
-
-export default App;
+Uncaught runtime errors:
+×
+ERROR
+You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (http://localhost:3000/static/js/bundle.js:37848:11)
+    at Router (http://localhost:3000/static/js/bundle.js:83899:103)
+    at renderWithHooks (http://localhost:3000/static/js/bundle.js:66504:22)
+    at mountIndeterminateComponent (http://localhost:3000/static/js/bundle.js:70475:17)
+    at beginWork (http://localhost:3000/static/js/bundle.js:71778:20)
+    at HTMLUnknownElement.callCallback (http://localhost:3000/static/js/bundle.js:56760:18)
+    at Object.invokeGuardedCallbackDev (http://localhost:3000/static/js/bundle.js:56804:20)
+    at invokeGuardedCallback (http://localhost:3000/static/js/bundle.js:56861:35)
+    at beginWork$1 (http://localhost:3000/static/js/bundle.js:76759:11)
+    at performUnitOfWork (http://localhost:3000/static/js/bundle.js:76007:16)
+ERROR
+You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (http://localhost:3000/static/js/bundle.js:37848:11)
+    at Router (http://localhost:3000/static/js/bundle.js:83899:103)
+    at renderWithHooks (http://localhost:3000/static/js/bundle.js:66504:22)
+    at mountIndeterminateComponent (http://localhost:3000/static/js/bundle.js:70475:17)
+    at beginWork (http://localhost:3000/static/js/bundle.js:71778:20)
+    at HTMLUnknownElement.callCallback (http://localhost:3000/static/js/bundle.js:56760:18)
+    at Object.invokeGuardedCallbackDev (http://localhost:3000/static/js/bundle.js:56804:20)
+    at invokeGuardedCallback (http://localhost:3000/static/js/bundle.js:56861:35)
+    at beginWork$1 (http://localhost:3000/static/js/bundle.js:76759:11)
+    at performUnitOfWork (http://localhost:3000/static/js/bundle.js:76007:16)
+ERROR
+You cannot render a <Router> inside another <Router>. You should never have more than one in your app.
+    at invariant (http://localhost:3000/static/js/bundle.js:37848:11)
+    at Router (http://localhost:3000/static/js/bundle.js:83899:103)
+    at renderWithHooks (http://localhost:3000/static/js/bundle.js:66504:22)
+    at mountIndeterminateComponent (http://localhost:3000/static/js/bundle.js:70475:17)
+    at beginWork (http://localhost:3000/static/js/bundle.js:71778:20)
+    at beginWork$1 (http://localhost:3000/static/js/bundle.js:76737:18)
+    at performUnitOfWork (http://localhost:3000/static/js/bundle.js:76007:16)
+    at workLoopSync (http://localhost:3000/static/js/bundle.js:75930:9)
+    at renderRootSync (http://localhost:3000/static/js/bundle.js:75903:11)
+    at recoverFromConcurrentError (http://localhost:3000/static/js/bundle.js:75395:24)
