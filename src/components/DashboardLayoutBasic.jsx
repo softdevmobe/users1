@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
+import { Outlet } from "react-router-dom";
 
 const NAVIGATION = [
   { kind: "header", title: "Main items" },
@@ -14,7 +15,7 @@ const NAVIGATION = [
   { segment: "integrations", title: "Integrations" },
 ];
 
-function DashboardLayoutBasic({ children }) {
+function DashboardLayoutBasic() {
   return (
     <AppProvider navigation={NAVIGATION}>
       <DashboardLayout>
@@ -27,7 +28,8 @@ function DashboardLayoutBasic({ children }) {
             textAlign: "center",
           }}
         >
-          {children}
+          {/* جایگذاری محتوای مسیرهای فرزند */}
+          <Outlet />
         </Box>
       </DashboardLayout>
     </AppProvider>
