@@ -1,41 +1,83 @@
-در این حالت از React Router استفاده شده است، که به صورت Client-Side Routing عمل می‌کند. به عبارت دیگر:
+import * as React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import { AppProvider } from "@toolpad/core/AppProvider";
+import { DashboardLayout } from "@toolpad/core/DashboardLayout";
+import { createTheme } from "@mui/material/styles";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import LayersIcon from "@mui/icons-material/Layers";
 
-آیا رفرش داریم؟
+// تعریف NAVIGATION
+const NAVIGATION = [
+  { segment: "dashboard", title: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
+  { segment: "orders", title: "Orders", icon: <ShoppingCartIcon />, link: "/orders" },
+  { segment: "reports", title: "Reports", icon: <BarChartIcon />, link: "/reports" },
+  { segment: "integrations", title: "Integrations", icon: <LayersIcon />, link: "/integrations" },
+];
 
-خیر، وقتی بین صفحات (Route) جا‌به‌جا می‌شوید، رفرش کامل صفحه اتفاق نمی‌افتد.
+// تم دمو
+const demoTheme = createTheme({
+  cssVariables: {
+    colorSchemeSelector: "data-toolpad-color-scheme",
+  },
+  colorSchemes: { light: true, dark: true },
+});
 
-دلایل:
+function DashboardLayoutBasic({ children, window }) {
+  return (
+    <AppProvider navigation={NAVIGATION} theme={demoTheme} window={window}>
+      <DashboardLayout>
+        {/* محتوای اصلی که از parent می‌آید */}
+        <Box
+          sx={{
+            py: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          {children}
+        </Box>
+      </DashboardLayout>
+    </AppProvider>
+  );
+}
 
-1. React Router از تاریخچه مرورگر (History API) استفاده می‌کند تا مسیر (URL) را تغییر دهد، بدون اینکه صفحه از ابتدا بارگذاری شود.
+DashboardLayoutBasic.propTypes = {
+  children: PropTypes.node,
+  window: PropTypes.func,
+};
 
-
-2. کامپوننت‌ها فقط محتوای خاص همان مسیر را تغییر می‌دهند (در اینجا محتوای children در DashboardLayoutBasic).
-
-
-3. منابع ثابت (مثل CSS و JavaScript) دوباره درخواست نمی‌شوند.
-
-
-
-سناریوهای بدون رفرش:
-
-وقتی روی لینک‌های NAVIGATION کلیک می‌کنید، فقط محتوای مربوط به مسیر تغییر می‌کند.
-
-ساختار اصلی، مانند تم یا منوهای جانبی، ثابت باقی می‌ماند.
-
-
-نکته مهم:
-
-اگر از Link یا useNavigate در React Router استفاده شود، انتقال بین صفحات بهینه و بدون رفرش کامل انجام می‌شود. در کد شما از AppProvider و Routes استفاده شده که به طور پیش‌فرض این رفتار را حفظ می‌کند.
-
-تست بدون رفرش:
-
-1. در مرورگر DevTools، به تب Network بروید.
-
-
-2. روی یکی از لینک‌های ناوبری کلیک کنید.
+export default DashboardLayoutBasic;
 
 
-3. مشاهده می‌کنید که فقط API‌های لازم یا منابع جدید (اگر وجود داشته باشند) درخواست می‌شوند و صفحه کامل رفرش نمی‌شود.
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DashboardLayoutBasic from "./DashboardLayoutBasic";
+import Typography from "@mui/material/Typography";
 
+// محتوای صفحات
+const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
+const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
+const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
+const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
 
+function App() {
+  return (
+    <Router>
+      <DashboardLayoutBasic>
+        <Routes>
+          <Route path="/dashboard" element={<DashboardContent />} />
+          <Route path="/orders" element={<OrdersContent />} />
+          <Route path="/reports" element={<ReportsContent />} />
+          <Route path="/integrations" element={<IntegrationsContent />} />
+        </Routes>
+      </DashboardLayoutBasic>
+    </Router>
+  );
+}
 
+export default App;
