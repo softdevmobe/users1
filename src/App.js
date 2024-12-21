@@ -10,14 +10,22 @@ import Logout from "./components/logout";
 import Product from "./components/Product";
 import LoginForm from "./components/loginForm";
 import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // Import مسیر جدید
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+
+const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
+const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
+const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
+const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
 
 class App extends Component {
   render() {
     return (
-      <>
-        <Routes>
-          <Route path="/" element={<DashboardLayoutBasic />}>
+      <Router>
+        {/* DashboardLayoutBasic به عنوان Layout اصلی */}
+        <DashboardLayoutBasic>
+          <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/user/:userId" element={<User />} />
             <Route path="/users" element={<Users />} />
             <Route path="/login" element={<Login />} />
@@ -25,22 +33,14 @@ class App extends Component {
             <Route path="/logout" element={<Logout />} />
             <Route path="/product" element={<Product />} />
             <Route path="/loginForm" element={<LoginForm />} />
-
-            {/* مسیر جدید برای DashboardLayoutBasic */}
-            <Route path="/dashboard-layout" element={<DashboardLayoutBasic />} />
-
-            <Route
-              path="/"
-              element={
-                <ProtecedRoute>
-                  <Home />
-                </ProtecedRoute>
-              }
-            />
+            <Route path="/dashboard" element={<DashboardContent />} />
+            <Route path="/orders" element={<OrdersContent />} />
+            <Route path="/reports" element={<ReportsContent />} />
+            <Route path="/integrations" element={<IntegrationsContent />} />
             <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </>
+          </Routes>
+        </DashboardLayoutBasic>
+      </Router>
     );
   }
 }
