@@ -8,9 +8,9 @@ import theme from './theme'; // تم سفارشی
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
+
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
-  </BrowserRouter>
+
 );
