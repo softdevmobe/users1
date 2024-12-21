@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import DashboardLayoutBasic from "./DashboardLayoutBasic";
+import DashboardLayoutBasic from "./components/DashboardLayoutBasic";
 
 function DashboardContent() {
   return <h2>Welcome to the Dashboard</h2>;
