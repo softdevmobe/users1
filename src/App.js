@@ -1,48 +1,24 @@
-import React, { Component } from "react";
-import Users from "./components/users";
-import User from "./components/user";
-import Login from "./components/login";
-import Register from "./components/register";
-import Home from "./components/home";
-import NotFound from "./components/notFound";
-import ProtecedRoute from "./components/protectedRote";
-import Logout from "./components/logout";
-import Product from "./components/Product";
-import LoginForm from "./components/loginForm";
-import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // Import مسیر جدید
+import React from "react";
 import { Routes, Route } from "react-router-dom";
+import DashboardLayoutBasic from "./DashboardLayoutBasic";
 
-class App extends Component {
-  render() {
-    return (
-      <>
-        <Routes>
-          <Route path="/" element={<DashboardLayoutBasic />}>
-            <Route path="/user/:userId" element={<User />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/loginForm" element={<LoginForm />} />
+function DashboardContent() {
+  return <h2>Welcome to the Dashboard</h2>;
+}
 
-            {/* مسیر جدید برای DashboardLayoutBasic */}
-            <Route path="/dashboard-layout" element={<DashboardLayoutBasic />} />
+function OrdersContent() {
+  return <h2>Here are your Orders</h2>;
+}
 
-            <Route
-              path="/"
-              element={
-                <ProtecedRoute>
-                  <Home />
-                </ProtecedRoute>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </>
-    );
-  }
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<DashboardLayoutBasic />}>
+        <Route path="/dashboard" element={<DashboardContent />} />
+        <Route path="/orders" element={<OrdersContent />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
