@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 class App extends Component {
   render() {
     return (
-      <Router>
+
         <Routes>
           {/* استفاده از Layout برای مسیرهای مشترک */}
           <Route path="/" element={<DashboardLayoutBasic />}>
@@ -30,7 +30,7 @@ class App extends Component {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </Router>
+
     );
   }
 }
