@@ -9,10 +9,17 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
 import { AppProvider } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
+import { DashboardLayout,ThemeSwitcher  } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
 import { useNavigate, Outlet } from "react-router-dom";
-
+import Stack from '@mui/material/Stack';
+import CloudCircleIcon from '@mui/icons-material/CloudCircle';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
 const NAVIGATION = [
   {
     kind: "header",
@@ -83,16 +90,75 @@ const demoTheme = createTheme({
 function DemoPageContent({ pathname }) {
   const navigat = useNavigate();
   React.useEffect(() => {
-
-      navigat(pathname);
-      console.log(pathname);
-
-  }, [ pathname]);
+    navigat(pathname);
+    console.log(pathname);
+  }, [pathname]);
 }
 
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
+function CustomAppTitle() {
+  return (
+    <Stack direction="row" alignItems="center" spacing={2}>
+      <CloudCircleIcon fontSize="large" color="primary" />
+      <Typography variant="h6">My App</Typography>
+      <Chip size="small" label="BETA" color="info" />
+      <Tooltip title="Connected to production">
+        <CheckCircleIcon color="success" fontSize="small" />
+      </Tooltip>
+    </Stack>
+  );
+}
+
+function SidebarFooter({ mini }) {
+  return (
+    <Typography
+      variant="caption"
+      sx={{ m: 1, whiteSpace: 'nowrap', overflow: 'hidden' }}
+    >
+      {mini ? '© MUI' : `© ${new Date().getFullYear()} Made with love by MUI`}
+    </Typography>
+  );
+}
+
+function ToolbarActionsSearch() {
+  return (
+    <Stack direction="row">
+      <Tooltip title="Search" enterDelay={1000}>
+        <div>
+          <IconButton
+            type="button"
+            aria-label="search"
+            sx={{
+              display: { xs: 'inline', md: 'none' },
+            }}
+          >
+            <SearchIcon />
+          </IconButton>
+        </div>
+      </Tooltip>
+      <TextField
+        label="جستجو"
+        variant="outlined"
+        size="small"
+        slotProps={{
+          input: {
+            endAdornment: (
+              <IconButton type="button" aria-label="search" size="small">
+                <SearchIcon />
+              </IconButton>
+            ),
+            sx: { pr: 0.5 },
+          },
+        }}
+        sx={{ display: { xs: 'none', md: 'inline-block' }, mr: 1 }}
+      />
+      <ThemeSwitcher />
+    </Stack>
+  );
+}
+
 
 function DashboardLayoutBasic(props) {
   const { window } = props;
@@ -104,13 +170,16 @@ function DashboardLayoutBasic(props) {
 
   return (
     <>
-      <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow} >
-        <DashboardLayout defaultSidebarCollapsed={true}>
+      <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow}>
+        <DashboardLayout defaultSidebarCollapsed={true}  slots={{
+          appTitle: CustomAppTitle,
+          toolbarActions: ToolbarActionsSearch,
+          sidebarFooter: SidebarFooter,
+        }}>
           <DemoPageContent pathname={router.pathname} />
           <Outlet />
         </DashboardLayout>
       </AppProvider>
-      
     </>
   );
 }
