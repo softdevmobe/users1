@@ -1,29 +1,53 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import DashboardLayoutBasic from "./components/DashboardLayoutBasic";
-import Typography from "@mui/material/Typography";
-import  Login  from "./components/login";
+import React, { Component } from "react";
+import Users from "./components/users";
+import User from "./components/user";
+import Login from "./components/login";
+import Register from "./components/register";
+import Home from "./components/home";
+import NotFound from "./components/notFound";
+import ProtecedRoute from "./components/protectedRote";
+import Logout from "./components/logout";
+import Product from "./components/Product";
+import LoginForm from "./components/loginForm";
+import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // Import مسیر جدید
+import { Routes, Route } from "react-router-dom";
 
-// محتوای صفحات
-const DashboardContent = () => <Typography variant="h4">Welcome to the Dashboard</Typography>;
-const OrdersContent = () => <Typography variant="h4">Here are your Orders</Typography>;
-const ReportsContent = () => <Typography variant="h4">Analytics and Reports</Typography>;
-const IntegrationsContent = () => <Typography variant="h4">Manage Integrations</Typography>;
+class App extends Component {
+  render() {
+    return (
+      <>
+      
+    
+        <div className="container mt-3">
 
-function App() {
-  return (
-
-      <DashboardLayoutBasic>
+   
         <Routes>
-          <Route path="/dashboard" element={<DashboardContent />} />
-          <Route path="/orders" element={<OrdersContent />} />
+        <Route path="/" element={<DashboardLayoutBasic />} >
+          <Route path="/user/:userId" element={<User />} />
+          <Route path="/users" element={<Users />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/reports" element={<ReportsContent />} />
-          <Route path="/integrations" element={<IntegrationsContent />} />
-        </Routes>
-      </DashboardLayoutBasic>
+          <Route path="/register" element={<Register />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/loginForm" element={<LoginForm />} />
+         
 
-  );
+
+          <Route path="/" element={  <ProtecedRoute>
+              <Home />
+              </ProtecedRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+ 
+        </div>
+
+      
+      </>
+    );
+  }
 }
 
 export default App;
