@@ -9,7 +9,7 @@ import ProtecedRoute from "./components/protectedRote";
 import Logout from "./components/logout";
 import Product from "./components/Product";
 import LoginForm from "./components/loginForm";
-import DashboardLayoutBasic from "./components/DashboardLayoutBasic"; // Import مسیر جدید
+import TemporaryDrawer from "./components/temporaryDrawer"; // Import مسیر جدید
 import { Routes, Route } from "react-router-dom";
 
 class App extends Component {
@@ -22,7 +22,7 @@ class App extends Component {
 
    
         <Routes>
-        <Route path="/" element={<DashboardLayoutBasic />} >
+        <Route path="/" element={<TemporaryDrawer />} >
           <Route path="/user/:userId" element={<User />} />
           <Route path="/users" element={<Users />} />
           <Route path="/login" element={<Login />} />

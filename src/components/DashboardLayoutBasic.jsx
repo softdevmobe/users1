@@ -20,6 +20,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 const NAVIGATION = [
   {
     kind: "header",
@@ -38,7 +39,7 @@ const NAVIGATION = [
   {
     segment: "login",
     title: "login",
-    icon: <ShoppingCartIcon />,
+    icon: <LoginOutlinedIcon />,
   },
   {
     kind: "divider",
@@ -171,7 +172,7 @@ function DashboardLayoutBasic(props) {
   return (
     <>
       <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow}>
-        <DashboardLayout defaultSidebarCollapsed={true}  slots={{
+        <DashboardLayout  defaultSidebarCollapsed={true}  slots={{
           appTitle: CustomAppTitle,
           toolbarActions: ToolbarActionsSearch,
           sidebarFooter: SidebarFooter,
