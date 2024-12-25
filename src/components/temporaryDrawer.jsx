@@ -17,7 +17,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
 import ResponsiveAppBar from "./responsiveAppBar";
-import { Link ,Outlet} from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 const NAVIGATION = [
   {
     kind: "header",
@@ -83,7 +83,12 @@ export default function TemporaryDrawer() {
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>{text.icon}</ListItemIcon>
-              <Link to={text.segment}>{text.segment}</Link>
+              <Link
+                to={text.segment}
+                style={{ width: "100%", display: "flex", justifyContent: "right", textDecoration: "none", color :"red"}}
+              >
+                {text.segment}
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -104,12 +109,12 @@ export default function TemporaryDrawer() {
 
   return (
     <div>
-      <ResponsiveAppBar onButtonclick={toggleDrawer(true)}/>
+      <ResponsiveAppBar onButtonclick={toggleDrawer(true)} />
       {/* <Button onClick={toggleDrawer(true)}>Open drawer</Button> */}
-      <Drawer open={open} onClose={toggleDrawer(false)}>
+      <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
         {DrawerList}
       </Drawer>
-    <Outlet/>
+      <Outlet />
     </div>
   );
 }
