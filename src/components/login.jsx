@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import Input from "./input";
-
+import Typography from "@mui/material/Typography";
 class Login extends Component {
   state = {
     account: {
@@ -42,7 +42,9 @@ class Login extends Component {
           onChange={this.handleChange}
         />
         <button className="btn btn-primary">Login</button>
+
       </form>
+      
     );
   }
 }

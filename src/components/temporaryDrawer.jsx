@@ -17,7 +17,9 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
 import ResponsiveAppBar from "./responsiveAppBar";
-import { Link, Outlet } from "react-router-dom";
+import {  Outlet } from "react-router-dom";
+import Container from "@mui/material/Container";
+import CustomLink from "./customLink";
 const NAVIGATION = [
   {
     kind: "header",
@@ -25,17 +27,17 @@ const NAVIGATION = [
   },
   {
     segment: "dashboard",
-    title: "Dashboard",
+    title: "داشبورد",
     icon: <DashboardIcon />,
   },
   {
     segment: "orders",
-    title: "Orders",
+    title: "انتخاب",
     icon: <ShoppingCartIcon />,
   },
   {
     segment: "login",
-    title: "login",
+    title: "ورود",
     icon: <LoginOutlinedIcon />,
   },
   {
@@ -47,7 +49,7 @@ const NAVIGATION = [
   },
   {
     segment: "reports",
-    title: "Reports",
+    title: "گزارشها",
     icon: <BarChartIcon />,
     children: [
       {
@@ -77,34 +79,32 @@ export default function TemporaryDrawer() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {NAVIGATION.map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{text.icon}</ListItemIcon>
-              <Link
-                to={text.segment}
-                style={{ width: "100%", display: "flex", justifyContent: "right", textDecoration: "none", color :"red"}}
-              >
-                {text.segment}
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+    <Container maxWidth="xl">
+      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <List>
+          {NAVIGATION.map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>{text.icon}</ListItemIcon>
+                <CustomLink to = {text.segment} text={text.title}/>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+
+        <Divider />
+        <List>
+          {["All mail", "Trash", "Spam"].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Container>
   );
 
   return (
@@ -113,8 +113,10 @@ export default function TemporaryDrawer() {
       {/* <Button onClick={toggleDrawer(true)}>Open drawer</Button> */}
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
         {DrawerList}
+       
       </Drawer>
       <Outlet />
+     
     </div>
   );
 }

@@ -73,14 +73,14 @@ function ResponsiveAppBar({ onButtonclick }) {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
+              // fontFamily: "monospace",
+              // fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              // color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO11
+            لوگو
           </Typography>
 
           <Typography
