@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-
+import "../App.css";
 const CustomLink = ({ to, text }) => {
   return (
     <Link
       to={to}
-      style={{   fontFamily: "Vazir, Arial, sans-serif", width: "100%", display: "flex", justifyContent: "right", textDecoration: "none", color: "red" }}
+      style={{ fontFamily: "IranianSans",  width: "100%", display: "flex", justifyContent: "right", textDecoration: "none", color: "inherit"}}
     >
       {text}
     </Link>

@@ -83,7 +83,7 @@ export default function TemporaryDrawer() {
       <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
         <List>
           {NAVIGATION.map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon>{text.icon}</ListItemIcon>
                 <CustomLink to = {text.segment} text={text.title}/>
@@ -92,17 +92,7 @@ export default function TemporaryDrawer() {
           ))}
         </List>
 
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        
       </Box>
     </Container>
   );

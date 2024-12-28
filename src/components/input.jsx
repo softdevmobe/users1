@@ -6,7 +6,7 @@ const Input = ({name,value,label,onChange ,type="text"}) => {
           // value={value}
           id={name}
           name={name}
-          className="form-control"
+          // className="form-control"
           type={type}
           {...(type !== "file" && {value})}
         />

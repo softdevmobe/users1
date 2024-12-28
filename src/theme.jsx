@@ -1,8 +1,9 @@
 import { createTheme } from "@mui/material/styles";
+import "./App.css";
 
 const theme = createTheme({
   typography: {
-    // fontFamily: "Vazir, Arial, sans-serif",
+    fontFamily: '"IranSans" "IranianSansBold"',
   },
 });
 
