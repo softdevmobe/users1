@@ -12,25 +12,15 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
+import { styled, alpha } from "@mui/material/styles";
 
-import { styled, alpha } from '@mui/material/styles';
+import InputBase from "@mui/material/InputBase";
 
+import SearchIcon from "@mui/icons-material/Search";
 
-import InputBase from '@mui/material/InputBase';
-
-import SearchIcon from '@mui/icons-material/Search';
-
-
-
-
-
-
-
-
-import logo from '../image/logo192.png'
+import logo from "../image/logo192.png";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 
 function ResponsiveAppBar({ onButtonclick }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -48,64 +38,66 @@ function ResponsiveAppBar({ onButtonclick }) {
     setAnchorElUser(null);
   };
 
-
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
+  const Search = styled("div")(({ theme }) => ({
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
+    margin: 0,
+    padding:0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(0),
+      width: "100%",
     },
+    direction: "rtl",
   }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
+
+  const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    margin: 0,
+    padding:0,
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    
   }));
-  
+
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    width: '100%',
-    '& .MuiInputBase-input': {
+    color: "inherit",
+    width: "100%",
+    "& .MuiInputBase-input": {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
+      paddingRight: `calc(1em + ${theme.spacing(4)})`,
+      margin: 0,
+      padding:0,
     },
   }));
-  
-
-
 
   return (
-    <AppBar position="static" color="default" >
-      <Container maxWidth="xl">
+    <AppBar position="static" color="default">
+      <Box maxWidth="xl" sx={{pt:1,pr:2}}>
+
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
+          </Search>
+        
+        </Box >
+        <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={logo} />
-                
-
+                <Avatar alt="Mohammad" src={logo} />
               </IconButton>
-            </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -129,9 +121,6 @@ function ResponsiveAppBar({ onButtonclick }) {
               ))}
             </Menu>
           </Box>
-
-
-          
 
           <Typography
             variant="h6"
@@ -179,28 +168,6 @@ function ResponsiveAppBar({ onButtonclick }) {
           </Box>
           <MenuIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} onClick={onButtonclick} />
         </Toolbar>
-
-        <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static"  >
-        <Toolbar  >
-
-
-          <Search >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              
-            />
-          </Search>
-        </Toolbar>
-      </AppBar>
-    </Box>
-
-
-        
       </Container>
     </AppBar>
   );
