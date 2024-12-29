@@ -11,14 +11,12 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-
 import { styled, alpha } from "@mui/material/styles";
-
 import InputBase from "@mui/material/InputBase";
-
 import SearchIcon from "@mui/icons-material/Search";
-
 import logo from "../image/logo192.png";
+import AccountDemoSignedIn from "./accountDemoSignedIn";
+
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -119,6 +117,7 @@ function ResponsiveAppBar({ onButtonclick }) {
                   <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
                 </MenuItem>
               ))}
+          <AccountDemoSignedIn/>
             </Menu>
           </Box>
 
