@@ -41,12 +41,11 @@ function ResponsiveAppBar({ onButtonclick }) {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
+
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.primary.dark, 0.25),
     },
-    margin: 0,
-    padding:0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(0),
@@ -56,15 +55,16 @@ function ResponsiveAppBar({ onButtonclick }) {
   }));
 
   const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(1, 1,1,1),
     height: "100%",
-    margin: 0,
-    padding:0,
+
     position: "absolute",
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+
+    backgroundColor:theme.palette.warning.light,
     
   }));
 
@@ -75,9 +75,9 @@ function ResponsiveAppBar({ onButtonclick }) {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
       paddingRight: `calc(1em + ${theme.spacing(4)})`,
-      margin: 0,
-      padding:0,
+     
     },
+
   }));
 
   return (
@@ -161,7 +161,7 @@ function ResponsiveAppBar({ onButtonclick }) {
           <MenuIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} onClick={onButtonclick} />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
+              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "black", display: "block" }}>
                 {page}
               </Button>
             ))}

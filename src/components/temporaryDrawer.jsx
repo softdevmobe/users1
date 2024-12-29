@@ -80,19 +80,17 @@ export default function TemporaryDrawer() {
 
   const DrawerList = (
     <Container maxWidth="xl">
-      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <Box sx={{ width: 250  }} role="presentation" onClick={toggleDrawer(false)}>
         <List>
           {NAVIGATION.map((text, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton>
+              <ListItemButton >
                 <ListItemIcon>{text.icon}</ListItemIcon>
-                <CustomLink to = {text.segment} text={text.title}/>
+                <CustomLink to = {text.segment} text={text.title} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-
-        
       </Box>
     </Container>
   );
@@ -100,10 +98,8 @@ export default function TemporaryDrawer() {
   return (
     <div>
       <ResponsiveAppBar onButtonclick={toggleDrawer(true)} />
-      {/* <Button onClick={toggleDrawer(true)}>Open drawer</Button> */}
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
         {DrawerList}
-       
       </Drawer>
       <Outlet />
      

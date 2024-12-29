@@ -3,8 +3,9 @@ import "./App.css";
 
 const theme = createTheme({
   typography: {
-    fontFamily: '"IranSans" "IranianSansBold"',
+    fontFamily: '"IranianSans" "IranianSansBold"',
   },
+  
 });
 
 export default theme;
