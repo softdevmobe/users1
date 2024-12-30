@@ -1,6 +1,8 @@
+import { Typography } from "@mui/material";
+
 const Input = ({name,value,label,onChange ,type="text"}) => {
     return (  <div className="mb-3">
-        <label htmlFor={name}>{label}:</label>
+        <Typography htmlFor={name}>{label}:</Typography>
         <input
           onChange={onChange}
           // value={value}
