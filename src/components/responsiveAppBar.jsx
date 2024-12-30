@@ -65,6 +65,7 @@ function ResponsiveAppBar({ onButtonclick }) {
     backgroundColor:theme.palette.warning.light,
     
   }));
+  
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
@@ -80,47 +81,17 @@ function ResponsiveAppBar({ onButtonclick }) {
 
   return (
     <AppBar position="static" color="default">
-      <Box maxWidth="xl" sx={{pt:1,pr:2}}>
-
+       <Container maxWidth="xl">
+       <Toolbar disableGutters sx={{p:0}}>
+       <AccountDemoSignedIn/>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
           </Search>
-        
-        </Box >
-        <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 0 }}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Mohammad" src={logo} />
-              </IconButton>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
-                </MenuItem>
-              ))}
-          <AccountDemoSignedIn/>
-            </Menu>
-          </Box>
-
+          </Toolbar >
+        <Toolbar disableGutters sx={{p:0,mt:-3}}>
           <Typography
             variant="h6"
             noWrap

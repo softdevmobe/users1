@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'IranSans';
-    src: url('/public/fonts/IranianSans.ttf')
+    src: url('./fonts/IRANSansMobile(FaNum)_Light.ttf')
     format('truetype');
     font-weight: normal;
     font-style: normal;
@@ -8,7 +8,7 @@
 /* BEGIN Bold */
 @font-face {
 	font-family: 'IranianSansBold';
-	src: url('/public/fonts/IranianSansBold.ttf') format('truetype');
+	src: url('./fonts/IranianSansBold.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -16,15 +16,15 @@
 /* BEGIN Regular */
 @font-face {
 	font-family: 'IranianSans';
-	src: url('/public/fonts/IranianSansRegular.ttf') format('truetype'),
-		 url('/public/fonts/IRANSans-web.woff') format('woff');
+	src: url('./fonts/IranianSansRegular.ttf') format('truetype'),
+		 url('./fonts/IRANSans-web.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Dubai-Regular';
-	src: url('/public/fonts/Dubai-Regular.woff') format('woff');
+	src: url('./fonts/Dubai-Regular.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 }
