@@ -1,52 +1,100 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography'; // برای عنوان فرم
+import React, { useState } from 'react';
+import { TextField, Button, Box, Typography } from '@mui/material';
+import axios from 'axios'; // Import Axios
 
-export default function LoginForm() {
+const LoginForm = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+
+  // Login form submission handler
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError('Please enter a valid email');
+      return;
+    }
+
+    setIsLoading(true); // Set loading indicator to true
+    setError(''); // Clear any previous errors
+
+    try {
+      const response = await axios.post('/api/login', {
+        email,
+        password,
+      });
+
+      // Handle successful login (redirect, store user data, etc.)
+      console.log('Login successful!', response.data); // Example: log response
+      // ... your success logic here (e.g., redirect to dashboard)
+
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Login failed. Please check your credentials.'); // Display error message
+    } finally {
+      setIsLoading(false); // Set loading indicator to false
+    }
+  };
+
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#f0f0f0', // رنگ پس‌زمینه صفحه
+        maxWidth: 400,
+        margin: 'auto',
+        mt: 10,
+        p: 3,
+        border: '1px solid #ddd',
+        borderRadius: 2,
+        boxShadow: 3,
+        textAlign: 'center',
       }}
     >
-      <Box
-        sx={{
-          border: '1px solid #ddd', // خط دور کادر
-          padding: '32px', // فاصله داخلی بیشتر
-          borderRadius: '8px', // گرد کردن بیشتر گوشه‌ها
-          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)', // سایه برای جلوه بیشتر
-          backgroundColor: 'white', // رنگ پس‌زمینه کادر
-          maxWidth: '400px', // حداکثر عرض کادر برای ریسپانسیو بودن
-          width: '90%', // عرض کادر در موبایل
-        }}
-      >
-          <Typography variant="h5" align="center" gutterBottom>ورود</Typography> {/* عنوان فرم */}
+      <Typography variant="h5" gutterBottom>
+        Login
+      </Typography>
+      <form onSubmit={handleSubmit}>
         <TextField
-          id="username"
-          label="نام کاربری"
-          variant="outlined"
-          margin="normal"
+          label="Email"
+          type="email"
           fullWidth
+          margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <TextField
-          id="password"
-          label="رمز عبور"
+          label="Password"
           type="password"
-          variant="outlined"
-          margin="normal"
           fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <Button variant="contained" fullWidth sx={{ marginTop: '24px' }}>
-          ورود
+        {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+          disabled={isLoading} // Disable button while loading
+        >
+          {isLoading ? 'Loading...' : 'Login'}
         </Button>
-      </Box>
+      </form>
     </Box>
   );
-}
+};
+
+export default LoginForm;
