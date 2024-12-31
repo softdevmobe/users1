@@ -3,13 +3,14 @@ import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider
 import { Account } from "@toolpad/core/Account";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
-import { Style, WidthNormal } from "@mui/icons-material";
+import UserContext from './userContext'
 const demoSession = {
   user: {
-    name: "Bharat Kashyap",
-    email: "bharatkashyap@outlook.com",
+    name: '',
+    email: '',
     image: "https://avatars.githubusercontent.com/u/19550456",
   },
+  updateUser: () => {},
 };
 
 export default function AccountDemoSignedIn() {
@@ -28,7 +29,6 @@ export default function AccountDemoSignedIn() {
   return (
     <AuthenticationContext.Provider value={authentication}>
       <SessionContext.Provider value={session}>
-        {/* preview-start */}
         <Account
           localeText={{
             signInLabel: "ورود | ثبت‌ نام",
@@ -46,7 +46,6 @@ export default function AccountDemoSignedIn() {
             },
           }}
         />
-        {/* preview-end */}
       </SessionContext.Provider>
     </AuthenticationContext.Provider>
   );
