@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Users from "./components/users";
 import User from "./components/user";
-import Login from "./components/login";
+// import LoginForm from "./components/login";
 import Register from "./components/register";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
@@ -25,7 +25,7 @@ class App extends Component {
         <Route path="/" element={<TemporaryDrawer />} >
           <Route path="/user/:userId" element={<User />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/product" element={<Product />} />

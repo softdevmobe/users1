@@ -31,7 +31,13 @@ const theme = createTheme({
       },
     },
 
-
+    MuiTextField: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          fontFamily: '"IranianSans"',
+        })
+      },
+    },
 
   },
 });
