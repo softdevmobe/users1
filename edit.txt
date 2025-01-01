@@ -1,16 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import { BrowserRouter } from 'react-router-dom';
-import { UserProvider } from './components/userContext'; // مسیر صحیح
+import React, { createContext, useState } from "react";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+const UserContext = createContext({
+  user: { name: "", email: "", image: "" },
+  updateUser: () => {},
+});
+
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState({ name: "", email: "", image: "" });
+
+  const updateUser = (newUserData) => {
+    setUser(newUserData);
+  };
+
+  return (
+    <UserContext.Provider value={{ user, updateUser }}> {/* spread لازم نیست */}
+      {children} {/* این خط حیاتی است! */}
+    </UserContext.Provider>
+  );
+};
+
+export default UserContext; // export default برای استفاده مستقیم از Context
+export const useUser = () => React.useContext(UserContext); // export برای هوک سفارشی
