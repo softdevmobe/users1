@@ -1,17 +1,23 @@
-import React, {createContext,useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios"; // Import Axios
-import { UserProvider } from "./userContext";
-
+import { useUser } from "./userContext";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const { updateUser } = useUser();
 
   // Login form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+   
+    updateUser({
+      name: "4",
+      email: "4",
+      image: "https://avatars.githubusercontent.com/u/19550456",
+    });
 
     // Basic validation
     if (!email || !password) {
@@ -47,9 +53,6 @@ const LoginForm = () => {
   };
 
   return (
-    <UserProvider>
-
-
     <Box
       sx={{
         maxWidth: 400,
@@ -63,7 +66,7 @@ const LoginForm = () => {
       }}
     >
       <Typography variant="h5" gutterBottom>
-      ورود
+        ورود
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -99,7 +102,6 @@ const LoginForm = () => {
         </Button>
       </form>
     </Box>
-    </UserProvider>
   );
 };
 

@@ -11,6 +11,8 @@ import Product from "./components/Product";
 import LoginForm from "./components/loginForm";
 import TemporaryDrawer from "./components/temporaryDrawer"; // Import مسیر جدید
 import { Routes, Route } from "react-router-dom";
+import AccountDemoSignedIn from "./components/accountDemoSignedIn";
+import ResponsiveAppBar from "./components/responsiveAppBar";
 
 function App () {
 
@@ -25,7 +27,7 @@ function App () {
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/loginForm" element={<LoginForm />} />
+          <Route path="/accountDemoSignedIn" element={<AccountDemoSignedIn />} />
           <Route path="/" element={  <ProtecedRoute>
               <Home />
               </ProtecedRoute>

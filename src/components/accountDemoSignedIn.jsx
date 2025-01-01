@@ -4,23 +4,27 @@ import { Account } from "@toolpad/core/Account";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import UserContext from "./userContext";
-import { UserProvider } from "./userContext";
+import { useUser } from "./userContext";
 const demoSession = {
   user: {
-    name: "1",
-    email: "1",
+    name: "3",
+    email: "3",
     image: "https://avatars.githubusercontent.com/u/19550456",
   },
+  updateUser: () => {},
 };
 
 export default function AccountDemoSignedIn() {
-
-  const [session, setSession] = React.useState(demoSession);
-
+  const demoses = useUser();
+  
+  const [session, setSession] = React.useState(demoses);
+  console.log(demoSession);
+  console.log(demoses);
+  console.log(session);
   const authentication = React.useMemo(() => {
     return {
       signIn: () => {
-        setSession(demoSession);
+        setSession(demoses);
       },
       signOut: () => {
         setSession(null);
@@ -29,28 +33,26 @@ export default function AccountDemoSignedIn() {
   }, []);
 
   return (
-
     <AuthenticationContext.Provider value={authentication}>
       <SessionContext.Provider value={session}>
-          <Account
-            localeText={{
-              signInLabel: "ورود | ثبت‌ نام",
-              signOutLabel: "خروج",
-            }}
-            slotProps={{
-              signInButton: {
-                color: "inherit",
-                startIcon: <Login />,
-                sx: { width: "150px", border: " 1px solid #ff9800" },
-              },
-              signOutButton: {
-                color: "success",
-                startIcon: <Logout />,
-              },
-            }}
-          />
+        <Account
+          localeText={{
+            signInLabel: "ورود | ثبت‌ نام",
+            signOutLabel: "خروج",
+          }}
+          slotProps={{
+            signInButton: {
+              color: "inherit",
+              startIcon: <Login />,
+              sx: { width: "150px", border: " 1px solid #ff9800" },
+            },
+            signOutButton: {
+              color: "success",
+              startIcon: <Logout />,
+            },
+          }}
+        />
       </SessionContext.Provider>
     </AuthenticationContext.Provider>
-
   );
 }

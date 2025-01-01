@@ -1,21 +1,29 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
+
 const UserContext = createContext({
-  user: { name: "", email: "", image: "https://avatars.githubusercontent.com/u/19550456" },
-  // https://avatars.githubusercontent.com/u/19550456
+  user: { name: "1", email: "1", image: "https://avatars.githubusercontent.com/u/19550456" },
   updateUser: () => {},
 });
-export const UserProvider = ({ Children }) => {
+
+export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
-    name: "a",
-    email: "b",
-    image: "https://avatars.githubusercontent.com/u/19550456",
+    name: "",
+    email: "",
+    image: "",
   });
+
   const updateUser = (newUserData) => {
     setUser(newUserData);
   };
-  return <UserContext.Provider value={{ ...user, updateUser }}>{Children}</UserContext.Provider>;
+
+  return (
+    <UserContext.Provider value={{ user, updateUser }}>
+      {" "}
+      {/* spread لازم نیست */}
+      {children} {/* این خط حیاتی است! */}
+    </UserContext.Provider>
+  );
 };
-export const useUser = () => {
-  return useContext(UserContext);
-};
-export default UserContext;
+
+export default UserContext; // export default برای استفاده مستقیم از Context
+export const useUser = () => useContext(UserContext); // export برای هوک سفارشی

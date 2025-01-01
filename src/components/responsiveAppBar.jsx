@@ -53,7 +53,7 @@ function ResponsiveAppBar({ onButtonclick }) {
   }));
 
   const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(1, 1,1,1),
+    padding: theme.spacing(1, 1, 1, 1),
     height: "100%",
 
     position: "absolute",
@@ -62,10 +62,8 @@ function ResponsiveAppBar({ onButtonclick }) {
     alignItems: "center",
     justifyContent: "center",
 
-    backgroundColor:theme.palette.warning.light,
-    
+    backgroundColor: theme.palette.warning.light,
   }));
-  
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
@@ -74,24 +72,22 @@ function ResponsiveAppBar({ onButtonclick }) {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
       paddingRight: `calc(1em + ${theme.spacing(4)})`,
-     
     },
-
   }));
 
   return (
     <AppBar position="static" color="default">
-       <Container maxWidth="xl">
-       <Toolbar disableGutters sx={{p:0}}>
-       <AccountDemoSignedIn/>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters sx={{ p: 0 }}>
+          <AccountDemoSignedIn />
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
           </Search>
-          </Toolbar >
-        <Toolbar disableGutters sx={{p:0,mt:-3}}>
+        </Toolbar>
+        <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
           <Typography
             variant="h6"
             noWrap

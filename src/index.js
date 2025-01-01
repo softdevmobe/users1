@@ -5,9 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme"; // تم سفارشی
 import { CssBaseline } from "@mui/material";
-
+import { UserProvider } from "./components/userContext";
 ReactDOM.createRoot(document.querySelector("#root")).render(
-
+    <UserProvider>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.querySelector("#root")).render(
       </BrowserRouter>
     </ThemeProvider>
 
-
+    </UserProvider>
 
 
 );
