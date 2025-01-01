@@ -1,7 +1,7 @@
 import React, {createContext,useContext, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios"; // Import Axios
-
+import { UserProvider } from "./userContext";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -47,6 +47,9 @@ const LoginForm = () => {
   };
 
   return (
+    <UserProvider>
+
+
     <Box
       sx={{
         maxWidth: 400,
@@ -96,6 +99,7 @@ const LoginForm = () => {
         </Button>
       </form>
     </Box>
+    </UserProvider>
   );
 };
 

@@ -12,15 +12,11 @@ import LoginForm from "./components/loginForm";
 import TemporaryDrawer from "./components/temporaryDrawer"; // Import مسیر جدید
 import { Routes, Route } from "react-router-dom";
 
-class App extends Component {
-  render() {
+function App () {
+
     return (
       <>
-      
-    
         <div className="container mt-3">
-
-   
         <Routes>
         <Route path="/" element={<TemporaryDrawer />} >
           <Route path="/user/:userId" element={<User />} />
@@ -30,9 +26,6 @@ class App extends Component {
           <Route path="/logout" element={<Logout />} />
           <Route path="/product" element={<Product />} />
           <Route path="/loginForm" element={<LoginForm />} />
-         
-
-
           <Route path="/" element={  <ProtecedRoute>
               <Home />
               </ProtecedRoute>
@@ -47,7 +40,7 @@ class App extends Component {
       
       </>
     );
-  }
+
 }
 
 export default App;
