@@ -12,7 +12,7 @@ const LoginForm = () => {
   // Login form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
+
     updateUser({
       name: "4",
       email: "4",

@@ -25,16 +25,12 @@ class Users extends Component {
             this.state.users.map((user) => {
               return (
                 <div className="col-4 text-center p-5">
-                  <img
-                    src={user.avatar}
-                    style={{ borderRadius: "50%", width: "100px" }}
-                    alt=""
-                  />
-                  <Link to ={`/user/${user.id}`}>
-                  <h4>
-                    {user.first_name}
-                    {user.last_name}
-                  </h4>
+                  <img src={user.avatar} style={{ borderRadius: "50%", width: "100px" }} alt="" />
+                  <Link to={`/user/${user.id}`}>
+                    <h4>
+                      {user.first_name}
+                      {user.last_name}
+                    </h4>
                   </Link>
                   <h5>{user.email}</h5>
                   <div className="row">
@@ -72,18 +68,14 @@ class Users extends Component {
       first_name: "mo",
       last_name: "be",
       emaile: "mo_be@gmail.com",
-      avatar:
-        "http://www.neonlearn.ir/uploads/images/users/1587741072106-photo_2018-09-25_21-36-49.jpg",
+      avatar: "http://www.neonlearn.ir/uploads/images/users/1587741072106-photo_2018-09-25_21-36-49.jpg",
     };
     // const response = await axios.post("https://reqres.in/api/users", newUser);
     this.setState({ users: [...this.state.users, newUser] });
   };
   handleUpdate = async (user) => {
     user.first_name = "update";
-    const response = await axios.put(
-      `https://reqres.in/api/users/${user.id}`,
-      user
-    );
+    const response = await axios.put(`https://reqres.in/api/users/${user.id}`, user);
     console.log(response);
     const updateUsers = [...this.state.users];
     const index = updateUsers.indexOf(user);
@@ -91,12 +83,10 @@ class Users extends Component {
     this.setState({ user: updateUsers });
   };
   handleDelete = async (user) => {
-    const response = await axios.delete(
-      `https://reqres.in/api/users/${user.id}`
-    );
+    const response = await axios.delete(`https://reqres.in/api/users/${user.id}`);
     console.log(response);
     const newUsers = this.state.users.filter((u) => u.id !== user.id);
-    this.setState({users:newUsers});
+    this.setState({ users: newUsers });
   };
 }
 

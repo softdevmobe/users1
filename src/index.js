@@ -7,17 +7,12 @@ import theme from "./theme"; // تم سفارشی
 import { CssBaseline } from "@mui/material";
 import { UserProvider } from "./components/userContext";
 ReactDOM.createRoot(document.querySelector("#root")).render(
-    <UserProvider>
+  <UserProvider>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-
-          <App />
-
+        <App />
       </BrowserRouter>
     </ThemeProvider>
-
-    </UserProvider>
-
-
+  </UserProvider>
 );

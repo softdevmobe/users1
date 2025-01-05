@@ -2,7 +2,7 @@ import axiosInstance from "./axiosConfig";
 import React, { Component } from "react";
 import Input from "./input";
 import axios from "axios";
-import { NumericFormat  } from 'react-number-format';
+import { NumericFormat } from "react-number-format";
 class Product extends Component {
   state = {
     product: {
@@ -33,7 +33,7 @@ class Product extends Component {
   handleChange = async (e) => {
     const { name, files } = e.target;
     if (name === "picture") {
-      this.setState({ product: { ...this.state.product,  [name]: files[0] } });
+      this.setState({ product: { ...this.state.product, [name]: files[0] } });
     } else {
       this.setState({ product: { ...this.state.product, [name]: e.target.value } });
     }

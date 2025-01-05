@@ -6,18 +6,16 @@ import Login from "@mui/icons-material/Login";
 // import UserContext from "./userContext";
 import { useUser } from "./userContext";
 
-
 export default function AccountDemoSignedIn() {
   const demoSession = useUser();
 
   const [session, setSession] = React.useState(null);
-React.useEffect(()=>{
-  if(demoSession && demoSession.user)
-  {
-    setSession(demoSession)
-  }
-},[demoSession])
-  
+  React.useEffect(() => {
+    if (demoSession && demoSession.user) {
+      setSession(demoSession);
+    }
+  }, [demoSession]);
+
   const authentication = React.useMemo(() => {
     return {
       signIn: () => {

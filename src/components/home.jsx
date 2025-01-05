@@ -9,9 +9,7 @@ class Home extends Component {
     console.log("{ response }");
   }
   render() {
-    return <>ssss
-    <img src="/uploads/picture/picture-1733901054403-h1yafewvibtx.png" alt="" />
-    </>;
+    return <>ssss</>;
   }
 }
 export default Home;
