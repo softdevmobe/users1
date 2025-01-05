@@ -8,41 +8,42 @@ import NotFound from "./components/notFound";
 import ProtecedRoute from "./components/protectedRote";
 import Logout from "./components/logout";
 import Product from "./components/Product";
+import Courses from "./components/courses";
 import LoginForm from "./components/loginForm";
 import TemporaryDrawer from "./components/temporaryDrawer"; // Import مسیر جدید
 import { Routes, Route } from "react-router-dom";
 import AccountDemoSignedIn from "./components/accountDemoSignedIn";
 import ResponsiveAppBar from "./components/responsiveAppBar";
 
-function App () {
-
-    return (
-      <>
-        <div className="container mt-3">
+function App() {
+  return (
+    <>
+      <div className="container mt-3">
         <Routes>
-        <Route path="/" element={<TemporaryDrawer />} >
-          <Route path="/user/:userId" element={<User />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/accountDemoSignedIn" element={<AccountDemoSignedIn />} />
-          <Route path="/" element={  <ProtecedRoute>
-              <Home />
-              </ProtecedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<TemporaryDrawer />}>
+            <Route path="/user/:userId" element={<User />} />
+            <Route
+              path="/users"
+              element={
+                <ProtecedRoute>
+                  <Users />
+                </ProtecedRoute>
+              }
+            />
+
+            <Route path="/Courses" element={<Courses />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/product" element={<Product />} />
+            <Route path="/accountDemoSignedIn" element={<AccountDemoSignedIn />} />
+            <Route index element={<Home />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
- 
-        </div>
-
-      
-      </>
-    );
-
+      </div>
+    </>
+  );
 }
 
 export default App;

@@ -3,7 +3,7 @@ import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider
 import { Account } from "@toolpad/core/Account";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
-import UserContext from "./userContext";
+// import UserContext from "./userContext";
 import { useUser } from "./userContext";
 
 
@@ -15,8 +15,6 @@ React.useEffect(()=>{
   if(demoSession && demoSession.user)
   {
     setSession(demoSession)
-    console.log("demoSession : ",demoSession);
-  console.log( "session : " ,session);
   }
 },[demoSession])
   
