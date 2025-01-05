@@ -1,23 +1,16 @@
-import React, { createContext, useState } from "react";
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const UserContext = createContext({
-  user: { name: "", email: "", image: "" },
-  updateUser: () => {},
-});
-
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: "", email: "", image: "" });
-
-  const updateUser = (newUserData) => {
-    setUser(newUserData);
-  };
-
-  return (
-    <UserContext.Provider value={{ user, updateUser }}> {/* spread لازم نیست */}
-      {children} {/* این خط حیاتی است! */}
-    </UserContext.Provider>
+module.exports = function (app) {
+  app.use(
+    (req, res, next) => {
+      if (!req.path.startsWith('/api/')) {
+        createProxyMiddleware({
+          target: 'http://localhost:5000', // آدرس سرور بک‌اند
+          changeOrigin: true,
+        })(req, res, next);
+      } else {
+        next();
+      }
+    }
   );
 };
-
-export default UserContext; // export default برای استفاده مستقیم از Context
-export const useUser = () => React.useContext(UserContext); // export برای هوک سفارشی
