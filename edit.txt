@@ -1,16 +1,25 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function (app) {
+module.exports = function(app) {
   app.use(
-    (req, res, next) => {
-      if (!req.path.startsWith('/api/')) {
-        createProxyMiddleware({
-          target: 'http://localhost:5000', // آدرس سرور بک‌اند
-          changeOrigin: true,
-        })(req, res, next);
-      } else {
-        next();
-      }
-    }
+    '/api', // مسیرهایی که می‌خواهید پروکسی شوند (مثلاً /api، /products، /users و غیره)
+    createProxyMiddleware({
+      target: 'http://localhost:5000', // آدرس سرور backend شما
+      changeOrigin: true, // بسیار مهم: برای تغییر origin درخواست و حل مشکل CORS
+      pathRewrite: { // اختیاری: برای تغییر مسیر درخواست قبل از ارسال به سرور backend
+        '^/api': '', // حذف /api از ابتدای مسیر (اختیاری)
+      },
+    })
+  );
+  // مثال برای پروکسی کردن به یک سرور دیگر با مسیر متفاوت:
+  app.use(
+    '/other-api',
+    createProxyMiddleware({
+      target: 'http://another-server.com',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/other-api': '/different-path', // تغییر مسیر به /different-path در سرور مقصد
+      },
+    })
   );
 };
