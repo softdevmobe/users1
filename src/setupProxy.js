@@ -1,0 +1,14 @@
+const { createProxyMiddleware } = require("http-proxy-middleware");
+
+module.exports = function (app) {
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api/")) {
+      createProxyMiddleware({
+        target: "http://localhost:5500", // آدرس سرور بک‌اند
+        changeOrigin: true,
+      })(req, res, next);
+    } else {
+      next();
+    }
+  });
+};
