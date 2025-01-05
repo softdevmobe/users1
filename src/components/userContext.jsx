@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 
 const UserContext = createContext({
-  user: { name: "1", email: "1", image: "https://avatars.githubusercontent.com/u/19550456" },
+  user: { name: "1", email: "1", image: "/uploads/picture/picture-1733901054403-h1yafewvibtx.png" },
   updateUser: () => {},
 });
 
@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     name: "",
     email: "",
-    image: "",
+    image: "/uploads/picture/picture-1733901054403-h1yafewvibtx.png",
   });
 
   const updateUser = (newUserData) => {

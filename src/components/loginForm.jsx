@@ -16,7 +16,7 @@ const LoginForm = () => {
     updateUser({
       name: "4",
       email: "4",
-      image: "https://avatars.githubusercontent.com/u/19550456",
+      image: "uploads/picture/picture-1733901054403-h1yafewvibtx.png",
     });
 
     // Basic validation

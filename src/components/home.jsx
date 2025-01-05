@@ -5,15 +5,13 @@ class Home extends Component {
     courses: [],
   };
   async componentDidMount() {
-    const response = await axios.post("/");
-    console.log({response});
+    const response = await axios.get("/");
+    console.log("{ response }");
   }
   render() {
-    return (
-      <>
-ssss
-      </>
-    );
+    return <>ssss
+    <img src="/uploads/picture/picture-1733901054403-h1yafewvibtx.png" alt="" />
+    </>;
   }
 }
 export default Home;
