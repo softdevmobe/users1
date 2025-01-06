@@ -7,9 +7,9 @@ const UserContext = createContext({
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
-    name: "",
-    email: "",
-    image: "/uploads/picture/picture-1733901054403-h1yafewvibtx.png",
+    name: null,
+    email: null,
+    image: null,
   });
 
   const updateUser = (newUserData) => {
