@@ -1,22 +1,24 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios"; // Import Axios
-import { useUser } from "./userContext";
+import { AuthenticationContext } from "@toolpad/core/AppProvider";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
-  const { updateUser } = useUser();
 
+ const {updateUser } = React.useContext(AuthenticationContext);
   // Login form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     updateUser({
-      name: "4",
-      email: "4",
-      image: "uploads/picture/picture-1733901054403-h1yafewvibtx.png",
+      user: {
+        name: "1",
+        email: "1",
+        image: "uploads/picture/picture-1733901054403-h1yafewvibtx.png",
+      },
     });
 
     // Basic validation

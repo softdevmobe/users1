@@ -3,36 +3,29 @@ import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider
 import { Account } from "@toolpad/core/Account";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
-import { useUser } from "./userContext";
+
 import { useNavigate } from "react-router-dom";
-
+import { use } from "react";
 export default function AccountDemoSignedIn() {
-  const demoSession = useUser();
-  const [session, setSession] = React.useState();
+  const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    if (demoSession.user?.name) {
-      setSession(demoSession);
-      navigate("/"); // هدایت به صفحه اصلی بعد از لاگین موفق
-    }
-  }, [demoSession]);
-
   const authentication = React.useMemo(() => {
     return {
       signIn: () => {
+        console.log("signIn", user);
+        updateUser(use);
         navigate("/login"); // هدایت به صفحه لاگین
       },
       signOut: () => {
-        setSession(null);
+        updateUser(null);
         navigate("/"); // هدایت به صفحه اصلی بعد از خروج
       },
     };
-  }, [navigate]);
+  }, [user]);
 
   return (
     <AuthenticationContext.Provider value={authentication}>
-      <SessionContext.Provider value={session}>
+      <SessionContext.Provider value={user}>
         <Account
           localeText={{
             signInLabel: "ورود | ثبت‌ نام",

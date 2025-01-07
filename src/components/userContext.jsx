@@ -1,29 +1,12 @@
-import React, { createContext, useState, useContext } from "react";
-
-const UserContext = createContext({
-  user: { name: "1", email: "1", image: "/uploads/picture/picture-1733901054403-h1yafewvibtx.png" },
-  updateUser: () => {},
-});
+import React, { useState } from "react";
+import { AuthenticationContext } from "@toolpad/core/AppProvider";
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    name: null,
-    email: null,
-    image: null,
-  });
-
+  const [user, setUser] = useState(null);
   const updateUser = (newUserData) => {
+    console.log(newUserData);
     setUser(newUserData);
   };
-
-  return (
-    <UserContext.Provider value={{ user, updateUser }}>
-      {" "}
-      {/* spread لازم نیست */}
-      {children} {/* این خط حیاتی است! */}
-    </UserContext.Provider>
-  );
+  return <AuthenticationContext.Provider value={{ user, updateUser }}> {children}</AuthenticationContext.Provider>;
 };
-
-export default UserContext; // export default برای استفاده مستقیم از Context
-export const useUser = () => useContext(UserContext); // export برای هوک سفارشی
+export default UserProvider;
