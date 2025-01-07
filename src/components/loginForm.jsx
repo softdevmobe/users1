@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios"; // Import Axios
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
@@ -9,7 +9,6 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
 
  const {updateUser } = React.useContext(AuthenticationContext);
-  // Login form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
