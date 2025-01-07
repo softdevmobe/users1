@@ -11,6 +11,7 @@ import Product from "./components/Product";
 import Courses from "./components/courses";
 import LoginForm from "./components/loginForm";
 import TemporaryDrawer from "./components/temporaryDrawer"; // Import مسیر جدید
+
 import { Routes, Route } from "react-router-dom";
 import AccountDemoSignedIn from "./components/accountDemoSignedIn";
 import ResponsiveAppBar from "./components/responsiveAppBar";
@@ -20,7 +21,7 @@ function App() {
     <>
       <div className="container mt-3">
         <Routes>
-          <Route path="/" element={<TemporaryDrawer />}>
+          <Route path="/" element={<ResponsiveAppBar />}>
             <Route path="/user/:userId" element={<User />} />
             <Route
               path="/users"

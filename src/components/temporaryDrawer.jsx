@@ -20,6 +20,7 @@ import ResponsiveAppBar from "./responsiveAppBar";
 import { Outlet } from "react-router-dom";
 import Container from "@mui/material/Container";
 import CustomLink from "./customLink";
+import MenuIcon from "@mui/icons-material/Menu";
 const NAVIGATION = [
   {
     kind: "header",
@@ -80,7 +81,7 @@ export default function TemporaryDrawer() {
 
   const DrawerList = (
     <Container maxWidth="xl">
-      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(true)}>
         <List>
           {NAVIGATION.map((text, index) => (
             <ListItem key={index} disablePadding>
@@ -97,11 +98,13 @@ export default function TemporaryDrawer() {
 
   return (
     <div>
-      <ResponsiveAppBar onButtonclick={toggleDrawer(true)} />
+       <MenuIcon  onClick={toggleDrawer(true)}/>
+       {/* <MenuIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} onClick={toggleDrawer(true)} /> */}
+      {/* <ResponsiveAppBar onButtonclick={toggleDrawer(true)} /> */}
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
         {DrawerList}
       </Drawer>
-      <Outlet />
+      {/* <Outlet /> */}
     </div>
   );
 }

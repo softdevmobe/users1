@@ -5,7 +5,6 @@ import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
 export default function AccountDemoSignedIn() {
   const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ export default function AccountDemoSignedIn() {
     return {
       signIn: () => {
         console.log("signIn", user);
-        updateUser(use);
+        updateUser(user);
         navigate("/login"); // هدایت به صفحه لاگین
       },
       signOut: () => {
@@ -35,7 +34,7 @@ export default function AccountDemoSignedIn() {
             signInButton: {
               color: "inherit",
               startIcon: <Login />,
-              sx: { width: "150px", border: "1px solid #ff9800" },
+              sx: { minWidth: "150px", border: "1px solid #ff9800" },
               onClick: authentication.signIn, // رویداد کلیک برای هدایت به لاگین
             },
             signOutButton: {

@@ -15,8 +15,9 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import logo from "../image/logo192.png";
+import { Outlet } from "react-router-dom";
 import AccountDemoSignedIn from "./accountDemoSignedIn";
-
+import TemporaryDrawer from "./temporaryDrawer";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -76,18 +77,23 @@ function ResponsiveAppBar({ onButtonclick }) {
   }));
 
   return (
+    <>
     <AppBar position="static" color="default">
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ p: 0 }}>
           <AccountDemoSignedIn />
+        
+          
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
           </Search>
+          
         </Toolbar>
         <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
+          
           <Typography
             variant="h6"
             noWrap
@@ -124,7 +130,7 @@ function ResponsiveAppBar({ onButtonclick }) {
           >
             LOGO1
           </Typography>
-          <MenuIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} onClick={onButtonclick} />
+          {/* <MenuIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} onClick={onButtonclick} /> */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "black", display: "block" }}>
@@ -132,10 +138,13 @@ function ResponsiveAppBar({ onButtonclick }) {
               </Button>
             ))}
           </Box>
-          <MenuIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} onClick={onButtonclick} />
+          <TemporaryDrawer/>
         </Toolbar>
+       
       </Container>
     </AppBar>
+     <Outlet /> 
+     </>
   );
 }
 export default ResponsiveAppBar;
