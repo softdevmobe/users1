@@ -18,13 +18,18 @@ import logo from "../image/logo192.png";
 import { Outlet } from "react-router-dom";
 import AccountDemoSignedIn from "./accountDemoSignedIn";
 import TemporaryDrawer from "./temporaryDrawer";
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import RestoreIcon from '@mui/icons-material/Restore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar({ onButtonclick }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [value, setValue] = React.useState(0);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -143,7 +148,20 @@ function ResponsiveAppBar({ onButtonclick }) {
        
       </Container>
     </AppBar>
-     <Outlet /> 
+     <Outlet  /> 
+     <Box sx={{ width: '100%' ,position:'fixed',bottom:0}}>
+      <BottomNavigation
+        showLabels
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      >
+        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+        <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+      </BottomNavigation>
+    </Box>
      </>
   );
 }
