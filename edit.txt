@@ -3,6 +3,14 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 
+// دیکشنری مسیرها به فارسی
+const breadcrumbNameMap = {
+  products: 'محصولات',
+  electronics: 'الکترونیک',
+  clothing: 'پوشاک',
+  home: 'خانه',
+};
+
 export default function DynamicBreadcrumbs() {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
@@ -10,11 +18,12 @@ export default function DynamicBreadcrumbs() {
   return (
     <Breadcrumbs aria-label="breadcrumb">
       <Link underline="hover" color="inherit" component={RouterLink} to="/">
-        Home
+        خانه
       </Link>
       {pathnames.map((value, index) => {
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
         const isLast = index === pathnames.length - 1;
+        const displayName = breadcrumbNameMap[value] || value;
 
         return isLast ? (
           <Link
@@ -23,7 +32,7 @@ export default function DynamicBreadcrumbs() {
             color="text.primary"
             aria-current="page"
           >
-            {value.charAt(0).toUpperCase() + value.slice(1)}
+            {displayName}
           </Link>
         ) : (
           <Link
@@ -33,7 +42,7 @@ export default function DynamicBreadcrumbs() {
             component={RouterLink}
             to={to}
           >
-            {value.charAt(0).toUpperCase() + value.slice(1)}
+            {displayName}
           </Link>
         );
       })}
