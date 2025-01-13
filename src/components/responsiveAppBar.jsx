@@ -18,11 +18,13 @@ import logo from "../image/logo192.png";
 import { Outlet } from "react-router-dom";
 import AccountDemoSignedIn from "./accountDemoSignedIn";
 import TemporaryDrawer from "./temporaryDrawer";
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import RestoreIcon from "@mui/icons-material/Restore";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import HomeIcon from "@mui/icons-material/Home";
+import ActiveLastBreadcrumb from "./ActiveLastBreadcrumb";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -83,86 +85,91 @@ function ResponsiveAppBar({ onButtonclick }) {
 
   return (
     <>
-    <AppBar position="static" color="default">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ p: 0 }}>
-          <AccountDemoSignedIn />
-        
-          
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
-          </Search>
-          
-        </Toolbar>
-        <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
-          
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              // fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              // color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            لوگو
-          </Typography>
+      <AppBar position="static" color="default">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters sx={{ p: 0 }}>
+            <AccountDemoSignedIn />
 
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO1
-          </Typography>
-          {/* <MenuIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} onClick={onButtonclick} /> */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "black", display: "block" }}>
-                {page}
-              </Button>
-            ))}
-          </Box>
-          <TemporaryDrawer/>
-        </Toolbar>
-       
-      </Container>
-    </AppBar>
-     <Outlet  /> 
-     <Box sx={{ width: '100%' ,position:'fixed',bottom:0}}>
-      <BottomNavigation
-        showLabels
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-      >
-        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-      </BottomNavigation>
-    </Box>
-     </>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
+            </Search>
+          </Toolbar>
+
+
+          <Toolbar disableGutters sx={{ p: 0 }}>
+            <ActiveLastBreadcrumb/>
+          </Toolbar>
+
+
+
+          <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                // fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                // color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              لوگو
+            </Typography>
+
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              LOGO1
+            </Typography>
+            {/* <MenuIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} onClick={onButtonclick} /> */}
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: "black", display: "block" }}>
+                  {page}
+                </Button>
+              ))}
+            </Box>
+            <TemporaryDrawer />
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <Outlet />
+      <Box sx={{ width: "100%",  bottom: 0 }}>
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        >
+         
+          <BottomNavigationAction label="خانه" icon={ <HomeIcon  />} />
+          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+          {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
+        </BottomNavigation>
+      </Box>
+    </>
   );
 }
 export default ResponsiveAppBar;
