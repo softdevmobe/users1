@@ -7,7 +7,7 @@ class Home extends Component {
   };
   async componentDidMount() {
     const response = await axios.get("/");
-    console.log("{ response }");
+    console.log({ response });
   }
   render() {
     return (

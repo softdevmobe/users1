@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios"; // Import Axios
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
@@ -8,8 +8,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
-const navigate = useNavigate();
- const {updateUser } = React.useContext(AuthenticationContext);
+  const navigate = useNavigate();
+  const { updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -60,6 +60,7 @@ const navigate = useNavigate();
         maxWidth: 400,
         margin: "auto",
         mt: 10,
+        mb: 10,
         p: 3,
         border: "1px solid #ddd",
         borderRadius: 2,

@@ -1,4 +1,4 @@
-import { createTheme, alpha } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 import "./App.css";
 const theme = createTheme({
   typography: {
@@ -10,7 +10,7 @@ const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           fontFamily: '"IranianSans" "IranianSansBold"',
-        })
+        }),
       },
     },
     // استایل‌دهی لینک
@@ -27,7 +27,7 @@ const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           fontFamily: '"IranianSans"',
-        })
+        }),
       },
     },
 
@@ -35,10 +35,9 @@ const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           fontFamily: '"IranianSans"',
-        })
+        }),
       },
     },
-
   },
 });
 

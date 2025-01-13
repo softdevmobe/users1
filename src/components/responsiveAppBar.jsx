@@ -2,47 +2,37 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import logo from "../image/logo192.png";
 import { Outlet } from "react-router-dom";
 import AccountDemoSignedIn from "./accountDemoSignedIn";
 import TemporaryDrawer from "./temporaryDrawer";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeIcon from "@mui/icons-material/Home";
 import ActiveLastBreadcrumb from "./ActiveLastBreadcrumb";
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function ResponsiveAppBar({ onButtonclick }) {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+function ResponsiveAppBar() {
+  const [ setAnchorElNav] = React.useState(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [value, setValue] = React.useState(0);
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  // const handleOpenUserMenu = (event) => {
+  //   setAnchorElUser(event.currentTarget);
+  // };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -76,6 +66,7 @@ function ResponsiveAppBar({ onButtonclick }) {
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
     width: "100%",
+
     "& .MuiInputBase-input": {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
@@ -88,24 +79,17 @@ function ResponsiveAppBar({ onButtonclick }) {
       <AppBar position="static" color="default">
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ p: 0 }}>
-            <AccountDemoSignedIn />
-
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
             </Search>
+            <AccountDemoSignedIn />
           </Toolbar>
-
-
-          <Toolbar disableGutters sx={{ p: 0 }}>
-            <ActiveLastBreadcrumb/>
-          </Toolbar>
-
-
 
           <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
+            <TemporaryDrawer />
             <Typography
               variant="h6"
               noWrap
@@ -114,6 +98,7 @@ function ResponsiveAppBar({ onButtonclick }) {
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
+
                 // fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
@@ -150,12 +135,14 @@ function ResponsiveAppBar({ onButtonclick }) {
                 </Button>
               ))}
             </Box>
-            <TemporaryDrawer />
+          </Toolbar>
+          <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
+            <ActiveLastBreadcrumb />
           </Toolbar>
         </Container>
       </AppBar>
       <Outlet />
-      <Box sx={{ width: "100%",  bottom: 0 }}>
+      <Box sx={{ width: "100%", bottom: 0 }}>
         <BottomNavigation
           showLabels
           value={value}
@@ -163,8 +150,7 @@ function ResponsiveAppBar({ onButtonclick }) {
             setValue(newValue);
           }}
         >
-         
-          <BottomNavigationAction label="خانه" icon={ <HomeIcon  />} />
+          <BottomNavigationAction label="خانه" icon={<HomeIcon />} />
           <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
           {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
         </BottomNavigation>

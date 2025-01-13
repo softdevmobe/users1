@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Users from "./components/users";
 import User from "./components/user";
 // import LoginForm from "./components/login";
@@ -10,7 +10,6 @@ import Logout from "./components/logout";
 import Product from "./components/Product";
 import Courses from "./components/courses";
 import LoginForm from "./components/loginForm";
-import TemporaryDrawer from "./components/temporaryDrawer"; // Import مسیر جدید
 
 import { Routes, Route } from "react-router-dom";
 import AccountDemoSignedIn from "./components/accountDemoSignedIn";

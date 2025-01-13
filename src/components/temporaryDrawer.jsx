@@ -1,23 +1,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
-import ResponsiveAppBar from "./responsiveAppBar";
-import { Outlet } from "react-router-dom";
 import Container from "@mui/material/Container";
 import CustomLink from "./customLink";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -97,7 +90,7 @@ export default function TemporaryDrawer() {
   );
 
   return (
-    <div>
+    <div >
        <MenuIcon  onClick={toggleDrawer(true)}/>
        {/* <MenuIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} onClick={toggleDrawer(true)} /> */}
       {/* <ResponsiveAppBar onButtonclick={toggleDrawer(true)} /> */}
