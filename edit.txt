@@ -1,105 +1,42 @@
-import * as React from "react";
-import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider";
-import { Account } from "@toolpad/core/Account";
-import Logout from "@mui/icons-material/Logout";
-import Login from "@mui/icons-material/Login";
-import { useNavigate } from "react-router-dom";
+import * as React from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
-export default function AccountDemoSignedIn() {
-  const [session, setSession] = React.useState(null); // مدیریت وضعیت کاربر
-  const navigate = useNavigate();
-
-  const authentication = {
-    signIn: () => {
-      // عملیات لاگین (مثلاً هدایت به صفحه لاگین)
-      navigate("/login"); 
-    },
-    signOut: () => {
-      // خروج کاربر و پاک کردن وضعیت
-      setSession(null);
-      navigate("/"); 
-    },
-  };
-
-  React.useEffect(() => {
-    // اینجا می‌توانید وضعیت ورود کاربر را بررسی کرده و اطلاعات را ست کنید
-    const userFromServer = { name: "Test User" }; // این داده‌ها باید از سرور یا API بیاید
-    if (userFromServer?.name) {
-      setSession(userFromServer);
-    }
-  }, []);
+export default function DynamicBreadcrumbs() {
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
 
   return (
-    <AuthenticationContext.Provider value={authentication}>
-      <SessionContext.Provider value={session}>
-        <Account
-          localeText={{
-            signInLabel: "ورود | ثبت‌ نام",
-            signOutLabel: "خروج",
-          }}
-          slotProps={{
-            signInButton: {
-              color: "inherit",
-              startIcon: <Login />,
-              sx: { width: "150px", border: "1px solid #ff9800" },
-              onClick: authentication.signIn, // کلیک روی دکمه ورود
-            },
-            signOutButton: {
-              color: "success",
-              startIcon: <Logout />,
-              onClick: authentication.signOut, // کلیک روی دکمه خروج
-            },
-          }}
-        />
-      </SessionContext.Provider>
-    </AuthenticationContext.Provider>
-  );
-}
+    <Breadcrumbs aria-label="breadcrumb">
+      <Link underline="hover" color="inherit" component={RouterLink} to="/">
+        Home
+      </Link>
+      {pathnames.map((value, index) => {
+        const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+        const isLast = index === pathnames.length - 1;
 
-
-**×***************
-
-
-import React, { useContext, useState } from "react";
-import { AuthenticationContext } from "@toolpad/core/AppProvider";
-
-export default function LoginPage() {
-  const authentication = useContext(AuthenticationContext); // دسترسی به AuthenticationContext
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = () => {
-    // اینجا می‌توانید لاگیک احراز هویت را قرار دهید
-    if (username === "test" && password === "1234") {
-      console.log("Login successful!");
-      authentication.signIn(); // فراخوانی متد signIn از AuthenticationContext
-    } else {
-      alert("Invalid credentials");
-    }
-  };
-
-  return (
-    <div style={{ padding: "20px", maxWidth: "300px", margin: "0 auto" }}>
-      <h2>Login</h2>
-      <div>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-        />
-      </div>
-      <button onClick={handleLogin} style={{ width: "100%", padding: "10px", background: "#ff9800", border: "none", color: "#fff", cursor: "pointer" }}>
-        Login
-      </button>
-    </div>
+        return isLast ? (
+          <Link
+            key={to}
+            underline="hover"
+            color="text.primary"
+            aria-current="page"
+          >
+            {value.charAt(0).toUpperCase() + value.slice(1)}
+          </Link>
+        ) : (
+          <Link
+            key={to}
+            underline="hover"
+            color="inherit"
+            component={RouterLink}
+            to={to}
+          >
+            {value.charAt(0).toUpperCase() + value.slice(1)}
+          </Link>
+        );
+      })}
+    </Breadcrumbs>
   );
 }
