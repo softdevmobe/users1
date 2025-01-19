@@ -3,6 +3,7 @@ import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios"; // Import Axios
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
 import { useNavigate } from "react-router-dom";
+import CustomLink from "./customLink";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,6 +67,7 @@ const LoginForm = () => {
         borderRadius: 2,
         boxShadow: 3,
         textAlign: "center",
+    
       }}
     >
       <Typography variant="h5" gutterBottom>
@@ -104,6 +106,7 @@ const LoginForm = () => {
           {isLoading ? "ورود..." : "ورود"}
         </Button>
       </form>
+
     </Box>
   );
 };

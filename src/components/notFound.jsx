@@ -12,7 +12,7 @@ const NotFound = () => {
           borderRadius: 2,
           boxShadow: 3,
           textAlign: "center",
-          height:"100%"
+          minHeight:"100vh",
         }}
       >
         <Typography variant="h5" gutterBottom>

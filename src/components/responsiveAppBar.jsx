@@ -142,7 +142,7 @@ function ResponsiveAppBar() {
         </Container>
       </AppBar>
       <Outlet />
-      <Box sx={{ width: "100%", bottom: 0 }}>
+      <Box sx={{ width: "100%", bottom: 0  }}>
         <BottomNavigation
           showLabels
           value={value}

@@ -7,6 +7,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -35,9 +36,12 @@ const NAVIGATION = [
     icon: <LoginOutlinedIcon />,
   },
   {
-    kind: "divider",
+    segment: "register",
+    title: "ایجاد کاربر",
+    icon: <PersonAddAlt1Icon />,
   },
   {
+
     kind: "header",
     title: "Analytics",
   },
