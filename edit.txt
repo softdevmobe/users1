@@ -1,51 +1,54 @@
-import * as React from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
+import React from "react";
+import Carousel from "react-material-ui-carousel";
+import { Paper, Button, Typography } from "@mui/material";
 
-// دیکشنری مسیرها به فارسی
-const breadcrumbNameMap = {
-  products: 'محصولات',
-  electronics: 'الکترونیک',
-  clothing: 'پوشاک',
-  home: 'خانه',
-};
+function MyCarousel() {
+    const items = [
+        {
+            name: "عکس اول",
+            description: "این توضیحات عکس اول است.",
+            image: "https://via.placeholder.com/800x400",
+        },
+        {
+            name: "عکس دوم",
+            description: "این توضیحات عکس دوم است.",
+            image: "https://via.placeholder.com/800x400",
+        },
+        {
+            name: "عکس سوم",
+            description: "این توضیحات عکس سوم است.",
+            image: "https://via.placeholder.com/800x400",
+        },
+    ];
 
-export default function DynamicBreadcrumbs() {
-  const location = useLocation();
-  const pathnames = location.pathname.split('/').filter((x) => x);
-
-  return (
-    <Breadcrumbs aria-label="breadcrumb">
-      <Link underline="hover" color="inherit" component={RouterLink} to="/">
-        خانه
-      </Link>
-      {pathnames.map((value, index) => {
-        const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-        const isLast = index === pathnames.length - 1;
-        const displayName = breadcrumbNameMap[value] || value;
-
-        return isLast ? (
-          <Link
-            key={to}
-            underline="hover"
-            color="text.primary"
-            aria-current="page"
-          >
-            {displayName}
-          </Link>
-        ) : (
-          <Link
-            key={to}
-            underline="hover"
-            color="inherit"
-            component={RouterLink}
-            to={to}
-          >
-            {displayName}
-          </Link>
-        );
-      })}
-    </Breadcrumbs>
-  );
+    return (
+        <Carousel>
+            {items.map((item, index) => (
+                <Item key={index} item={item} />
+            ))}
+        </Carousel>
+    );
 }
+
+function Item({ item }) {
+    return (
+        <Paper style={{ textAlign: "center", padding: "20px" }}>
+            <img
+                src={item.image}
+                alt={item.name}
+                style={{ width: "100%", maxHeight: "400px", objectFit: "cover" }}
+            />
+            <Typography variant="h5" style={{ marginTop: "10px" }}>
+                {item.name}
+            </Typography>
+            <Typography variant="body1" style={{ margin: "10px 0" }}>
+                {item.description}
+            </Typography>
+            <Button variant="contained" color="primary">
+                مشاهده بیشتر
+            </Button>
+        </Paper>
+    );
+}
+
+export default MyCarousel;
