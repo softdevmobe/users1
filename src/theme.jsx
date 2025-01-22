@@ -35,6 +35,17 @@ const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           fontFamily: '"IranianSans"',
+          direction: "rtl",
+        }),
+      },
+    },
+
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          textAlign: "right",
+          width: "100%",
+          "& .MuiInputLabel-root": { paddingRight: "0 !important", paddingLeft: "0 !important" },
         }),
       },
     },
