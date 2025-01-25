@@ -9,6 +9,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
+    nameFamily:"",
     userName: "",
     password: "",
     image: "",
@@ -26,6 +27,11 @@ const Register = () => {
   }));
 
   const schema = yup.object().shape({
+    nameFamily: yup
+      .string()
+      .required("نام نمی تواند خالی باشد ")
+      .min(3, "نام کوچکتر از 3 نباشد")
+      .max(20, "نام بزرگتر از 20 نباشد"),
     userName: yup
       .string()
       .required("نام کاریری نمی تواند خالی باشد ")
@@ -64,62 +70,71 @@ const Register = () => {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "80%",
         margin: "auto",
-
         p: 3,
         border: "1px solid #ddd",
         borderRadius: 2,
         boxShadow: 3,
+        textAlign:"center"
       }}
     >
       {Object.keys(errors).map((key) => {
         return (
           <Grid>
             {" "}
-            <p style={{ color: "red" }}>{errors[key]}</p>{" "}
+            <p style={{ color: "red", fontSize: 10 }}>{errors[key]}</p>{" "}
           </Grid>
         );
       })}
 
       <form onSubmit={handleSubmit}>
         <Grid container>
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+        <Grid size={12}>
+            <TextField
+              label="نام و نام خانوادگی"
+              name="nameFamily"
+              width="100%"
+              size="small"
+ 
+              margin="normal"
+              value={formData.nameFamily}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid size={12} >
+            <TextField
+              label="نام کاربری"
+              name="userName"
+              type="userName"
+              width="100%"
+              size="small"
+ 
+              margin="normal"
+              value={formData.userName}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid size={12}>
             <TextField
               label="رمز عبور"
               type="password"
               name="password"
               width="100%"
               size="small"
-              variant="standard"
+      
               margin="normal"
               value={formData.password}
               onChange={handleChange}
             />
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <TextField
-              
-              label="نام کاربری"
-              name="userName"
-              type="userName"
-              width="100%"
-              size="small"
-              variant="standard"
-              margin="normal"
-              value={formData.userName}
-              onChange={handleChange}
-            />
-          </Grid>
+          
 
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <Item>3</Item>
-          </Grid>
-          <Grid size={6}>
-            <Item>4</Item>
-          </Grid>
-
+          <Grid size={12}>
           <input accept=".xlsx, .xls" id="file" type="file" />
+          </Grid>
+
+          <Grid size={12}>
           <Button
             type="submit"
             variant="contained"
@@ -129,6 +144,9 @@ const Register = () => {
           >
             {isLoading ? "ذخیره..." : "ذخیره"}
           </Button>
+          </Grid>
+
+          
         </Grid>
       </form>
     </Box>
