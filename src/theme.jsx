@@ -25,7 +25,7 @@ const theme = createTheme({
 
     MuiFormLabel: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: ({
           fontFamily: '"IranianSans"',
         }),
       },

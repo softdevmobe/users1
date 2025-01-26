@@ -24,7 +24,8 @@ class Product extends Component {
       for (let [key, value] of formData.entries()) {
         console.log(`${key} :`, value);
       }
-
+      
+      
       const response = await axios.post("/api/products", formData);
     } catch (error) {
       alert("login failed .");

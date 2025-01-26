@@ -5,16 +5,33 @@ import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import * as yup from "yup";
+import { MuiFileInput } from "mui-file-input";
+import Avatar, { avatarClasses } from "@mui/material/Avatar";
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({
-    nameFamily:"",
+  const [imageFile, setImageFile] = useState(null);
+
+  const [userData, setUserData] = useState({
+    nameFamily: "",
     userName: "",
     password: "",
-    image: "",
+    imagePath: "",
   });
+  const handleChange1 = async (value_) => {
+    setImageFile(value_);
+    const formData = new FormData();
+    formData.append("image", value_);
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key} :`, value);
+    }
 
+    const response = await axios.post("/api/users", formData);
+
+    setUserData({ ...userData, imagePath: response.data });
+
+    console.log(response.data);
+  };
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#fff",
     ...theme.typography.body2,
@@ -45,12 +62,13 @@ const Register = () => {
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setUserData({ ...userData, [name]: value });
+    console.log(userData);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await schema.validate(formData, { abortEarly: false });
+      await schema.validate(userData, { abortEarly: false });
       setErrors({});
     } catch (err) {
       if (err.name === "ValidationError") {
@@ -70,13 +88,13 @@ const Register = () => {
   return (
     <Box
       sx={{
-        width: "80%",
+        width: "50%",
         margin: "auto",
         p: 3,
         border: "1px solid #ddd",
         borderRadius: 2,
         boxShadow: 3,
-        textAlign:"center"
+        textAlign: "center",
       }}
     >
       {Object.keys(errors).map((key) => {
@@ -90,63 +108,71 @@ const Register = () => {
 
       <form onSubmit={handleSubmit}>
         <Grid container>
-        <Grid size={12}>
+          <Grid size={12}>
             <TextField
               label="نام و نام خانوادگی"
+              fullWidth
               name="nameFamily"
               width="100%"
               size="small"
- 
               margin="normal"
-              value={formData.nameFamily}
+              value={userData.nameFamily}
               onChange={handleChange}
             />
           </Grid>
-          <Grid size={12} >
+          <Grid size={12}>
             <TextField
               label="نام کاربری"
+              fullWidth
               name="userName"
               type="userName"
               width="100%"
               size="small"
- 
               margin="normal"
-              value={formData.userName}
+              value={userData.userName}
               onChange={handleChange}
             />
           </Grid>
           <Grid size={12}>
             <TextField
               label="رمز عبور"
+              fullWidth
               type="password"
               name="password"
               width="100%"
               size="small"
-      
               margin="normal"
-              value={formData.password}
+              value={userData.password}
               onChange={handleChange}
             />
           </Grid>
-          
 
-          <Grid size={12}>
-          <input accept=".xlsx, .xls" id="file" type="file" />
+          <Grid size={9}>
+            <MuiFileInput
+              fullWidth
+              value={imageFile}
+              onChange={handleChange1}
+              placeholder="عکس"
+              margin="normal"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid size={2}>
+            <Avatar margin="normal" alt="Remy Sharp" src={userData.imagePath} sx={{ width: 56, height: 56, m: 1.5 }} />
           </Grid>
 
           <Grid size={12}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ mt: 2 }}
-            disabled={isLoading} // Disable button while loading
-          >
-            {isLoading ? "ذخیره..." : "ذخیره"}
-          </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2 }}
+              fullWidth
+              disabled={isLoading} // Disable button while loading
+            >
+              {isLoading ? "ذخیره..." : "ذخیره"}
+            </Button>
           </Grid>
-
-          
         </Grid>
       </form>
     </Box>
