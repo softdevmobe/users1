@@ -22,15 +22,14 @@ const Register = () => {
     setImageFile(value_);
     const formData = new FormData();
     formData.append("image", value_);
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key} :`, value);
+
+    try {
+      const response = await axios.post("/api/users", formData);
+      setUserData({ ...userData, imagePath: response.data });
+    } catch (error) {
+      setUserData({ ...userData, imagePath: ""});
+
     }
-
-    const response = await axios.post("/api/users", formData);
-
-    setUserData({ ...userData, imagePath: response.data });
-
-    console.log(response.data);
   };
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: "#fff",
@@ -63,7 +62,6 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-    console.log(userData);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,7 +75,6 @@ const Register = () => {
           errorMessages[error.path] = error.message;
         });
         setErrors(errorMessages);
-        console.log(errors);
       }
     }
     return;
