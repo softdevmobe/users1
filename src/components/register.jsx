@@ -26,9 +26,16 @@ const Register = () => {
     try {
       const response = await axios.post("/api/users", formData);
       setUserData({ ...userData, imagePath: response.data });
+      setErrors({});
     } catch (error) {
-      setUserData({ ...userData, imagePath: ""});
+      setUserData({ ...userData, imagePath: "" });
+      const error_ = error.response.data.error;
+      const errorMessages = {file : error_};
 
+      setErrors(errorMessages);
+
+      console.log("error is : ", error_);
+      
     }
   };
   const Item = styled(Paper)(({ theme }) => ({
@@ -47,17 +54,17 @@ const Register = () => {
       .string()
       .required("نام نمی تواند خالی باشد ")
       .min(3, "نام کوچکتر از 3 نباشد")
-      .max(20, "نام بزرگتر از 20 نباشد"),
+      .max(50, "نام بزرگتر از 50 نباشد"),
     userName: yup
       .string()
       .required("نام کاریری نمی تواند خالی باشد ")
       .min(3, "نام کاربری کوچکتر از 3 نباشد")
-      .max(10, "نام کاربری بزرگتر از 10 نباشد"),
+      .max(30, "نام کاربری بزرگتر از 30 نباشد"),
     password: yup
       .string()
       .required("کلمه عبور نمی تواند خالی باشد ")
-      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
-      .max(10, "کلمه عبور بزرگتر از 10 نباشد"),
+      .min(8, "کلمه عبور کوچکتر از 8 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,6 +74,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await schema.validate(userData, { abortEarly: false });
+    var response =  axios.post("/api/users/register", userData);
       setErrors({});
     } catch (err) {
       if (err.name === "ValidationError") {
@@ -79,7 +87,7 @@ const Register = () => {
     }
     return;
 
-    axios.post("/api/users/register", this.state.user);
+
   };
 
   return (
