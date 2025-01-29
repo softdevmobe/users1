@@ -25,6 +25,7 @@ const Register = () => {
 
     try {
       const response = await axios.post("/api/users", formData);
+      console.log(response.data)
       setUserData({ ...userData, imagePath: response.data });
       setErrors({});
     } catch (error) {
