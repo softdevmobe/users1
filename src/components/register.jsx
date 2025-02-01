@@ -25,18 +25,17 @@ const Register = () => {
 
     try {
       const response = await axios.post("/api/users", formData);
-      console.log(response.data)
+      console.log(response.data);
       setUserData({ ...userData, imagePath: response.data });
       setErrors({});
     } catch (error) {
       setUserData({ ...userData, imagePath: "" });
       const error_ = error.response.data.error;
-      const errorMessages = {file : error_};
+      const errorMessages = { file: error_ };
 
       setErrors(errorMessages);
 
       console.log("error is : ", error_);
-      
     }
   };
   const Item = styled(Paper)(({ theme }) => ({
@@ -75,7 +74,9 @@ const Register = () => {
     e.preventDefault();
     try {
       await schema.validate(userData, { abortEarly: false });
-    var response =  axios.post("/api/users/register", userData);
+      var response = axios.post("/api/users/register", userData);
+      console.log("response is ",(await response).data);
+      setUserData({ ...userData, imagePath: (await response).data.imagePath });
       setErrors({});
     } catch (err) {
       if (err.name === "ValidationError") {
@@ -87,8 +88,6 @@ const Register = () => {
       }
     }
     return;
-
-
   };
 
   return (
