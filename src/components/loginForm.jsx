@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import axios from "axios";
+import axios from "axios"; 
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
 import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
   const navigate = useNavigate();
-  const { user, updateUser } = React.useContext(AuthenticationContext);
+  const { updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -23,7 +23,7 @@ const LoginForm = () => {
       return;
     }
 
-    setIsLoading(true);
+    setIsLoading(true); 
 
     try {
       const response = await axios.post("/api/users/login", {
@@ -31,13 +31,12 @@ const LoginForm = () => {
         password,
       });
 
-      // const token = response.headers["authorization"];
+      const token = response.headers["authorization"];
 
-      console.log("response : ", response);
-      // console.log("token : ",token)
+console.log("response : ",response)
+console.log("token : ",token)
 
-      // localStorage.setItem("token", token);
-
+      localStorage.setItem("token", token);
       updateUser({
         user: {
           name: response.data.nameFamily,
@@ -47,9 +46,9 @@ const LoginForm = () => {
       });
       navigate("/");
     } catch (error) {
-      setError(error.response.data);
+      setError(error.response.data); 
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
     }
   };
 
