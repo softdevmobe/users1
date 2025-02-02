@@ -1,57 +1,54 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import axios from "axios"; // Import Axios
+import axios from "axios"; 
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
 import { useNavigate } from "react-router-dom";
-import CustomLink from "./customLink";
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const [isLoading, setIsLoading] = useState(false); 
   const navigate = useNavigate();
-  const { updateUser } = React.useContext(AuthenticationContext);
+const { user, updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    updateUser({
-      user: {
-        name: "1",
-        email: "1",
-        image: "uploads/picture/picture-1733901054403-h1yafewvibtx.png",
-      },
-    });
-    navigate("/"); // هدایت به صفحه اصلی بعد از خروج
-    // Basic validation
-    if (!email || !password) {
+    setError("");
+    if (!userName || !password) {
       setError("نام کاربری و کلمه عبور را وارد کنید");
       return;
     }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Please enter a valid email");
+    const pattern = /^[a-zA-Z][a-zA-Z0-9_]{2,15}$/;
+    if (!pattern.test(userName)) {
+      setError("Please enter a valid userName");
       return;
     }
 
-    setIsLoading(true); // Set loading indicator to true
-    setError(""); // Clear any previous errors
+    setIsLoading(true); 
 
     try {
       const response = await axios.post("/api/users/login", {
-        email,
+        userName,
         password,
       });
-      const token = response.headers["authorization"];
-      localStorage.setItem("token", token);
 
-      // Handle successful login (redirect, store user data, etc.)
-      console.log("Login successful!", response.data); // Example: log response
-      // ... your success logic here (e.g., redirect to dashboard)
+      const token = response.headers["authorization"];
+
+console.log("response : ",response)
+console.log("token : ",token)
+
+      localStorage.setItem("token", token);
+      updateUser({
+        user: {
+          name: response.data.nameFamily,
+          email: response.data.userName,
+          image: response.data.imagePath,
+        },
+      });
+      navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
-      setError("Login failed. Please check your credentials."); // Display error message
+      setError(error.response.data); 
     } finally {
-      setIsLoading(false); // Set loading indicator to false
+      setIsLoading(false); 
     }
   };
 
@@ -67,7 +64,6 @@ const LoginForm = () => {
         borderRadius: 2,
         boxShadow: 3,
         textAlign: "center",
-    
       }}
     >
       <Typography variant="h5" gutterBottom>
@@ -76,11 +72,11 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <TextField
           label="نام کاربری"
-          type="email"
+          type="userName"
           fullWidth
           margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
         />
         <TextField
           label="کلمه عبور"
@@ -106,7 +102,6 @@ const LoginForm = () => {
           {isLoading ? "ورود..." : "ورود"}
         </Button>
       </form>
-
     </Box>
   );
 };
