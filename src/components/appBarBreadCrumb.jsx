@@ -14,7 +14,7 @@ const breadcrumbNameMap = {
   clothing: "پوشاک",
   home: "خانه",
 };
-export default function ActiveLastBreadcrumb() {
+export default function AppBarBreadCrumb() {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   return (

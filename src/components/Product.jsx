@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosConfig";
 import React, { Component } from "react";
-import Input from "./input";
+import CustomInput from "./customInput";
 import axios from "axios";
 import { NumericFormat } from "react-number-format";
 class Product extends Component {
@@ -43,12 +43,12 @@ class Product extends Component {
     const { title, price, perent } = this.state.product;
     return (
       <form onSubmit={this.handleSubmit}>
-        <Input name="title" value={title} label="title" onChange={this.handleChange} />
-        <Input name="price" value={price} label="price" onChange={this.handleChange} />
-        <Input name="perent" value={perent} label="perent" onChange={this.handleChange} />
+        <CustomInput name="title" value={title} label="title" onChange={this.handleChange} />
+        <CustomInput name="price" value={price} label="price" onChange={this.handleChange} />
+        <CustomInput name="perent" value={perent} label="perent" onChange={this.handleChange} />
 
         <NumericFormat className="form-control" value="20020220" allowLeadingZeros thousandSeparator="," />
-        <Input name="picture" label="picture" onChange={this.handleChange} type="file" />
+        <CustomInput name="picture" label="picture" onChange={this.handleChange} type="file" />
         <button className="btn btn-primary">save</button>
       </form>
     );

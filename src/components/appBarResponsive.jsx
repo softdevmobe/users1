@@ -9,17 +9,17 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Outlet } from "react-router-dom";
-import AccountDemoSignedIn from "./accountDemoSignedIn";
-import TemporaryDrawer from "./temporaryDrawer";
+import AppBarSignedIn from "./appBarSignedIn";
+import AppBarDrawer from "./appBarDrawer";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HomeIcon from "@mui/icons-material/Home";
-import ActiveLastBreadcrumb from "./ActiveLastBreadcrumb";
+import AppBarBreadCrumb from "./appBarBreadCrumb";
 const pages = ["Products", "Pricing", "Blog"];
 
-function ResponsiveAppBar() {
-  const [ setAnchorElNav] = React.useState(null);
+function AppBarResponsive() {
+  const [setAnchorElNav] = React.useState(null);
   // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [value, setValue] = React.useState(0);
   // const handleOpenUserMenu = (event) => {
@@ -85,11 +85,11 @@ function ResponsiveAppBar() {
               </SearchIconWrapper>
               <StyledInputBase placeholder="جستجو..." inputProps={{ "aria-label": "search" }} />
             </Search>
-            <AccountDemoSignedIn />
+            <AppBarSignedIn />
           </Toolbar>
 
           <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
-            <TemporaryDrawer />
+            <AppBarDrawer />
             <Typography
               variant="h6"
               noWrap
@@ -137,12 +137,12 @@ function ResponsiveAppBar() {
             </Box>
           </Toolbar>
           <Toolbar disableGutters sx={{ p: 0, mt: -3 }}>
-            <ActiveLastBreadcrumb />
+            <AppBarBreadCrumb />
           </Toolbar>
         </Container>
       </AppBar>
       <Outlet />
-      <Box sx={{ width: "100%", bottom: 0  }}>
+      <Box sx={{ width: "100%", bottom: 0 }}>
         <BottomNavigation
           showLabels
           value={value}
@@ -158,4 +158,4 @@ function ResponsiveAppBar() {
     </>
   );
 }
-export default ResponsiveAppBar;
+export default AppBarResponsive;

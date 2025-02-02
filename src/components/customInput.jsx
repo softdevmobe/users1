@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 
-const Input = ({name,value,label,onChange ,type="text"}) => {
+const CustomInput = ({name,value,label,onChange ,type="text"}) => {
     return (  <div className="mb-3">
         <Typography htmlFor={name}>{label}:</Typography>
         <input
@@ -15,4 +15,4 @@ const Input = ({name,value,label,onChange ,type="text"}) => {
       </div>);
 }
  
-export default Input;
+export default CustomInput;

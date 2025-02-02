@@ -11,15 +11,15 @@ import Courses from "./components/courses";
 import LoginForm from "./components/loginForm";
 
 import { Routes, Route } from "react-router-dom";
-import AccountDemoSignedIn from "./components/accountDemoSignedIn";
-import ResponsiveAppBar from "./components/responsiveAppBar";
+import AppBarSignedIn from "./components/appBarSignedIn";
+import AppBarResponsive from "./components/appBarResponsive";
 
 function App() {
   return (
     <>
       <div className="container mt-3">
         <Routes>
-          <Route path="/" element={<ResponsiveAppBar />}>
+          <Route path="/" element={<AppBarResponsive />}>
             <Route path="/user/:userId" element={<User />} />
             <Route
               path="/users"
@@ -35,7 +35,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/product" element={<Product />} />
-            <Route path="/accountDemoSignedIn" element={<AccountDemoSignedIn />} />
+            <Route path="/appBarSignedIn" element={<AppBarSignedIn />} />
             <Route index element={<Home />} />
             <Route path="*" element={<NotFound />} />
           </Route>

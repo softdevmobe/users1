@@ -69,7 +69,7 @@ const NAVIGATION = [
   },
 ];
 
-export default function TemporaryDrawer() {
+export default function AppBarDrawer() {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -96,12 +96,9 @@ export default function TemporaryDrawer() {
   return (
     <div >
        <MenuIcon  onClick={toggleDrawer(true)}/>
-       {/* <MenuIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} onClick={toggleDrawer(true)} /> */}
-      {/* <ResponsiveAppBar onButtonclick={toggleDrawer(true)} /> */}
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
         {DrawerList}
       </Drawer>
-      {/* <Outlet /> */}
     </div>
   );
 }
