@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios";
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
@@ -9,7 +9,6 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  
   const { user, updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,16 +31,20 @@ const LoginForm = () => {
         password,
       });
 
-      localStorage.setItem("user", JSON.stringify(response.data));
-      updateUser(response.data);
-      console.log("user is :", user);
-      // updateUser({
-      //   user: {
-      //     name: response.data.nameFamily,
-      //     email: response.data.userName,
-      //     image: response.data.imagePath,
-      //   },
-      // });
+      // const token = response.headers["authorization"];
+
+      console.log("response : ", response);
+      // console.log("token : ",token)
+
+      // localStorage.setItem("token", token);
+
+      updateUser({
+        user: {
+          name: response.data.nameFamily,
+          email: response.data.userName,
+          image: response.data.imagePath,
+        },
+      });
       navigate("/");
     } catch (error) {
       setError(error.response.data);

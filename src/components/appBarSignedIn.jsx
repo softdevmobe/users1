@@ -5,7 +5,7 @@ import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 
 import { useNavigate } from "react-router-dom";
-export default function AppBarSignedIn() {
+export default function AccountDemoSignedIn() {
   const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
   const authentication = React.useMemo(() => {
