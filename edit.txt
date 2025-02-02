@@ -1,47 +1,96 @@
-import * as React from "react";
+import React, { useState, useContext } from "react";
+import { TextField, Button, Box, Typography } from "@mui/material";
+import axios from "axios";
 import { AuthenticationContext } from "../AuthenticationProvider"; // از کانتکست اصلی استفاده کنید
-import { Account } from "@toolpad/core/Account";
-import Logout from "@mui/icons-material/Logout";
-import Login from "@mui/icons-material/Login";
 import { useNavigate } from "react-router-dom";
 
-export default function AppBarSignedIn() {
-  const { user, updateUser } = React.useContext(AuthenticationContext); // گرفتن مقدار `user` و `updateUser`
+const LoginForm = () => {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const authentication = React.useMemo(() => {
-    return {
-      signIn: () => {
-        console.log("signIn", user);
-        navigate("/login"); // هدایت به صفحه لاگین
-      },
-      signOut: () => {
-        updateUser(null);
-        localStorage.removeItem("user"); // حذف اطلاعات کاربر از LocalStorage
-        navigate("/"); // هدایت به صفحه اصلی بعد از خروج
-      },
-    };
-  }, [user, updateUser]);
+  const { updateUser } = useContext(AuthenticationContext); // مقدار `updateUser` را از کانتکست بگیرید
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!userName || !password) {
+      setError("نام کاربری و کلمه عبور را وارد کنید");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post("/api/users/login", {
+        userName,
+        password,
+      });
+
+      updateUser(response.data); // ذخیره اطلاعات کاربر در Context
+      localStorage.setItem("user", JSON.stringify(response.data)); // ذخیره در LocalStorage
+      navigate("/");
+    } catch (error) {
+      setError(error.response?.data || "خطایی رخ داده است");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <Account
-      localeText={{
-        signInLabel: user ? `خوش آمدید ${user.nameFamily}` : "ورود | ثبت‌ نام",
-        signOutLabel: "خروج",
+    <Box
+      sx={{
+        maxWidth: 400,
+        margin: "auto",
+        mt: 10,
+        mb: 10,
+        p: 3,
+        border: "1px solid #ddd",
+        borderRadius: 2,
+        boxShadow: 3,
+        textAlign: "center",
       }}
-      slotProps={{
-        signInButton: {
-          color: "inherit",
-          startIcon: <Login />,
-          sx: { minWidth: "150px", border: "1px solid #ff9800" },
-          onClick: authentication.signIn, // هدایت به لاگین
-        },
-        signOutButton: {
-          color: "success",
-          startIcon: <Logout />,
-          onClick: authentication.signOut, // خروج از سیستم
-        },
-      }}
-    />
+    >
+      <Typography variant="h5" gutterBottom>
+        ورود
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="نام کاربری"
+          fullWidth
+          margin="normal"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <TextField
+          label="کلمه عبور"
+          type="password"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+          disabled={isLoading}
+        >
+          {isLoading ? "ورود..." : "ورود"}
+        </Button>
+      </form>
+    </Box>
   );
-}
+};
+
+export default LoginForm;
