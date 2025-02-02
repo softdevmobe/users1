@@ -1,3 +1,4 @@
+// این کامپوننت مربوط به نمایش قالب مثل یوتیوب قبل از لود شدن اطلاعات صفحه است
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 const LoadingUsers = () => {

@@ -2,7 +2,7 @@ import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { Paper, Button, Typography } from "@mui/material";
 
-function MyCarousel() {
+function HomeCarousel() {
     const items = [
         {
             name: "عکس اول",
@@ -32,7 +32,7 @@ function MyCarousel() {
 
 function Item({ item }) {
     return (
-        <Paper style={{ textAlign: "center", padding: "20px" }}>
+        <Paper style={{ textAlign: "center", padding: "20px" ,borderTop: "1px solid #ddd",}}>
             <img
                 src={item.image}
                 alt={item.name}
@@ -51,4 +51,4 @@ function Item({ item }) {
     );
 }
 
-export default MyCarousel;
+export default HomeCarousel;

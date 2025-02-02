@@ -1,7 +1,6 @@
 import React from "react";
 import Users from "./components/users";
 import User from "./components/user";
-// import LoginForm from "./components/login";
 import Register from "./components/register";
 import Home from "./components/home";
 import NotFound from "./components/notFound";

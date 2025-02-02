@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import {Box} from '@mui/material'
-import MyCarousel from "./myCarousel";
+import HomeCarousel from "./homeCarousel";
 class Home extends Component {
   state = {
     courses: [],
@@ -15,13 +15,14 @@ class Home extends Component {
     return (
       <>
 
-          <MyCarousel/>
+          <HomeCarousel/>
 <Box
 sx={{
   display:"grid",
   gridTemplateColumns:"repeat(3,1fr)",
   gap:"16px",
   height:"100vh"
+  
 
 }}
 >
