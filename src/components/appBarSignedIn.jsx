@@ -5,6 +5,7 @@ import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 
 import { useNavigate } from "react-router-dom";
+import { use } from "react";
 export default function AccountDemoSignedIn() {
   const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -20,9 +21,9 @@ export default function AccountDemoSignedIn() {
           image: userData.imagePath,
         },
       });
-      console.log("userData is 2 : ", userData);
+      console.log("userData is 2 : ", user);
     }
-  }, [ updateUser]);
+  }, [ user]);
 
   const authentication = React.useMemo(() => {
     return {
@@ -40,7 +41,7 @@ export default function AccountDemoSignedIn() {
 
   return (
     <AuthenticationContext.Provider value={authentication}>
-      <SessionContext.Provider value={user}>
+      <SessionContext.Provider value={{ user, updateUser }}>
         <Account
           localeText={{
             signInLabel: "ورود | ثبت‌ نام",

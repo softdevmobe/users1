@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import axios from "axios"; 
+import axios from "axios";
 import { AuthenticationContext } from "@toolpad/core/AppProvider";
 import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const {user , updateUser } = React.useContext(AuthenticationContext);
+  const { user, updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -24,7 +24,7 @@ const LoginForm = () => {
       return;
     }
 
-    setIsLoading(true); 
+    setIsLoading(true);
 
     try {
       const response = await axios.post("/api/users/login", {
@@ -32,31 +32,46 @@ const LoginForm = () => {
         password,
       });
 
-
- setUserData({
-  user: {
-    name: response.data.nameFamily,
-    email: response.data.userName,
-    image: response.data.imagePath,
-  },
-})
-localStorage.setItem("user", userData);
-      updateUser({
+      setUserData({
         user: {
           name: response.data.nameFamily,
           email: response.data.userName,
           image: response.data.imagePath,
         },
       });
-      
-      console.log("user is : ",userData)
-      navigate("/");
+
+      // updateUser({
+      //   user: {
+      //     name: response.data.nameFamily,
+      //     email: response.data.userName,
+      //     image: response.data.imagePath,
+      //   },
+      // });
+
+     
+     
     } catch (error) {
-      setError(error.response.data); 
+      setError(error.response.data);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (userData) {
+      localStorage.setItem("user",JSON.stringify( userData));
+      updateUser({
+        user: {
+          name: userData.nameFamily,
+          email: userData.userName,
+          image: userData.imagePath,
+        },
+      });
+      console.log("userData is : ", userData);
+      navigate("/");
+    }
+
+  },[userData]);
 
   return (
     <Box
