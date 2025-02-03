@@ -9,27 +9,24 @@ import { use } from "react";
 export default function AccountDemoSignedIn() {
   const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    const userData =JSON.parse( localStorage.getItem("user"));
-    if (userData) {
-  
-      updateUser({
-        user: {
-          name: userData.name,
-          email: userData.email,
-          image: userData.image,
-        },
-      });
-      console.log("userData is 2 : ", userData);
-    }
-  }, []);
+  const userData =JSON.parse( localStorage.getItem("user"));
+  console.log("userData is 5 : ", userData);
 
   const authentication = React.useMemo(() => {
     return {
       signIn: () => {
-        console.log("signIn", user);
-        updateUser(user);
+        if(userData){
+          updateUser({
+            user: {
+              name: userData.name,
+              email: userData.email,
+              image: userData.image,
+            },
+          });
+        }else{
+          updateUser(null);
+        }
+       
         navigate("/login"); // هدایت به صفحه لاگین
       },
       signOut: () => {
@@ -37,11 +34,12 @@ export default function AccountDemoSignedIn() {
         navigate("/"); // هدایت به صفحه اصلی بعد از خروج
       },
     };
+    
   }, [user]);
 
   return (
-    <AuthenticationContext.Provider value={{user ,updateUser,...authentication}}>
-      <SessionContext.Provider value={{ user, updateUser }}>
+    <AuthenticationContext.Provider value={authentication}>
+      <SessionContext.Provider value={user}>
         <Account
           localeText={{
             signInLabel: "ورود | ثبت‌ نام",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios";
-import { AuthenticationContext } from "@toolpad/core/AppProvider";
+import { AuthenticationContext, SessionContext } from '@toolpad/core/AppProvider';
 import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [userName, setUserName] = useState("");
@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const { user, updateUser } = React.useContext(AuthenticationContext);
+  const {  updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -23,15 +23,12 @@ const LoginForm = () => {
       setError("Please enter a valid userName");
       return;
     }
-
     setIsLoading(true);
-
     try {
       const response = await axios.post("/api/users/login", {
         userName,
         password,
       });
-
       setUserData({
         user: {
           name: response.data.nameFamily,
