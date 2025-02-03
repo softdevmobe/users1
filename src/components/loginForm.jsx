@@ -9,7 +9,7 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); 
   const navigate = useNavigate();
-  const { updateUser } = React.useContext(AuthenticationContext);
+  const {user , updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -31,12 +31,12 @@ const LoginForm = () => {
         password,
       });
 
-      const token = response.headers["authorization"];
+      // const token = response.headers["authorization"];
 
 console.log("response : ",response)
-console.log("token : ",token)
 
-      localStorage.setItem("token", token);
+
+      localStorage.setItem("user", user);
       updateUser({
         user: {
           name: response.data.nameFamily,
@@ -44,6 +44,7 @@ console.log("token : ",token)
           image: response.data.imagePath,
         },
       });
+      console.log("user is : ",user)
       navigate("/");
     } catch (error) {
       setError(error.response.data); 
