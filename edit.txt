@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios";
-import { AuthenticationContext } from "../AuthenticationProvider"; // از کانتکست اصلی استفاده کنید
+import { AuthenticationContext } from "@toolpad/core/AppProvider";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -9,14 +9,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-
-  const { updateUser } = useContext(AuthenticationContext); // مقدار `updateUser` را از کانتکست بگیرید
+  const { updateUser } = useContext(AuthenticationContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     if (!userName || !password) {
       setError("نام کاربری و کلمه عبور را وارد کنید");
       return;
@@ -30,67 +29,83 @@ const LoginForm = () => {
         password,
       });
 
-      updateUser(response.data); // ذخیره اطلاعات کاربر در Context
-      localStorage.setItem("user", JSON.stringify(response.data)); // ذخیره در LocalStorage
-      navigate("/");
+      setUserData(response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
     } catch (error) {
-      setError(error.response?.data || "خطایی رخ داده است");
+      setError(error.response?.data || "خطا در ورود");
     } finally {
       setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (userData) {
+      updateUser(userData);
+      navigate("/");
+    }
+  }, [userData, updateUser, navigate]);
+
   return (
-    <Box
-      sx={{
-        maxWidth: 400,
-        margin: "auto",
-        mt: 10,
-        mb: 10,
-        p: 3,
-        border: "1px solid #ddd",
-        borderRadius: 2,
-        boxShadow: 3,
-        textAlign: "center",
-      }}
-    >
-      <Typography variant="h5" gutterBottom>
-        ورود
-      </Typography>
+    <Box sx={{ maxWidth: 400, margin: "auto", mt: 10, mb: 10, p: 3 }}>
+      <Typography variant="h5">ورود</Typography>
       <form onSubmit={handleSubmit}>
-        <TextField
-          label="نام کاربری"
-          fullWidth
-          margin="normal"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
-        <TextField
-          label="کلمه عبور"
-          type="password"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && (
-          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-            {error}
-          </Typography>
-        )}
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-          disabled={isLoading}
-        >
-          {isLoading ? "ورود..." : "ورود"}
-        </Button>
+        <TextField label="نام کاربری" value={userName} onChange={(e) => setUserName(e.target.value)} />
+        <TextField label="کلمه عبور" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        {error && <Typography color="error">{error}</Typography>}
+        <Button type="submit" disabled={isLoading}>{isLoading ? "ورود..." : "ورود"}</Button>
       </form>
     </Box>
   );
 };
 
 export default LoginForm;
+
+
+
+
+import * as React from "react";
+import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider";
+import { Account } from "@toolpad/core/Account";
+import { useNavigate } from "react-router-dom";
+import Logout from "@mui/icons-material/Logout";
+import Login from "@mui/icons-material/Login";
+
+export default function AccountDemoSignedIn() {
+  const { user, updateUser } = React.useContext(AuthenticationContext);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      updateUser(userData);
+      console.log("User restored:", userData);
+    }
+  }, []);  // ✅ حالا فقط در اولین رندر اجرا می‌شود
+
+  const authentication = React.useMemo(() => ({
+    signIn: () => {
+      console.log("signIn", user);
+      updateUser(user);
+      navigate("/login");
+    },
+    signOut: () => {
+      localStorage.removeItem("user");
+      updateUser(null);
+      navigate("/");
+    },
+  }), [user]);
+
+  return (
+    <AuthenticationContext.Provider value={{ user, updateUser, ...authentication }}>
+      <SessionContext.Provider value={user}>
+        <Account
+          localeText={{ signInLabel: "ورود | ثبت‌ نام", signOutLabel: "خروج" }}
+          slotProps={{
+            signInButton: { startIcon: <Login />, onClick: authentication.signIn },
+            signOutButton: { startIcon: <Logout />, onClick: authentication.signOut },
+          }}
+        />
+      </SessionContext.Provider>
+    </AuthenticationContext.Provider>
+  );
+}
