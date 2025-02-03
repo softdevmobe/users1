@@ -8,6 +8,22 @@ import { useNavigate } from "react-router-dom";
 export default function AccountDemoSignedIn() {
   const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const userData =JSON.parse( localStorage.getItem("user"));
+    if (userData) {
+  
+      updateUser({
+        user: {
+          name: userData.nameFamily,
+          email: userData.userName,
+          image: userData.imagePath,
+        },
+      });
+      console.log("userData is 2 : ", userData);
+    }
+  }, [ updateUser]);
+
   const authentication = React.useMemo(() => {
     return {
       signIn: () => {

@@ -8,6 +8,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); 
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const {user , updateUser } = React.useContext(AuthenticationContext);
   const handleSubmit = async (e) => {
@@ -31,12 +32,15 @@ const LoginForm = () => {
         password,
       });
 
-      // const token = response.headers["authorization"];
 
-console.log("response : ",response)
-
-
-      localStorage.setItem("user", user);
+ setUserData({
+  user: {
+    name: response.data.nameFamily,
+    email: response.data.userName,
+    image: response.data.imagePath,
+  },
+})
+localStorage.setItem("user", userData);
       updateUser({
         user: {
           name: response.data.nameFamily,
@@ -44,7 +48,8 @@ console.log("response : ",response)
           image: response.data.imagePath,
         },
       });
-      console.log("user is : ",user)
+      
+      console.log("user is : ",userData)
       navigate("/");
     } catch (error) {
       setError(error.response.data); 
