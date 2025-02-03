@@ -16,14 +16,14 @@ export default function AccountDemoSignedIn() {
   
       updateUser({
         user: {
-          name: userData.nameFamily,
-          email: userData.userName,
-          image: userData.imagePath,
+          name: userData.name,
+          email: userData.email,
+          image: userData.image,
         },
       });
-      console.log("userData is 2 : ", user);
+      console.log("userData is 2 : ", userData);
     }
-  }, [ user]);
+  }, []);
 
   const authentication = React.useMemo(() => {
     return {
@@ -40,7 +40,7 @@ export default function AccountDemoSignedIn() {
   }, [user]);
 
   return (
-    <AuthenticationContext.Provider value={authentication}>
+    <AuthenticationContext.Provider value={{user ,updateUser,...authentication}}>
       <SessionContext.Provider value={{ user, updateUser }}>
         <Account
           localeText={{

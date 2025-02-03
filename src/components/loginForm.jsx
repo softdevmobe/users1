@@ -62,9 +62,9 @@ const LoginForm = () => {
       localStorage.setItem("user",JSON.stringify( userData));
       updateUser({
         user: {
-          name: userData.nameFamily,
-          email: userData.userName,
-          image: userData.imagePath,
+          name: userData.name,
+          email: userData.email,
+          image: userData.image,
         },
       });
       console.log("userData is : ", userData);
