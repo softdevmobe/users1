@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios";
-import { AuthenticationContext, SessionContext } from '@toolpad/core/AppProvider';
 import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [userName, setUserName] = useState("");
@@ -10,7 +9,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
-  const {  updateUser } = React.useContext(AuthenticationContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -37,16 +36,6 @@ const LoginForm = () => {
         },
       });
 
-      // updateUser({
-      //   user: {
-      //     name: response.data.nameFamily,
-      //     email: response.data.userName,
-      //     image: response.data.imagePath,
-      //   },
-      // });
-
-     
-     
     } catch (error) {
       setError(error.response.data);
     } finally {
@@ -57,14 +46,7 @@ const LoginForm = () => {
   useEffect(() => {
     if (userData) {
       localStorage.setItem("user",JSON.stringify( userData));
-      updateUser({
-        user: {
-          name: userData.name,
-          email: userData.email,
-          image: userData.image,
-        },
-      });
-      console.log("userData is : ", userData);
+
       navigate("/");
     }
 

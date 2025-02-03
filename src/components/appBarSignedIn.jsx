@@ -5,51 +5,44 @@ import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
+
 export default function AccountDemoSignedIn() {
-  const { user, updateUser } = React.useContext(AuthenticationContext);
   const navigate = useNavigate();
-  const userData =JSON.parse( localStorage.getItem("user"));
-  console.log("userData is 5 : ", userData);
+
+  const [userData, setUserData] = React.useState(null);
+  React.useEffect(() => {
+    const userData_ = JSON.parse(localStorage.getItem("user"));
+    console.log("userData_ is ", userData_);
+    setUserData(userData_);
+  });
 
   const authentication = React.useMemo(() => {
     return {
       signIn: () => {
-        if(userData){
-          updateUser({
-            user: {
-              name: userData.name,
-              email: userData.email,
-              image: userData.image,
-            },
-          });
-        }else{
-          updateUser(null);
-        }
-       
-        navigate("/login"); // هدایت به صفحه لاگین
+        setUserData(userData);
+        navigate("/login");
       },
       signOut: () => {
-        updateUser(null);
-        navigate("/"); // هدایت به صفحه اصلی بعد از خروج
+        setUserData(null);
+        localStorage.removeItem("user");
+        navigate("/");
       },
     };
-    
-  }, [user]);
+  }, [AuthenticationContext, userData]);
 
   return (
     <AuthenticationContext.Provider value={authentication}>
-      <SessionContext.Provider value={user}>
+      <SessionContext.Provider value={userData}>
         <Account
           localeText={{
-            signInLabel: "ورود | ثبت‌ نام",
+            signInLabel: "ورود|ثبت‌ نام",
             signOutLabel: "خروج",
           }}
           slotProps={{
             signInButton: {
               color: "inherit",
               startIcon: <Login />,
-              sx: { minWidth: "150px", border: "1px solid #ff9800" },
+              sx: { minWidth: "130px", border: "1px solid #ff9800" },
               onClick: authentication.signIn, // رویداد کلیک برای هدایت به لاگین
             },
             signOutButton: {
