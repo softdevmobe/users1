@@ -11,9 +11,10 @@ export default function AccountDemoSignedIn() {
 
   const [userData, setUserData] = React.useState(null);
   React.useEffect(() => {
-    const userData_ = JSON.parse(localStorage.getItem("user"));
+    if(!userData)
+   { const userData_ = JSON.parse(localStorage.getItem("user"));
     console.log("userData_ is ", userData_);
-    setUserData(userData_);
+    setUserData(userData_);}
   });
 
   const authentication = React.useMemo(() => {
@@ -28,7 +29,7 @@ export default function AccountDemoSignedIn() {
         navigate("/");
       },
     };
-  }, [AuthenticationContext, userData]);
+  }, [userData]);
 
   return (
     <AuthenticationContext.Provider value={authentication}>
