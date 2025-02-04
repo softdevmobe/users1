@@ -7,10 +7,14 @@ import Paper from "@mui/material/Paper";
 import * as yup from "yup";
 import { MuiFileInput } from "mui-file-input";
 import Avatar, { avatarClasses } from "@mui/material/Avatar";
+import PaginatedTable from "./paginatedTable";
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
+
+  const [rows, setRows] = useState(null);
+  const [count, setCount] = useState(10);
 
   const [userData, setUserData] = useState({
     nameFamily: "",
@@ -18,6 +22,24 @@ const Register = () => {
     password: "",
     imagePath: "",
   });
+
+  const columns = [
+    { id: "id", label: "شناسه" },
+    { id: "name", label: "نام" },
+    { id: "age", label: "سن" },
+    { id: "email", label: "ایمیل" },
+  ];
+const handelSetRows = async  ()=>{
+  setRows([
+    { id: 1, name: "John Doe", age: 25, email: "john.doe@example.com" },
+    { id: 2, name: "Jane Doe", age: 30, email: "jane.doe@example.com" },
+
+    // ... داده‌های بیشتر
+  ]);
+  
+}
+  
+
   const handleChange1 = async (value_) => {
     setImageFile(value_);
     const formData = new FormData();
@@ -75,7 +97,7 @@ const Register = () => {
     try {
       await schema.validate(userData, { abortEarly: false });
       var response = axios.post("/api/users/register", userData);
-      console.log("response is ",(await response).data);
+      console.log("response is ", (await response).data);
       setUserData({ ...userData, imagePath: (await response).data.imagePath });
       setErrors({});
     } catch (err) {
@@ -180,6 +202,7 @@ const Register = () => {
           </Grid>
         </Grid>
       </form>
+      <PaginatedTable rows={rows} columns={columns} count={count} handleChangePage = {handelSetRows} />
     </Box>
   );
 };
