@@ -1,111 +1,85 @@
-import React, { useEffect, useState, useContext } from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
-import axios from "axios";
-import { AuthenticationContext } from "@toolpad/core/AppProvider";
-import { useNavigate } from "react-router-dom";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
-const LoginForm = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const navigate = useNavigate();
-  const { updateUser } = useContext(AuthenticationContext);
+export default function PaginatedTable({ rows, columns }) {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (!userName || !password) {
-      setError("نام کاربری و کلمه عبور را وارد کنید");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post("/api/users/login", {
-        userName,
-        password,
-      });
-
-      setUserData(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
-    } catch (error) {
-      setError(error.response?.data || "خطا در ورود");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
-  useEffect(() => {
-    if (userData) {
-      updateUser(userData);
-      navigate("/");
-    }
-  }, [userData, updateUser, navigate]);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
-    <Box sx={{ maxWidth: 400, margin: "auto", mt: 10, mb: 10, p: 3 }}>
-      <Typography variant="h5">ورود</Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField label="نام کاربری" value={userName} onChange={(e) => setUserName(e.target.value)} />
-        <TextField label="کلمه عبور" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        {error && <Typography color="error">{error}</Typography>}
-        <Button type="submit" disabled={isLoading}>{isLoading ? "ورود..." : "ورود"}</Button>
-      </form>
-    </Box>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            {columns.map((column) => (
+              <TableCell key={column.id}>{column.label}</TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                {columns.map((column) => (
+                  <TableCell key={column.id}>{row[column.id]}</TableCell>
+                ))}
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </TableContainer>
   );
-};
-
-export default LoginForm;
+}
 
 
 
 
-import * as React from "react";
-import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider";
-import { Account } from "@toolpad/core/Account";
-import { useNavigate } from "react-router-dom";
-import Logout from "@mui/icons-material/Logout";
-import Login from "@mui/icons-material/Login";
 
-export default function AccountDemoSignedIn() {
-  const { user, updateUser } = React.useContext(AuthenticationContext);
-  const navigate = useNavigate();
+import PaginatedTable from './PaginatedTable';
 
-  React.useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      updateUser(userData);
-      console.log("User restored:", userData);
-    }
-  }, []);  // ✅ حالا فقط در اولین رندر اجرا می‌شود
+const rows = [
+  { id: 1, name: 'John Doe', age: 25, email: 'john.doe@example.com' },
+  { id: 2, name: 'Jane Doe', age: 30, email: 'jane.doe@example.com' },
+  // ... داده‌های بیشتر
+];
 
-  const authentication = React.useMemo(() => ({
-    signIn: () => {
-      console.log("signIn", user);
-      updateUser(user);
-      navigate("/login");
-    },
-    signOut: () => {
-      localStorage.removeItem("user");
-      updateUser(null);
-      navigate("/");
-    },
-  }), [user]);
+const columns = [
+  { id: 'id', label: 'شناسه' },
+  { id: 'name', label: 'نام' },
+  { id: 'age', label: 'سن' },
+  { id: 'email', label: 'ایمیل' },
+];
 
+function MyComponent() {
   return (
-    <AuthenticationContext.Provider value={{ user, updateUser, ...authentication }}>
-      <SessionContext.Provider value={user}>
-        <Account
-          localeText={{ signInLabel: "ورود | ثبت‌ نام", signOutLabel: "خروج" }}
-          slotProps={{
-            signInButton: { startIcon: <Login />, onClick: authentication.signIn },
-            signOutButton: { startIcon: <Logout />, onClick: authentication.signOut },
-          }}
-        />
-      </SessionContext.Provider>
-    </AuthenticationContext.Provider>
+    <PaginatedTable rows={rows} columns={columns} />
   );
 }
