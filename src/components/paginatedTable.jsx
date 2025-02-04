@@ -1,25 +1,35 @@
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
+import * as React from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
-export default function PaginatedTable({ rows, columns, count }) {
+export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerPageChange ,count }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
+  const handlePageChange = (event, newPage) => {
     setPage(newPage);
+    if (onPageChange) {
+      onPageChange(newPage); // Call the parent's callback
+    }
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleRowsPerPageChange = (event) => {
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
+    setPage(0); // Reset to the first page when rows per page changes
+    if (onRowsPerPageChange) {
+      onRowsPerPageChange(newRowsPerPage); // Call the parent's callback
+    }
   };
+
+  const displayedRows = rows;
+//   rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <TableContainer component={Paper}>
@@ -32,10 +42,11 @@ export default function PaginatedTable({ rows, columns, count }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-            */}
-             {rows.map((row) => (
-            <TableRow key={row.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+          {displayedRows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
               {columns.map((column) => (
                 <TableCell key={column.id}>{row[column.id]}</TableCell>
               ))}
@@ -46,11 +57,12 @@ export default function PaginatedTable({ rows, columns, count }) {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
-        count={rows.length}
+        // count={rows.length}
+        count={count}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onPageChange={handlePageChange} // Use the modified handler
+        onRowsPerPageChange={handleRowsPerPageChange} // Use the modified handler
       />
     </TableContainer>
   );

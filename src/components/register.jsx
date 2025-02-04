@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { Component, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
@@ -13,9 +13,6 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
 
-  const [rows, setRows] = useState(null);
-  const [count, setCount] = useState(10);
-
   const [userData, setUserData] = useState({
     nameFamily: "",
     userName: "",
@@ -23,22 +20,52 @@ const Register = () => {
     imagePath: "",
   });
 
-  const columns = [
-    { id: "id", label: "شناسه" },
-    { id: "name", label: "نام" },
-    { id: "age", label: "سن" },
-    { id: "email", label: "ایمیل" },
-  ];
-const handelSetRows = async  ()=>{
-  setRows([
-    { id: 1, name: "John Doe", age: 25, email: "john.doe@example.com" },
-    { id: 2, name: "Jane Doe", age: 30, email: "jane.doe@example.com" },
+  const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [count, setCount] = useState(10);
 
-    // ... داده‌های بیشتر
-  ]);
-  
-}
-  
+  // const [page_, setPage_] = useState({
+  //   p: 0,
+  //   r: 10,
+  // });
+
+  const columns = [
+    { id: "code", label: "شناسه" },
+    { id: "nameFamily", label: "نام" },
+    { id: "useName", label: "یوزر" },
+    { id: "roleCode", label: "roleCode" },
+    { id: "imagePath", label: "imagePath" },
+  ];
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      try {
+
+        var response = axios.post("/api/users/users",{ page, rowsPerPage});
+
+        
+        const data = (await response).data.user;
+        console.log("data.output.count :", data.output.count);
+        setRows(data.recordset); 
+        setCount(data.output.count); 
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [page, rowsPerPage]); // Re-fetch when page or rowsPerPage changes
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newRowsPerPage) => {
+    setRowsPerPage(newRowsPerPage);
+  };
 
   const handleChange1 = async (value_) => {
     setImageFile(value_);
@@ -202,7 +229,15 @@ const handelSetRows = async  ()=>{
           </Grid>
         </Grid>
       </form>
-      <PaginatedTable rows={rows} columns={columns} count={count} handleChangePage = {handelSetRows} />
+      <div>
+        <PaginatedTable
+          rows={rows}
+          columns={columns}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
+          count ={count}
+        />
+      </div>
     </Box>
   );
 };
