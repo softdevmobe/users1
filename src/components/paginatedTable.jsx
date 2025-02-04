@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
+import Avatar from "@mui/material/Avatar";
 
 export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerPageChange ,count }) {
   const [page, setPage] = React.useState(0);
@@ -48,6 +49,8 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {columns.map((column) => (
+                column.id ==='imagePath'? 
+                <Avatar margin="normal" alt="Remy Sharp" src={row[column.id]} sx={{ width: 56, height: 56, m: 1.5 }} />:
                 <TableCell key={column.id}>{row[column.id]}</TableCell>
               ))}
             </TableRow>
