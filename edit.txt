@@ -8,18 +8,27 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 
-export default function PaginatedTable({ rows, columns }) {
+export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerPageChange }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
+  const handlePageChange = (event, newPage) => {
     setPage(newPage);
+    if (onPageChange) {
+      onPageChange(newPage); // Call the parent's callback
+    }
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleRowsPerPageChange = (event) => {
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
+    setPage(0); // Reset to the first page when rows per page changes
+    if (onRowsPerPageChange) {
+      onRowsPerPageChange(newRowsPerPage); // Call the parent's callback
+    }
   };
+
+  const displayedRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <TableContainer component={Paper}>
@@ -32,18 +41,16 @@ export default function PaginatedTable({ rows, columns }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                {columns.map((column) => (
-                  <TableCell key={column.id}>{row[column.id]}</TableCell>
-                ))}
-              </TableRow>
-            ))}
+          {displayedRows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              {columns.map((column) => (
+                <TableCell key={column.id}>{row[column.id]}</TableCell>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <TablePagination
@@ -52,34 +59,56 @@ export default function PaginatedTable({ rows, columns }) {
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onPageChange={handlePageChange} // Use the modified handler
+        onRowsPerPageChange={handleRowsPerPageChange} // Use the modified handler
       />
     </TableContainer>
   );
 }
 
 
+// Example usage in the parent component:
+import PaginatedTable from './PaginatedTable'; // Import your table component
+import React, { useState, useEffect } from 'react';
 
+function MyParentComponent() {
+  const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  useEffect(() => {
+    // Fetch data from your API or database based on page and rowsPerPage
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/data?page=${page}&rowsPerPage=${rowsPerPage}`);
+        const data = await response.json();
+        setRows(data.data); // Assuming your API returns { data: [...], totalRows: ... }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-import PaginatedTable from './PaginatedTable';
+    fetchData();
+  }, [page, rowsPerPage]); // Re-fetch when page or rowsPerPage changes
 
-const rows = [
-  { id: 1, name: 'John Doe', age: 25, email: 'john.doe@example.com' },
-  { id: 2, name: 'Jane Doe', age: 30, email: 'jane.doe@example.com' },
-  // ... داده‌های بیشتر
-];
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
 
-const columns = [
-  { id: 'id', label: 'شناسه' },
-  { id: 'name', label: 'نام' },
-  { id: 'age', label: 'سن' },
-  { id: 'email', label: 'ایمیل' },
-];
+  const handleRowsPerPageChange = (newRowsPerPage) => {
+    setRowsPerPage(newRowsPerPage);
+  };
 
-function MyComponent() {
   return (
-    <PaginatedTable rows={rows} columns={columns} />
+    <div>
+      <PaginatedTable 
+        rows={rows} 
+        columns={[/* Your column definitions */]} 
+        onPageChange={handlePageChange} 
+        onRowsPerPageChange={handleRowsPerPageChange} 
+      />
+    </div>
   );
 }
+
+export default MyParentComponent;
