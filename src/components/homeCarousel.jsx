@@ -19,6 +19,11 @@ function HomeCarousel() {
             description: "این توضیحات عکس سوم است.",
             image: "/images/pic3.jpg",
         },
+        {
+            name: "عکس 4",
+            description: "این توضیحات عکس سوم است.",
+            image: "/images/pic4.jpg",
+        },
     ];
 
     return (
@@ -32,21 +37,21 @@ function HomeCarousel() {
 
 function Item({ item }) {
     return (
-        <Paper style={{ textAlign: "center", padding: "20px" ,borderTop: "1px solid #ddd",}}>
+        <Paper style={{ textAlign: "center", padding: "10px" ,borderTop: "1px solid #ddd",}}>
             <img
                 src={item.image}
                 alt={item.name}
-                style={{ width: "100%", maxHeight: "300px", objectFit: "contain"}}
+                style={{ width: "100%", maxHeight: "250px", objectFit: "contain"}}
             />
-            <Typography variant="h5" style={{ marginTop: "10px" }}>
+            <Typography variant="h6" style={{ marginTop: "3px" }}>
                 {item.name}
             </Typography>
-            <Typography variant="body1" style={{ margin: "10px 0" }}>
+            <Typography variant="body2" style={{ margin: "3px 0" }}>
                 {item.description}
             </Typography>
-            <Button variant="contained" color="primary">
+            {/* <Button variant="contained" color="primary">
                 مشاهده بیشتر
-            </Button>
+            </Button> */}
         </Paper>
     );
 }
