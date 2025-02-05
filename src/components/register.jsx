@@ -33,24 +33,24 @@ const Register = () => {
   const columns = [
     { id: "code", label: "شناسه" },
     { id: "nameFamily", label: "نام" },
-    { id: "useName", label: "یوزر" },
+    { id: "userName", label: "یوزر" },
     { id: "roleCode", label: "roleCode" },
     { id: "imagePath", label: "imagePath" },
   ];
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
-
-        var response = axios.post("/api/users/users",{ page, rowsPerPage});
-
-        
+        var response = await axios.post("/api/users/users", { page, rowsPerPage });
+        if (!response.ok) {
+          const errorData = await response.json();
+          setErrors(errorData.message || errorData.statusText);
+          console.log("errors : ", errors);
+          return;
+        }
         const data = (await response).data.user;
-        console.log("data.output.count :", data.output.count);
-        setRows(data.recordset); 
-        setCount(data.output.count); 
-
+        setRows(data.recordset);
+        setCount(data.output.count);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -140,105 +140,122 @@ const Register = () => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "50%",
-        margin: "auto",
-        p: 3,
-        border: "1px solid #ddd",
-        borderRadius: 2,
-        boxShadow: 3,
-        textAlign: "center",
-      }}
-    >
-      {Object.keys(errors).map((key) => {
-        return (
-          <Grid>
-            {" "}
-            <p style={{ color: "red", fontSize: 10 }}>{errors[key]}</p>{" "}
-          </Grid>
-        );
-      })}
+    <>
+      <Box
+        sx={{
+          width: "50%",
+          m: "auto",
+          p: 3,
+          border: "1px solid #ddd",
+          borderRadius: 2,
+          boxShadow: 3,
+          textAlign: "center",
+        }}
+      >
+        {Object.keys(errors).map((key) => {
+          return (
+            <Grid>
+              {" "}
+              <p style={{ color: "red", fontSize: 10 }}>{errors[key]}</p>{" "}
+            </Grid>
+          );
+        })}
 
-      <form onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid size={12}>
-            <TextField
-              label="نام و نام خانوادگی"
-              fullWidth
-              name="nameFamily"
-              width="100%"
-              size="small"
-              margin="normal"
-              value={userData.nameFamily}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid size={12}>
-            <TextField
-              label="نام کاربری"
-              fullWidth
-              name="userName"
-              type="userName"
-              width="100%"
-              size="small"
-              margin="normal"
-              value={userData.userName}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid size={12}>
-            <TextField
-              label="رمز عبور"
-              fullWidth
-              type="password"
-              name="password"
-              width="100%"
-              size="small"
-              margin="normal"
-              value={userData.password}
-              onChange={handleChange}
-            />
-          </Grid>
+        <form onSubmit={handleSubmit}>
+          <Grid container>
+            <Grid size={12}>
+              <TextField
+                label="نام و نام خانوادگی"
+                fullWidth
+                name="nameFamily"
+                width="100%"
+                size="small"
+                margin="normal"
+                value={userData.nameFamily}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                label="نام کاربری"
+                fullWidth
+                name="userName"
+                type="userName"
+                width="100%"
+                size="small"
+                margin="normal"
+                value={userData.userName}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                label="رمز عبور"
+                fullWidth
+                type="password"
+                name="password"
+                width="100%"
+                size="small"
+                margin="normal"
+                value={userData.password}
+                onChange={handleChange}
+              />
+            </Grid>
 
-          <Grid size={9}>
-            <MuiFileInput
-              fullWidth
-              value={imageFile}
-              onChange={handleChange1}
-              placeholder="عکس"
-              margin="normal"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid size={2}>
-            <Avatar margin="normal" alt="Remy Sharp" src={userData.imagePath} sx={{ width: 56, height: 56, m: 1.5 }} />
-          </Grid>
+            <Grid size={9}>
+              <MuiFileInput
+                fullWidth
+                value={imageFile}
+                onChange={handleChange1}
+                placeholder="عکس"
+                margin="normal"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid size={2}>
+              <Avatar
+                margin="normal"
+                alt="Remy Sharp"
+                src={userData.imagePath}
+                sx={{ width: 56, height: 56, m: 1.5 }}
+              />
+            </Grid>
 
-          <Grid size={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
-              fullWidth
-              disabled={isLoading} // Disable button while loading
-            >
-              {isLoading ? "ذخیره..." : "ذخیره"}
-            </Button>
+            <Grid size={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                fullWidth
+                disabled={isLoading} // Disable button while loading
+              >
+                {isLoading ? "ذخیره..." : "ذخیره"}
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
-      <div>
+        </form>
+      </Box>
+      <Box
+        sx={{
+          width: "95%",
+          m: "25px auto 2px auto",
+          p: 0,
+          border: "1px solid #ddd",
+          borderRadius: 2,
+          boxShadow: 3,
+          textAlign: "center",
+        }}
+      >
         <PaginatedTable
           rows={rows}
           columns={columns}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleRowsPerPageChange}
-          count ={count}
+          count={count}
         />
-      </div>
-    </Box>
+      </Box>
+    </>
   );
 };
 

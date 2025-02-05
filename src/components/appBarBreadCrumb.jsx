@@ -24,7 +24,7 @@ export default function AppBarBreadCrumb() {
         {pathnames.map((value, index) => {
           const to = `/${pathnames.slice(0, index + 1).join("/")}`;
           const displayName = breadcrumbNameMap[value] || value;
-          return <CustomLink to={to} text={displayName} />;
+          return <CustomLink to={to} text={displayName} key={index} />;
         })}
       </Breadcrumbs>
     </div>

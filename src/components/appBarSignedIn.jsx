@@ -3,6 +3,7 @@ import { AuthenticationContext, SessionContext } from "@toolpad/core/AppProvider
 import { Account } from "@toolpad/core/Account";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
+import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +14,6 @@ export default function AccountDemoSignedIn() {
   React.useEffect(() => {
     if(!userData)
    { const userData_ = JSON.parse(localStorage.getItem("user"));
-    console.log("userData_ is ", userData_);
     setUserData(userData_);}
   });
 
@@ -26,6 +26,7 @@ export default function AccountDemoSignedIn() {
       signOut: () => {
         setUserData(null);
         localStorage.removeItem("user");
+         axios.post("/api/users/logout")
         navigate("/");
       },
     };

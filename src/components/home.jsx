@@ -8,8 +8,8 @@ class Home extends Component {
     courses: [],
   };
   async componentDidMount() {
-    const response = await axios.get("/");
-    console.log({ response });
+    const response = await axios.get("/api" );
+    console.log("response : ",response);
   }
   render() {
     return (

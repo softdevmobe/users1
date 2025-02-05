@@ -15,6 +15,8 @@ import LayersIcon from "@mui/icons-material/Layers";
 import Container from "@mui/material/Container";
 import CustomLink from "./customLink";
 import MenuIcon from "@mui/icons-material/Menu";
+import { IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 const NAVIGATION = [
   {
     kind: "header",
@@ -95,8 +97,18 @@ export default function AppBarDrawer() {
 
   return (
     <div >
-       <MenuIcon  onClick={toggleDrawer(true)}/>
+      <IconButton onClick={toggleDrawer(true)}>
+      <MenuIcon  />
+      </IconButton>
+   
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
+      <Box sx={{display:'flex', justifyContent:'flex-end'}}>
+      <IconButton onClick={toggleDrawer(false)}>
+      <CloseIcon  />
+      </IconButton>
+      </Box>
+      
+
         {DrawerList}
       </Drawer>
     </div>

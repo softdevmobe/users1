@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "../App.css";
-const CustomLink = ({ to, text }) => {
+const CustomLink = ({ to, text  }) => {
   return (
     <Link
       to={to}
