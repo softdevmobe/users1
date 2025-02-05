@@ -13,6 +13,7 @@ import LoginForm from "./components/loginForm";
 import { Routes, Route } from "react-router-dom";
 import AppBarSignedIn from "./components/appBarSignedIn";
 import AppBarResponsive from "./components/appBarResponsive";
+import ExcelSpecifications from "./components/excelSpecifications";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/product" element={<Product />} />
+            <Route path="/excelSpecifications" element={<ExcelSpecifications />} />
             <Route path="/appBarSignedIn" element={<AppBarSignedIn />} />
             <Route index element={<Home />} />
             <Route path="*" element={<NotFound />} />

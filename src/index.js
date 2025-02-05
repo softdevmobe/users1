@@ -8,11 +8,11 @@ import { CssBaseline } from "@mui/material";
 import { UserProvider } from "./components/userContext";
 ReactDOM.createRoot(document.querySelector("#root")).render(
   // <UserProvider>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ThemeProvider>
   // </UserProvider>
 );

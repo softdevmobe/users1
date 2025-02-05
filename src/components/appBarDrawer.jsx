@@ -17,6 +17,7 @@ import CustomLink from "./customLink";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 const NAVIGATION = [
   {
     kind: "header",
@@ -28,9 +29,9 @@ const NAVIGATION = [
     icon: <DashboardIcon />,
   },
   {
-    segment: "orders",
-    title: "انتخاب",
-    icon: <ShoppingCartIcon />,
+    segment: "excelSpecifications",
+    title: "تنظیم فایل های اکسل",
+    icon: <AttachFileIcon />,
   },
   {
     segment: "login",
