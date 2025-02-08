@@ -11,13 +11,31 @@ import PaginatedTable from "./paginatedTable";
 const ExcelSpecifications = () => {
   const [errors, setErrors] = useState({});
   const [excelFile, setExcelFile] = useState(null);
+  const [pathFile, setPathFile] = useState("");
+  const  handleClick = async () =>{
+    try {
+      console.log("pathFile : ",pathFile);
+      const response = await axios.post("/api/excel/excelSpecifications", pathFile);
+      
+      console.log(response.data);
 
+      setErrors({});
+    } catch (error) {
+      const error_ = error.response.data.error;
+      const errorMessages = { file: error_ };
+
+      setErrors(errorMessages);
+
+      console.log("error is : ", error_);
+    }
+  }
   const handleChange = async (value_) => {
     setExcelFile(value_);
     const formData = new FormData();
     formData.append("excel", value_);
     try {
       const response = await axios.post("/api/excel", formData);
+      setPathFile({pathFile : response.data})
       console.log(response.data);
 
       setErrors({});
@@ -44,7 +62,7 @@ const ExcelSpecifications = () => {
           textAlign: "center",
         }}
       >
-        <Grid size={9}>
+        <Grid size={8}>
           <MuiFileInput
             fullWidth
             value={excelFile}
@@ -54,6 +72,18 @@ const ExcelSpecifications = () => {
             variant="outlined"
           />
         </Grid>
+        <Grid size={4}>
+              <Button
+                onClick={handleClick}
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                fullWidth
+               
+              >
+              ذخیره
+              </Button>
+            </Grid>
       </Box>
     </>
   );
