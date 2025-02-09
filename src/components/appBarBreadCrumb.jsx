@@ -1,7 +1,7 @@
 import * as React from "react";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import CustomLink from "./customLink";
-import {  useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function handleClick(event) {
   event.preventDefault();
@@ -13,12 +13,13 @@ const breadcrumbNameMap = {
   login: "ورود",
   clothing: "پوشاک",
   home: "خانه",
+  excelSpecifications: "پردازش اکسل",
 };
 export default function AppBarBreadCrumb() {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   return (
-    <div role="presentation" onClick={handleClick} >
+    <div role="presentation" onClick={handleClick}>
       <Breadcrumbs aria-label="breadcrumb">
         <CustomLink to={"/"} text={"خانه"} />
         {pathnames.map((value, index) => {

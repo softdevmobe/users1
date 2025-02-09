@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { MuiFileInput } from "mui-file-input";
 import Avatar, { avatarClasses } from "@mui/material/Avatar";
 import PaginatedTable from "./paginatedTable";
+import HorizontalLinearStepper from './horizontalLinearStepper'
 const ExcelSpecifications = () => {
   const [errors, setErrors] = useState({});
   const [excelFile, setExcelFile] = useState(null);
@@ -62,6 +63,7 @@ const ExcelSpecifications = () => {
           textAlign: "center",
         }}
       >
+       <Grid>
         <Grid size={8}>
           <MuiFileInput
             fullWidth
@@ -84,6 +86,10 @@ const ExcelSpecifications = () => {
               ذخیره
               </Button>
             </Grid>
+            <Grid>
+          <HorizontalLinearStepper/>
+        </Grid>
+        </Grid>
       </Box>
     </>
   );
