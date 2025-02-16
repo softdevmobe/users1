@@ -8,16 +8,17 @@ import * as yup from "yup";
 import { MuiFileInput } from "mui-file-input";
 import Avatar, { avatarClasses } from "@mui/material/Avatar";
 import PaginatedTable from "./paginatedTable";
-import HorizontalLinearStepper from './horizontalLinearStepper'
+import HorizontalLinearStepper from "./horizontalLinearStepper";
 const ExcelSpecifications = () => {
   const [errors, setErrors] = useState({});
   const [excelFile, setExcelFile] = useState(null);
   const [pathFile, setPathFile] = useState("");
-  const  handleClick = async () =>{
+  const [isOk, setIsOk] = useState(0);
+  const handleClick = async () => {
     try {
-      console.log("pathFile : ",pathFile);
+      console.log("pathFile : ", pathFile);
       const response = await axios.post("/api/excel/excelSpecifications", pathFile);
-      
+
       console.log(response.data);
 
       setErrors({});
@@ -29,21 +30,23 @@ const ExcelSpecifications = () => {
 
       console.log("error is : ", error_);
     }
-  }
+  };
   const handleChange = async (value_) => {
     setExcelFile(value_);
     const formData = new FormData();
     formData.append("excel", value_);
     try {
       const response = await axios.post("/api/excel", formData);
-      setPathFile({pathFile : response.data})
+      setPathFile({ pathFile: response.data });
       console.log(response.data);
 
       setErrors({});
+      setIsOk(1)
     } catch (error) {
       const error_ = error.response.data.error;
       const errorMessages = { file: error_ };
-
+      setIsOk(0)
+      setExcelFile(null)
       setErrors(errorMessages);
 
       console.log("error is : ", error_);
@@ -63,32 +66,21 @@ const ExcelSpecifications = () => {
           textAlign: "center",
         }}
       >
-       <Grid>
-        <Grid size={8}>
-          <MuiFileInput
-            fullWidth
-            value={excelFile}
-            onChange={handleChange}
-            placeholder="اکسل"
-            margin="normal"
-            variant="outlined"
-          />
-        </Grid>
-        <Grid size={4}>
-              <Button
-                onClick={handleClick}
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-                fullWidth
-               
-              >
-              ذخیره
-              </Button>
-            </Grid>
-            <Grid>
-          <HorizontalLinearStepper/>
-        </Grid>
+        <Grid>
+          <Grid size={8}>
+            <MuiFileInput
+              fullWidth
+              value={excelFile}
+              onChange={handleChange}
+              placeholder="اکسل"
+              margin="normal"
+              variant="outlined"
+            />
+          </Grid>
+
+          <Grid>
+            <HorizontalLinearStepper isOk = {isOk} handleClick_ = {handleClick} />
+          </Grid>
         </Grid>
       </Box>
     </>

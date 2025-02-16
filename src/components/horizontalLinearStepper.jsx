@@ -6,19 +6,33 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-const steps = ["انتخاب فایل اکسل", "Create an ad group", "Create an ad"];
+const steps = ["انتخاب فایل اکسل", "دریافت مشخصات فایل اکسل", "Create an ad"];
 
-export default function HorizontalLinearStepper() {
+export default function HorizontalLinearStepper(props) {
   const [activeStep, setActiveStep] = React.useState(0);
+
+ 
+
 
   const isStepOptional = (step) => {
     return step === 1;
   };
 
   const handleNext = () => {
+    console.log("activeStep : ",activeStep)
+if(props.isOk){
+  
+setActiveStep((prevActiveStep) => prevActiveStep + 1);
+if(activeStep===1 ){
+  props.handleClick_()
+}
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+}
+else{
+  setActiveStep(0);
+}
+};
+  
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -35,7 +49,7 @@ export default function HorizontalLinearStepper() {
           const stepProps = {};
           const labelProps = {};
           if (isStepOptional(index)) {
-            labelProps.optional = <Typography variant="caption">Optional</Typography>;
+            labelProps.optional = <Typography variant="caption"></Typography>;
           }
 
           return (
@@ -55,7 +69,7 @@ export default function HorizontalLinearStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+          <Typography sx={{ mt: 2, mb: 1 }}>مرحله{activeStep + 1}</Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button color="inherit" disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
               Back
