@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import * as yup from "yup";
 import { MuiFileInput } from "mui-file-input";
-import Avatar, { avatarClasses } from "@mui/material/Avatar";
+import BasicSelect from "./basicSelect";
 import PaginatedTable from "./paginatedTable";
 import HorizontalLinearStepper from "./horizontalLinearStepper";
 const ExcelSpecifications = () => {
@@ -14,13 +14,19 @@ const ExcelSpecifications = () => {
   const [excelFile, setExcelFile] = useState(null);
   const [pathFile, setPathFile] = useState("");
   const [isOk, setIsOk] = useState(0);
+  const [result, setResult] = useState([]);
+  useEffect(() => {
+    console.log("result : ", result);
+  }, [result]);
+
   const handleClick = async () => {
     try {
-      console.log("pathFile : ", pathFile);
       const response = await axios.post("/api/excel/excelSpecifications", pathFile);
-
-      console.log(response.data);
-
+      const result_ = Object.keys(response.data).map((sheetName, index) => ({
+        value: sheetName,
+        index: index,
+      }));
+      setResult(result_);
       setErrors({});
     } catch (error) {
       const error_ = error.response.data.error;
@@ -41,12 +47,12 @@ const ExcelSpecifications = () => {
       console.log(response.data);
 
       setErrors({});
-      setIsOk(1)
+      setIsOk(1);
     } catch (error) {
       const error_ = error.response.data.error;
       const errorMessages = { file: error_ };
-      setIsOk(0)
-      setExcelFile(null)
+      setIsOk(0);
+      setExcelFile(null);
       setErrors(errorMessages);
 
       console.log("error is : ", error_);
@@ -79,7 +85,11 @@ const ExcelSpecifications = () => {
           </Grid>
 
           <Grid>
-            <HorizontalLinearStepper isOk = {isOk} handleClick_ = {handleClick} />
+            <HorizontalLinearStepper isOk={isOk} handleClick_={handleClick} />
+          </Grid>
+
+          <Grid>
+            <BasicSelect result={result} />
           </Grid>
         </Grid>
       </Box>
