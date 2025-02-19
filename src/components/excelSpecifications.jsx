@@ -22,10 +22,13 @@ const ExcelSpecifications = () => {
   const handleClick = async () => {
     try {
       const response = await axios.post("/api/excel/excelSpecifications", pathFile);
+      console.log("response : ", response);
       const result_ = Object.keys(response.data).map((sheetName, index) => ({
         value: sheetName,
         index: index,
       }));
+
+      console.log("result_ : ", result_);
       setResult(result_);
       setErrors({});
     } catch (error) {

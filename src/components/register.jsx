@@ -42,15 +42,17 @@ const Register = () => {
     const fetchData = async () => {
       try {
         var response = await axios.post("/api/users/users", { page, rowsPerPage });
-        if (!response.ok) {
+        
+        if (response.status !==200) {
           const errorData = await response.json();
           setErrors(errorData.message || errorData.statusText);
           console.log("errors : ", errors);
           return;
         }
-        const data = (await response).data.user;
-        setRows(data.recordset);
-        setCount(data.output.count);
+        const dataUser = await response.data.user;
+      
+        setRows(dataUser.recordset);
+        setCount(dataUser.output.count);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
