@@ -9,11 +9,13 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import Avatar from "@mui/material/Avatar";
 
+
 export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerPageChange, count }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  console.log("rows : ", rows);
   const handlePageChange = (event, newPage) => {
+
     setPage(newPage);
     if (onPageChange) {
       onPageChange(newPage); // Call the parent's callback
@@ -44,10 +46,11 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
         </TableHead>
         <TableBody>
           {displayedRows.map((row) => (
-            <TableRow key={row.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableRow key={row.code} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               {columns.map((column) =>
                 column.id === "imagePath" ? (
                   <Avatar
+                  key={column.id}
                     margin="normal"
                     alt="Remy Sharp"
                     src={row[column.id]}

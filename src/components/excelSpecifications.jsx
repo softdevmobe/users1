@@ -15,29 +15,21 @@ const ExcelSpecifications = () => {
   const [pathFile, setPathFile] = useState("");
   const [isOk, setIsOk] = useState(0);
   const [result, setResult] = useState([]);
-  useEffect(() => {
-    console.log("result : ", result);
-  }, [result]);
 
   const handleClick = async () => {
     try {
       const response = await axios.post("/api/excel/excelSpecifications", pathFile);
-      console.log("response : ", response);
-      const result_ = Object.keys(response.data).map((sheetName, index) => ({
-        value: sheetName,
-        index: index,
+      const result_ = response.data.data.map((sheet) => ({
+        value: sheet.SheetName,
+        index: sheet.Code,
       }));
 
-      console.log("result_ : ", result_);
       setResult(result_);
       setErrors({});
     } catch (error) {
       const error_ = error.response.data.error;
       const errorMessages = { file: error_ };
-
       setErrors(errorMessages);
-
-      console.log("error is : ", error_);
     }
   };
   const handleChange = async (value_) => {
@@ -57,8 +49,6 @@ const ExcelSpecifications = () => {
       setIsOk(0);
       setExcelFile(null);
       setErrors(errorMessages);
-
-      console.log("error is : ", error_);
     }
   };
 

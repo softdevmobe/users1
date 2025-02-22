@@ -24,7 +24,7 @@ export default function BasicSelect(props) {
           onChange={handleChange}
         >
           {props.result.map((item) => {
-            return <MenuItem value={item.index + 1}>{item.value}</MenuItem>;
+            return <MenuItem key={item.index} value={item.index}>{item.value}</MenuItem>;
           })}
         </Select>
       </FormControl>
