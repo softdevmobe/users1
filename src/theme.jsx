@@ -1,11 +1,11 @@
 import { createTheme } from "@mui/material/styles";
 import "./App.css";
+
 const theme = createTheme({
   typography: {
-    fontFamily: "IranianSans, IranianSansBold", // دقت کنید که بین نام فونت‌ها کاما قرار دهید
+    fontFamily: "IranianSans, IranianSansBold",
   },
   components: {
-    // استایل‌دهی دکمه
     MuiButton: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -13,24 +13,21 @@ const theme = createTheme({
         }),
       },
     },
-    // استایل‌دهی لینک
     MuiLink: {
       styleOverrides: {
         root: {
-          textDecoration: "none", // حذف underline پیش‌فرض لینک
+          textDecoration: "none",
           fontFamily: '"IranianSans" "IranianSansBold"',
         },
       },
     },
-
     MuiFormLabel: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           fontFamily: '"IranianSans"',
-        },
+        }),
       },
     },
-
     MuiTextField: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -39,8 +36,31 @@ const theme = createTheme({
         }),
       },
     },
+    MuiTablePagination: {
+      styleOverrides: {
+        root: {
+          direction: "rtl", // برای راست به چپ کردن کل کامپوننت
+        },
+        // برای تغییر جهت دکمه "بعدی"
+        nextIconButton: {
+          direction: "rtl",
+        },
+        // برای تغییر جهت دکمه "قبلی"
+        previousIconButton: {
+          direction: "rtl",
+        },
+        // برای تغییر متن "Rows per page"
+        labelRowsPerPage: {
+          fontFamily: '"IranianSans"', // تغییر فونت
+          // margin: "0 16px", // می‌توانید margin هم اضافه کنید
+        },
+        // برای تغییر متن نمایش داده شده در بخش اطلاعات pagination (مانند "1-10 از 100")
+        displayedRows: {
+          fontFamily: '"IranianSans"',
+        },
 
-  
+      },
+    },
   },
 });
 
