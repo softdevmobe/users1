@@ -25,9 +25,9 @@ const theme = createTheme({
 
     MuiFormLabel: {
       styleOverrides: {
-        root: ({
+        root: {
           fontFamily: '"IranianSans"',
-        }),
+        },
       },
     },
 
@@ -40,15 +40,7 @@ const theme = createTheme({
       },
     },
 
-    // MuiInputLabel: {
-    //   styleOverrides: {
-    //     root: ({ theme }) => ({
-    //       textAlign: "right",
-    //       width: "100%",
-    //       "& .MuiInputLabel-root": { paddingRight: "0 !important", paddingLeft: "0 !important" },
-    //     }),
-    //   },
-    // },
+  
   },
 });
 

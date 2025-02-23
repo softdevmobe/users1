@@ -52,8 +52,7 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
                     <Avatar
                       margin="normal"
                       alt="Remy Sharp"
-                      src={row[column.id] }
-                     
+                      src={row[column.id]}
                       sx={{ width: 56, height: 56, m: 1.5 }}
                     />
                   </TableCell>
@@ -74,6 +73,10 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
         page={page}
         onPageChange={handlePageChange} // Use the modified handler
         onRowsPerPageChange={handleRowsPerPageChange} // Use the modified handler
+        labelDisplayedRows={({ from, to, count }) => {
+          return `نمایش ${from} تا ${to} از ${count}`;
+        }}
+        labelRowsPerPage="تعداد سطر در هر صفحه"
       />
     </TableContainer>
   );
