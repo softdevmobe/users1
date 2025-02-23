@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { MuiFileInput } from "mui-file-input";
 import Avatar, { avatarClasses } from "@mui/material/Avatar";
 import PaginatedTable from "./paginatedTable";
+
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -42,15 +43,15 @@ const Register = () => {
     const fetchData = async () => {
       try {
         var response = await axios.post("/api/users/users", { page, rowsPerPage });
-        
-        if (response.status !==200) {
+
+        if (response.status !== 200) {
           const errorData = await response.json();
           setErrors(errorData.message || errorData.statusText);
           console.log("errors : ", errors);
           return;
         }
         const dataUser = await response.data.user;
-      
+
         setRows(dataUser.recordset);
         setCount(dataUser.output.count);
       } catch (error) {
