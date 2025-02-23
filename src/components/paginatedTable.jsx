@@ -10,7 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import Avatar from "@mui/material/Avatar";
 
 export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerPageChange, count }) {
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   console.log("rows : ", rows);
   const handlePageChange = (event, newPage) => {
@@ -23,7 +23,7 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
   const handleRowsPerPageChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
     setRowsPerPage(newRowsPerPage);
-    setPage(0); // Reset to the first page when rows per page changes
+    setPage(1); // Reset to the first page when rows per page changes
     if (onRowsPerPageChange) {
       onRowsPerPageChange(newRowsPerPage); // Call the parent's callback
     }
