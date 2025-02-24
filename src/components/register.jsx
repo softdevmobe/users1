@@ -71,13 +71,19 @@ const Register = () => {
   };
 
   const handleDelete = (row) => {
-   console.log('row delete :' ,row)
+    console.log("row delete :", row);
   };
 
   const handleEdit = (row) => {
-    console.log('row edite :' ,row)
-   };
-
+    console.log("row edite :", row);
+    setUserData({
+      nameFamily: row.nameFamily,
+      userName: row.userName,
+      password: row.password,
+      imagePath: row.imagePath,
+    });
+    console.log("userData edite :", userData);
+  };
 
   const handleChange1 = async (value_) => {
     setImageFile(value_);
@@ -264,7 +270,7 @@ const Register = () => {
           columns={columns}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
-          onDelete ={handleDelete}
+          onDelete={handleDelete}
           onEdit={handleEdit}
           count={count}
         />
