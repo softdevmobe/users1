@@ -23,7 +23,7 @@ const Register = () => {
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageSize, setPageSize] = useState(10);
   const [count, setCount] = useState(10);
 
   // const [page_, setPage_] = useState({
@@ -42,7 +42,7 @@ const Register = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        var response = await axios.post("/api/users/users", { page, rowsPerPage });
+        var response = await axios.post("/api/users/users", { page, pageSize });
 
         if (response.status !== 200) {
           const errorData = await response.json();
@@ -60,14 +60,14 @@ const Register = () => {
     };
 
     fetchData();
-  }, [page, rowsPerPage]); // Re-fetch when page or rowsPerPage changes
+  }, [page, pageSize]); // Re-fetch when page or rowsPerPage changes
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
 
-  const handleRowsPerPageChange = (newRowsPerPage) => {
-    setRowsPerPage(newRowsPerPage);
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
   };
 
   const handleChange1 = async (value_) => {
@@ -254,7 +254,7 @@ const Register = () => {
           rows={rows}
           columns={columns}
           onPageChange={handlePageChange}
-          onRowsPerPageChange={handleRowsPerPageChange}
+          onPageSizeChange={handlePageSizeChange}
           count={count}
         />
       </Box>

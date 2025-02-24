@@ -9,10 +9,10 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import Avatar from "@mui/material/Avatar";
 
-export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerPageChange, count }) {
+
+export default function PaginatedTable({ rows, columns, onPageChange, onPageSizeChange, count }) {
   const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  console.log("rows : ", rows);
+  const [pageSize, setPageSize] = React.useState(10);
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
     if (onPageChange) {
@@ -20,12 +20,12 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
     }
   };
 
-  const handleRowsPerPageChange = (event) => {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    setRowsPerPage(newRowsPerPage);
+  const handlePageSizeChange= (event) => {
+    const newPageSize = parseInt(event.target.value, 10);
+    setPageSize(newPageSize);
     setPage(1); // Reset to the first page when rows per page changes
-    if (onRowsPerPageChange) {
-      onRowsPerPageChange(newRowsPerPage); // Call the parent's callback
+    if (onPageSizeChange) {
+      onPageSizeChange(newPageSize); // Call the parent's callback
     }
   };
 
@@ -33,8 +33,9 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
   //   rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <TableContainer sx={{ maxHeight: 440 }}>
+      <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
             {columns.map((column) => (
@@ -69,15 +70,16 @@ export default function PaginatedTable({ rows, columns, onPageChange, onRowsPerP
         component="div"
         // count={rows.length}
         count={count}
-        rowsPerPage={rowsPerPage}
+        rowsPerPage={pageSize}
         page={page}
         onPageChange={handlePageChange} // Use the modified handler
-        onRowsPerPageChange={handleRowsPerPageChange} // Use the modified handler
+        onPageSizeChange={handlePageSizeChange} // Use the modified handler
         labelDisplayedRows={({ from, to, count }) => {
           return `نمایش ${from} تا ${to} از ${count}`;
         }}
         labelRowsPerPage="تعداد سطر در هر صفحه"
       />
     </TableContainer>
+    </Paper>
   );
 }
