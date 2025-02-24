@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./App.css";
 
 const theme = createTheme({
@@ -63,5 +63,32 @@ const theme = createTheme({
     },
   },
 });
+
+
+
+
+
+const theme = createTheme({
+  components: {
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#f5f5f5", // تغییر رنگ پس‌زمینه
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          color: "#333", // تغییر رنگ متن
+          fontWeight: "bold", // متن پررنگ
+        },
+      },
+    },
+  },
+});
+
+
+
 
 export default theme;
