@@ -70,6 +70,15 @@ const Register = () => {
     setPageSize(newPageSize);
   };
 
+  const handleDelete = (row) => {
+   console.log('row delete :' ,row)
+  };
+
+  const handleEdit = (row) => {
+    console.log('row edite :' ,row)
+   };
+
+
   const handleChange1 = async (value_) => {
     setImageFile(value_);
     const formData = new FormData();
@@ -255,6 +264,8 @@ const Register = () => {
           columns={columns}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
+          onDelete ={handleDelete}
+          onEdit={handleEdit}
           count={count}
         />
       </Box>
