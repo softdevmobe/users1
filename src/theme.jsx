@@ -4,12 +4,16 @@ import "./App.css";
 const theme = createTheme({
   typography: {
     fontFamily: "IranianSans, IranianSansBold",
+    color: 'darkslategray',
+    backgroundColor: 'aliceblue',
+   
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: ({ theme }) => ({
           fontFamily: '"IranianSans" "IranianSansBold"',
+          
         }),
       },
     },
@@ -18,6 +22,7 @@ const theme = createTheme({
         root: {
           textDecoration: "none",
           fontFamily: '"IranianSans" "IranianSansBold"',
+         
         },
       },
     },
@@ -25,6 +30,7 @@ const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           fontFamily: '"IranianSans"',
+
         }),
       },
     },
@@ -58,34 +64,18 @@ const theme = createTheme({
         displayedRows: {
           fontFamily: '"IranianSans"',
         },
-
-      },
-    },
-    MuiTableHead: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          backgroundColor: "#f5f5f5", // تغییر رنگ پس‌زمینه
-        }),
       },
     },
     MuiTableCell: {
       styleOverrides: {
         head: {
-          color: "#333", // تغییر رنگ متن
+          color: 'darkslategray',
+          backgroundColor: '#82b1ff',
           fontWeight: "bold", // متن پررنگ
         },
       },
     },
   },
 });
-
-
-
-
-
-
-
-
-
 
 export default theme;

@@ -18,7 +18,7 @@ import ExcelSpecifications from "./components/excelSpecifications";
 function App() {
   return (
     <>
-      <div className="container mt-3">
+      <div>
         <Routes>
           <Route path="/" element={<AppBarResponsive />}>
             <Route path="/user/:userId" element={<User />} />
