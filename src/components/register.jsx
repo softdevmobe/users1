@@ -6,9 +6,15 @@ import EditForm from "./editForm";
 import DeleteForm from "./deleteForm";
 import EditPasswordForm from "./editPasswordForm";
 import * as yup from "yup";
+const MODES = {
+  DEFAULT: "DEFAULT",
+  EDIT: "EDIT",
+  DELETE: "DELETE",
+  EDITEPASS: "EDITEPASS",
+};
 const Register = () => {
-  const [isEdit, setIsEdit] = useState(false);
-  const [isDelete, setIsDelete] = useState(false); // حالت برای نمایش فرم حذف
+  const [mode, setMode] = useState(MODES.DEFAULT);
+
   const [selectedRow, setSelectedRow] = useState(null); // ردیف انتخاب‌شده برای حذف
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
@@ -81,18 +87,15 @@ const Register = () => {
 
   const handleDelete = (row) => {
     console.log("Deleting row:", row);
-    // ارسال درخواست حذف به سرور
-    axios
-      .delete(`/api/users/${row.code}`)
-      .then((response) => {
-        console.log("User deleted:", response.data);
-        // به‌روزرسانی لیست کاربران پس از حذف
-        setRows(rows.filter((r) => r.code !== row.code));
-        setIsDelete(false); // بستن فرم حذف
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-      });
+    
+    setUserData({
+      nameFamily: row.nameFamily,
+      userName: row.userName,
+      imagePath: row.imagePath,
+    });
+        setMode(MODES.DELETE);
+    
+     
   };
 
   const handleEdit = (row) => {
@@ -101,10 +104,11 @@ const Register = () => {
       userName: row.userName,
       imagePath: row.imagePath,
     });
-    setIsEdit(true);
+    setMode(MODES.EDIT);
   };
 
   const handleEditPass = (row) => {
+    setMode(MODES.EDITEPASS);
     console.log("row edit pass : ", row);
   };
 
@@ -147,7 +151,25 @@ const Register = () => {
       }
     }
   };
-
+  let formComponent;
+  if (mode === MODES.DELETE) {
+    formComponent = (
+      <DeleteForm userData={userData} handleDelete={handleDelete} onCancel={() => setMode(MODES.DEFAULT)} />
+    );
+  } else if (mode === MODES.EDIT) {
+    formComponent = (
+      <EditForm
+        userData={userData}
+        handleChange={handleChange}
+        handleChange1={handleChange1}
+        imageFile={imageFile}
+        handleSubmit={handleSubmit}
+      />
+    );
+  } else if (mode === MODES.EDITEPASS) {
+    console.log("EDITEPASS");
+    formComponent = <EditPasswordForm handleChange={handleChange} handleSubmit={handleSubmit} />;
+  }
   return (
     <>
       <Box
@@ -167,19 +189,7 @@ const Register = () => {
           </p>
         ))}
 
-        {isEdit ?  (
-          <EditForm
-            userData={userData}
-            handleChange={handleChange}
-            handleChange1={handleChange1}
-            imageFile={imageFile}
-            handleSubmit={handleSubmit}
-          />
-        ) : isDelete ? (
-          <DeleteForm row={selectedRow} handleDelete={handleDelete} onCancel={() => setIsDelete(false)} />
-        ) : (
-          <EditPasswordForm handleChange={handleChange} handleSubmit={handleSubmit} />
-        )}
+        {formComponent}
       </Box>
       <Box
         sx={{
@@ -197,10 +207,7 @@ const Register = () => {
           columns={columns}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
-          onDelete={(row) => {
-            setSelectedRow(row); // تنظیم ردیف انتخاب‌شده
-            setIsDelete(true); // نمایش فرم حذف
-          }}
+          onDelete={handleDelete}
           onEdit={handleEdit}
           onEditPass={handleEditPass}
           count={count}
