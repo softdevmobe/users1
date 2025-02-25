@@ -11,7 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-
+import LockResetIcon from "@mui/icons-material/LockReset";
+import { Box } from "@mui/material";
 export default function PaginatedTable({ rows, columns, onPageChange, onPageSizeChange, count, onDelete, onEdit }) {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
@@ -49,35 +50,55 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" >
           <TableHead>
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column.id}>{column.label}</TableCell>
               ))}
-              <TableCell>عملیات</TableCell> {/* Add a column for actions */}
             </TableRow>
           </TableHead>
           <TableBody>
             {displayedRows.map((row) => (
               <TableRow key={row.code} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                {columns.map((column) =>
-                  column.id === "imagePath" ? (
-                    <TableCell key={column.id}>
-                      <Avatar alt="Remy Sharp" src={row[column.id]} sx={{ width: 56, height: 56, m: 1.5 }} />
-                    </TableCell>
-                  ) : (
-                    <TableCell key={column.id}>{row[column.id]}</TableCell>
-                  )
-                )}
-                <TableCell> {/* Actions column */}
-                  <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                {columns.map((column) => {
+                  if (column.id === "imagePath") {
+                    return (
+                      <TableCell
+                        key={column.id}
+                        sx={{ display: "flex", justifyContent: "left", alignContent: "center", m: 0 }}
+                      >
+                        <Avatar alt="Remy Sharp" src={row[column.id]} />
+                      </TableCell>
+                    );
+                  } else if (column.id === "edit") {
+                    return (
+                      <TableCell key={column.id}>
+                        <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                    );
+                  } else if (column.id === "delete") {
+                    return (
+                      <TableCell key={column.id}>
+                        <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    );
+                  } else if (column.id === "editPass") {
+                    return (
+                      <TableCell key={column.id}>
+                        <IconButton aria-label="editPass" onClick={() => handleDelete(row)}>
+                          <LockResetIcon />
+                        </IconButton>
+                      </TableCell>
+                    );
+                  } else {
+                    return <TableCell key={column.id}>{row[column.id]}</TableCell>;
+                  }
+                })}
               </TableRow>
             ))}
           </TableBody>

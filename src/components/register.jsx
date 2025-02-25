@@ -1,16 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import * as yup from "yup";
 import { MuiFileInput } from "mui-file-input";
 import Avatar, { avatarClasses } from "@mui/material/Avatar";
 import PaginatedTable from "./paginatedTable";
 
 const Register = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEdit, setIsEdite] = useState(false);
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
 
@@ -37,6 +35,9 @@ const Register = () => {
     { id: "userName", label: "یوزر" },
     { id: "roleCode", label: "roleCode" },
     { id: "imagePath", label: "imagePath" },
+    { id: "edit", label: "اصلاح" },
+    { id: "delete", label: "حذف" },
+    { id: "editPass", label: "تغییر رمز عبور" },
   ];
 
   useEffect(() => {
@@ -75,14 +76,13 @@ const Register = () => {
   };
 
   const handleEdit = (row) => {
-    console.log("row edite :", row);
     setUserData({
       nameFamily: row.nameFamily,
       userName: row.userName,
       password: row.password,
       imagePath: row.imagePath,
     });
-    console.log("userData edite :", userData);
+    setIsEdite(true);
   };
 
   const handleChange1 = async (value_) => {
@@ -105,16 +105,6 @@ const Register = () => {
       console.log("error is : ", error_);
     }
   };
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    ...theme.applyStyles("dark", {
-      backgroundColor: "#1A2027",
-    }),
-  }));
 
   const schema = yup.object().shape({
     nameFamily: yup
@@ -141,8 +131,8 @@ const Register = () => {
     e.preventDefault();
     try {
       await schema.validate(userData, { abortEarly: false });
-      var response = axios.post("/api/users/register", userData);
-      console.log("response is ", (await response).data);
+      var response = await axios.post("/api/users/register", userData);
+      console.log("response is ", response.data);
       setUserData({ ...userData, imagePath: (await response).data.imagePath });
       setErrors({});
     } catch (err) {
@@ -240,15 +230,8 @@ const Register = () => {
             </Grid>
 
             <Grid size={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-                fullWidth
-                disabled={isLoading} // Disable button while loading
-              >
-                {isLoading ? "ذخیره..." : "ذخیره"}
+              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
+                {isEdit ? "اصلاح" : "ذخیره"}
               </Button>
             </Grid>
           </Grid>
