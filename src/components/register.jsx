@@ -20,7 +20,7 @@ const Register = () => {
   });
 
   const [rows, setRows] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [count, setCount] = useState(10);
 
@@ -35,9 +35,7 @@ const Register = () => {
     { id: "userName", label: "یوزر" },
     { id: "roleCode", label: "roleCode" },
     { id: "imagePath", label: "imagePath" },
-    { id: "edit", label: "اصلاح" },
-    { id: "delete", label: "حذف" },
-    { id: "editPass", label: "تغییر رمز عبور" },
+    { id: "action", label: "عملیات", actions: ["edit", "delete", "editPass"] },
   ];
 
   useEffect(() => {
@@ -68,6 +66,7 @@ const Register = () => {
   };
 
   const handlePageSizeChange = (newPageSize) => {
+    setPage(0);
     setPageSize(newPageSize);
   };
 
@@ -79,10 +78,12 @@ const Register = () => {
     setUserData({
       nameFamily: row.nameFamily,
       userName: row.userName,
-      password: row.password,
       imagePath: row.imagePath,
     });
     setIsEdite(true);
+  };
+  const handleEditPass = (row) => {
+    console.log("row edit pass : ", row);
   };
 
   const handleChange1 = async (value_) => {
@@ -255,6 +256,7 @@ const Register = () => {
           onPageSizeChange={handlePageSizeChange}
           onDelete={handleDelete}
           onEdit={handleEdit}
+          onEditPass={handleEditPass}
           count={count}
         />
       </Box>

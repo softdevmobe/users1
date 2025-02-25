@@ -13,8 +13,17 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LockResetIcon from "@mui/icons-material/LockReset";
 import { Box } from "@mui/material";
-export default function PaginatedTable({ rows, columns, onPageChange, onPageSizeChange, count, onDelete, onEdit }) {
-  const [page, setPage] = React.useState(1);
+export default function PaginatedTable({
+  rows,
+  columns,
+  onPageChange,
+  onPageSizeChange,
+  count,
+  onDelete,
+  onEdit,
+  onEditPass,
+}) {
+  const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(10);
 
   const handlePageChange = (event, newPage) => {
@@ -27,7 +36,7 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
   const handlePageSizeChange = (event) => {
     const newPageSize = parseInt(event.target.value, 10);
     setPageSize(newPageSize);
-    setPage(1);
+    setPage(0);
     if (onPageSizeChange) {
       onPageSizeChange(newPageSize);
     }
@@ -46,11 +55,16 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
       onEdit(row);
     }
   };
+  const handleEditPass = (row) => {
+    if (onEditPass) {
+      onEditPass(row);
+    }
+  };
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table" >
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -71,28 +85,25 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
                         <Avatar alt="Remy Sharp" src={row[column.id]} />
                       </TableCell>
                     );
-                  } else if (column.id === "edit") {
+                  } else if (column.id === "action") {
                     return (
                       <TableCell key={column.id}>
-                        <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                    );
-                  } else if (column.id === "delete") {
-                    return (
-                      <TableCell key={column.id}>
-                        <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    );
-                  } else if (column.id === "editPass") {
-                    return (
-                      <TableCell key={column.id}>
-                        <IconButton aria-label="editPass" onClick={() => handleDelete(row)}>
-                          <LockResetIcon />
-                        </IconButton>
+                        {column.actions.includes("edit") && (
+                          <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
+                            <EditIcon />
+                          </IconButton>
+                        )}
+                        {column.actions.includes("delete") && (
+                          <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        )}
+
+                        {column.actions.includes("editPass") && (
+                          <IconButton aria-label="editPass" onClick={() => handleEditPass(row)}>
+                            <LockResetIcon />
+                          </IconButton>
+                        )}
                       </TableCell>
                     );
                   } else {
@@ -110,7 +121,7 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
           rowsPerPage={pageSize}
           page={page}
           onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
+          onRowsPerPageChange={handlePageSizeChange}
           labelDisplayedRows={({ from, to, count }) => {
             return `نمایش ${from} تا ${to} از ${count}`;
           }}
