@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
 import PaginatedTable from "./paginatedTable";
-import EditForm from "./EditForm";
-import DeleteForm from "./DeleteForm";
-import EditPasswordForm from "./EditPasswordForm";
-
+import EditForm from "./editForm";
+import DeleteForm from "./deleteForm";
+import EditPasswordForm from "./editPasswordForm";
+import * as yup from "yup";
 const Register = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false); // حالت برای نمایش فرم حذف
@@ -51,6 +51,24 @@ const Register = () => {
 
     fetchData();
   }, [page, pageSize]);
+
+  const schema = yup.object().shape({
+    nameFamily: yup
+      .string()
+      .required("نام نمی تواند خالی باشد ")
+      .min(3, "نام کوچکتر از 3 نباشد")
+      .max(50, "نام بزرگتر از 50 نباشد"),
+    userName: yup
+      .string()
+      .required("نام کاریری نمی تواند خالی باشد ")
+      .min(3, "نام کاربری کوچکتر از 3 نباشد")
+      .max(30, "نام کاربری بزرگتر از 30 نباشد"),
+    password: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
+  });
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -149,7 +167,7 @@ const Register = () => {
           </p>
         ))}
 
-        {isEdit ? (
+        {isEdit ?  (
           <EditForm
             userData={userData}
             handleChange={handleChange}
@@ -158,11 +176,7 @@ const Register = () => {
             handleSubmit={handleSubmit}
           />
         ) : isDelete ? (
-          <DeleteForm
-            row={selectedRow}
-            handleDelete={handleDelete}
-            onCancel={() => setIsDelete(false)}
-          />
+          <DeleteForm row={selectedRow} handleDelete={handleDelete} onCancel={() => setIsDelete(false)} />
         ) : (
           <EditPasswordForm handleChange={handleChange} handleSubmit={handleSubmit} />
         )}
