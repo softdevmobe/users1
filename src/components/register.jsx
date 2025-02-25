@@ -1,33 +1,27 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Box } from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import * as yup from "yup";
-import { MuiFileInput } from "mui-file-input";
-import Avatar, { avatarClasses } from "@mui/material/Avatar";
+import axios from "axios";
+import { Box } from "@mui/material";
 import PaginatedTable from "./paginatedTable";
+import EditForm from "./EditForm";
+import DeleteForm from "./DeleteForm";
+import EditPasswordForm from "./EditPasswordForm";
 
 const Register = () => {
-  const [isEdit, setIsEdite] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false); // حالت برای نمایش فرم حذف
+  const [selectedRow, setSelectedRow] = useState(null); // ردیف انتخاب‌شده برای حذف
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
-
   const [userData, setUserData] = useState({
     nameFamily: "",
     userName: "",
     password: "",
     imagePath: "",
   });
-
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [count, setCount] = useState(10);
-
-  // const [page_, setPage_] = useState({
-  //   p: 0,
-  //   r: 10,
-  // });
 
   const columns = [
     { id: "code", label: "شناسه" },
@@ -41,16 +35,13 @@ const Register = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        var response = await axios.post("/api/users/users", { page, pageSize });
-
+        const response = await axios.post("/api/users/users", { page, pageSize });
         if (response.status !== 200) {
           const errorData = await response.json();
           setErrors(errorData.message || errorData.statusText);
-          console.log("errors : ", errors);
           return;
         }
         const dataUser = await response.data.user;
-
         setRows(dataUser.recordset);
         setCount(dataUser.output.count);
       } catch (error) {
@@ -59,7 +50,7 @@ const Register = () => {
     };
 
     fetchData();
-  }, [page, pageSize]); // Re-fetch when page or rowsPerPage changes
+  }, [page, pageSize]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -71,7 +62,19 @@ const Register = () => {
   };
 
   const handleDelete = (row) => {
-    console.log("row delete :", row);
+    console.log("Deleting row:", row);
+    // ارسال درخواست حذف به سرور
+    axios
+      .delete(`/api/users/${row.code}`)
+      .then((response) => {
+        console.log("User deleted:", response.data);
+        // به‌روزرسانی لیست کاربران پس از حذف
+        setRows(rows.filter((r) => r.code !== row.code));
+        setIsDelete(false); // بستن فرم حذف
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+      });
   };
 
   const handleEdit = (row) => {
@@ -80,8 +83,9 @@ const Register = () => {
       userName: row.userName,
       imagePath: row.imagePath,
     });
-    setIsEdite(true);
+    setIsEdit(true);
   };
+
   const handleEditPass = (row) => {
     console.log("row edit pass : ", row);
   };
@@ -93,48 +97,27 @@ const Register = () => {
 
     try {
       const response = await axios.post("/api/users", formData);
-      console.log(response.data);
       setUserData({ ...userData, imagePath: response.data });
       setErrors({});
     } catch (error) {
       setUserData({ ...userData, imagePath: "" });
       const error_ = error.response.data.error;
       const errorMessages = { file: error_ };
-
       setErrors(errorMessages);
-
-      console.log("error is : ", error_);
     }
   };
 
-  const schema = yup.object().shape({
-    nameFamily: yup
-      .string()
-      .required("نام نمی تواند خالی باشد ")
-      .min(3, "نام کوچکتر از 3 نباشد")
-      .max(50, "نام بزرگتر از 50 نباشد"),
-    userName: yup
-      .string()
-      .required("نام کاریری نمی تواند خالی باشد ")
-      .min(3, "نام کاربری کوچکتر از 3 نباشد")
-      .max(30, "نام کاربری بزرگتر از 30 نباشد"),
-    password: yup
-      .string()
-      .required("کلمه عبور نمی تواند خالی باشد ")
-      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
-      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
-  });
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await schema.validate(userData, { abortEarly: false });
-      var response = await axios.post("/api/users/register", userData);
-      console.log("response is ", response.data);
-      setUserData({ ...userData, imagePath: (await response).data.imagePath });
+      const response = await axios.post("/api/users/register", userData);
+      setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
     } catch (err) {
       if (err.name === "ValidationError") {
@@ -145,7 +128,6 @@ const Register = () => {
         setErrors(errorMessages);
       }
     }
-    return;
   };
 
   return (
@@ -161,82 +143,29 @@ const Register = () => {
           textAlign: "center",
         }}
       >
-        {Object.keys(errors).map((key) => {
-          return (
-            <Grid>
-              {" "}
-              <p style={{ color: "red", fontSize: 10 }}>{errors[key]}</p>{" "}
-            </Grid>
-          );
-        })}
+        {Object.keys(errors).map((key) => (
+          <p key={key} style={{ color: "red", fontSize: 10 }}>
+            {errors[key]}
+          </p>
+        ))}
 
-        <form onSubmit={handleSubmit}>
-          <Grid container>
-            <Grid size={12}>
-              <TextField
-                label="نام و نام خانوادگی"
-                fullWidth
-                name="nameFamily"
-                width="100%"
-                size="small"
-                margin="normal"
-                value={userData.nameFamily}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                label="نام کاربری"
-                fullWidth
-                name="userName"
-                type="userName"
-                width="100%"
-                size="small"
-                margin="normal"
-                value={userData.userName}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid size={12}>
-              <TextField
-                label="رمز عبور"
-                fullWidth
-                type="password"
-                name="password"
-                width="100%"
-                size="small"
-                margin="normal"
-                value={userData.password}
-                onChange={handleChange}
-              />
-            </Grid>
-
-            <Grid size={9}>
-              <MuiFileInput
-                fullWidth
-                value={imageFile}
-                onChange={handleChange1}
-                placeholder="عکس"
-                margin="normal"
-                variant="outlined"
-              />
-            </Grid>
-            <Grid size={2}>
-              <Avatar
-                margin="normal"
-                alt="Remy Sharp"
-                src={userData.imagePath}
-                sx={{ width: 56, height: 56, m: 1.5 }}
-              />
-            </Grid>
-
-            <Grid size={12}>
-              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
-                {isEdit ? "اصلاح" : "ذخیره"}
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
+        {isEdit ? (
+          <EditForm
+            userData={userData}
+            handleChange={handleChange}
+            handleChange1={handleChange1}
+            imageFile={imageFile}
+            handleSubmit={handleSubmit}
+          />
+        ) : isDelete ? (
+          <DeleteForm
+            row={selectedRow}
+            handleDelete={handleDelete}
+            onCancel={() => setIsDelete(false)}
+          />
+        ) : (
+          <EditPasswordForm handleChange={handleChange} handleSubmit={handleSubmit} />
+        )}
       </Box>
       <Box
         sx={{
@@ -254,7 +183,10 @@ const Register = () => {
           columns={columns}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
-          onDelete={handleDelete}
+          onDelete={(row) => {
+            setSelectedRow(row); // تنظیم ردیف انتخاب‌شده
+            setIsDelete(true); // نمایش فرم حذف
+          }}
           onEdit={handleEdit}
           onEditPass={handleEditPass}
           count={count}
