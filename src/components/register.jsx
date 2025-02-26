@@ -76,24 +76,35 @@ const Register = () => {
       .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
   });
 
+  const schemaEdit = yup.object().shape({
+    nameFamily: yup
+      .string()
+      .required("نام نمی تواند خالی باشد ")
+      .min(3, "نام کوچکتر از 3 نباشد")
+      .max(50, "نام بزرگتر از 50 نباشد"),
+    userName: yup
+      .string()
+      .required("نام کاریری نمی تواند خالی باشد ")
+      .min(3, "نام کاربری کوچکتر از 3 نباشد")
+      .max(30, "نام کاربری بزرگتر از 30 نباشد"),
+  });
 
   const schemaEditPassword = yup.object().shape({
-   
     currentPassword: yup
       .string()
       .required("کلمه عبور نمی تواند خالی باشد ")
       .min(3, "کلمه عبور کوچکتر از 3 نباشد")
       .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
-      newPassword: yup
+    newPassword: yup
       .string()
       .required("کلمه عبور نمی تواند خالی باشد ")
       .min(3, "کلمه عبور کوچکتر از 3 نباشد")
-      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
-      confirmNewPassword: yup
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد")
+      .notOneOf([yup.ref("currentPassword")], "رمز عبور جدید باید با رمزعبور قبلی متفاوت باشد ."),
+    confirmNewPassword: yup
       .string()
       .required("کلمه عبور نمی تواند خالی باشد ")
-      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
-      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
+      .oneOf([yup.ref("newPassword")], "رمز عبور جدید و تایید رمز عبور جدید باید یکسان باشد ."),
   });
 
   const handlePageChange = (newPage) => {
@@ -105,19 +116,15 @@ const Register = () => {
     setPageSize(newPageSize);
   };
 
-  
-
   const handleDelete = (row) => {
     console.log("Deleting row:", row);
-    
+
     setUserData({
       nameFamily: row.nameFamily,
       userName: row.userName,
       imagePath: row.imagePath,
     });
-        setMode(MODES.DELETE);
-    
-     
+    setMode(MODES.DELETE);
   };
 
   const handleEdit = (row) => {
@@ -154,12 +161,14 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
+    
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("e : ",e.target);
     try {
-      await schema.validate(userData, { abortEarly: false });
+      await schemaEdit.validate(userData, { abortEarly: false });
       const response = await axios.post("/api/users/register", userData);
       setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});

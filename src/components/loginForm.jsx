@@ -6,7 +6,6 @@ const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -22,35 +21,25 @@ const LoginForm = () => {
       setError("Please enter a valid userName");
       return;
     }
-    setIsLoading(true);
     try {
       const response = await axios.post("/api/users/login", {
         userName,
         password,
       });
-      setUserData({
-        user: {
-          name: response.data.nameFamily,
-          email: response.data.userName,
-          image: response.data.imagePath,
-        },
-      });
 
+      const user = {
+        name: response.data.nameFamily,
+        email: response.data.userName,
+        image: response.data.imagePath,
+      };
+
+      localStorage.setItem("user", JSON.stringify({user}));
+      navigate("/");
     } catch (error) {
       setError(error.response.data);
     } finally {
-      setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (userData) {
-      localStorage.setItem("user",JSON.stringify( userData));
-
-      navigate("/");
-    }
-
-  },[userData]);
 
   return (
     <Box
@@ -66,6 +55,11 @@ const LoginForm = () => {
         textAlign: "center",
       }}
     >
+      {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
       <Typography variant="h5" gutterBottom>
         ورود
       </Typography>
@@ -86,20 +80,9 @@ const LoginForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {error && (
-          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-            {error}
-          </Typography>
-        )}
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-          disabled={isLoading} // Disable button while loading
-        >
-          {isLoading ? "ورود..." : "ورود"}
+        
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+          ورود
         </Button>
       </form>
     </Box>
