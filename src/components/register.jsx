@@ -14,16 +14,30 @@ const MODES = {
 };
 const Register = () => {
   const [mode, setMode] = useState(MODES.DEFAULT);
-
-  const [selectedRow, setSelectedRow] = useState(null); // ردیف انتخاب‌شده برای حذف
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
-  const [userData, setUserData] = useState({
+  const [userDataDefult, setUserDataDefult] = useState({
+    code: "",
     nameFamily: "",
     userName: "",
     password: "",
     imagePath: "",
   });
+
+  
+  const [userDataEdit, setUserDataEdit] = useState({
+    code:'',
+    userName: "",
+    nameFamily: "",
+    imagePath: "",
+  });
+
+  const [userDataEditPass, setUserDataEditPass] = useState({
+    code: "",
+    userName: "",
+    password: "",
+  });
+
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -119,18 +133,20 @@ const Register = () => {
   const handleDelete = (row) => {
     console.log("Deleting row:", row);
 
-    setUserData({
-      nameFamily: row.nameFamily,
+    setUserDataEdit({
+      code:'',
       userName: row.userName,
+      nameFamily: row.nameFamily,
       imagePath: row.imagePath,
     });
     setMode(MODES.DELETE);
   };
 
   const handleEdit = (row) => {
-    setUserData({
-      nameFamily: row.nameFamily,
+    setUserDataEdit({
+      code:'',
       userName: row.userName,
+      nameFamily: row.nameFamily,
       imagePath: row.imagePath,
     });
     setMode(MODES.EDIT);
@@ -148,10 +164,10 @@ const Register = () => {
 
     try {
       const response = await axios.post("/api/users", formData);
-      setUserData({ ...userData, imagePath: response.data });
+      setUserDataDefult({ ...userDataDefult, imagePath: response.data });
       setErrors({});
     } catch (error) {
-      setUserData({ ...userData, imagePath: "" });
+      setUserDataDefult({ ...userDataDefult, imagePath: "" });
       const error_ = error.response.data.error;
       const errorMessages = { file: error_ };
       setErrors(errorMessages);
@@ -160,17 +176,16 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-    
+    setUserDataDefult({ ...userDataDefult, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("e : ",e.target);
+    console.log("e : ", e.target);
     try {
-      await schemaEdit.validate(userData, { abortEarly: false });
-      const response = await axios.post("/api/users/register", userData);
-      setUserData({ ...userData, imagePath: response.data.imagePath });
+      await schemaEdit.validate(userDataDefult, { abortEarly: false });
+      const response = await axios.post("/api/users/register", userDataDefult);
+      setUserDataDefult({ ...userDataDefult, imagePath: response.data.imagePath });
       setErrors({});
     } catch (err) {
       if (err.name === "ValidationError") {
@@ -185,12 +200,12 @@ const Register = () => {
   let formComponent;
   if (mode === MODES.DELETE) {
     formComponent = (
-      <DeleteForm userData={userData} handleDelete={handleDelete} onCancel={() => setMode(MODES.DEFAULT)} />
+      <DeleteForm userDataEdit={userDataEdit} handleDelete={handleDelete} onCancel={() => setMode(MODES.DEFAULT)} />
     );
   } else if (mode === MODES.EDIT) {
     formComponent = (
       <EditForm
-        userData={userData}
+        userData={userDataEdit}
         handleChange={handleChange}
         handleChange1={handleChange1}
         imageFile={imageFile}
