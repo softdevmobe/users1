@@ -76,6 +76,26 @@ const Register = () => {
       .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
   });
 
+
+  const schemaEditPassword = yup.object().shape({
+   
+    currentPassword: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
+      newPassword: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
+      confirmNewPassword: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
+  });
+
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
@@ -84,6 +104,8 @@ const Register = () => {
     setPage(0);
     setPageSize(newPageSize);
   };
+
+  
 
   const handleDelete = (row) => {
     console.log("Deleting row:", row);
