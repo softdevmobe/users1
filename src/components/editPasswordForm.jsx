@@ -2,11 +2,11 @@ import React from "react";
 import { TextField, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
-const EditPasswordForm = ({ handleChange, handleSubmit }) => {
+const EditPasswordForm = ({ userData,handleChange, handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Grid container>
-        <Grid item xs={12}>
+
           <TextField
             label="رمز عبور فعلی"
             fullWidth
@@ -14,10 +14,11 @@ const EditPasswordForm = ({ handleChange, handleSubmit }) => {
             type="password"
             size="small"
             margin="normal"
+            value={userData.currentPassword}
             onChange={handleChange}
           />
-        </Grid>
-        <Grid item xs={12}>
+    
+
           <TextField
             label="رمز عبور جدید"
             fullWidth
@@ -25,10 +26,11 @@ const EditPasswordForm = ({ handleChange, handleSubmit }) => {
             type="password"
             size="small"
             margin="normal"
+            value={userData.newPassword}
             onChange={handleChange}
           />
-        </Grid>
-        <Grid item xs={12}>
+
+ 
           <TextField
             label="تکرار رمز عبور جدید"
             fullWidth
@@ -36,14 +38,15 @@ const EditPasswordForm = ({ handleChange, handleSubmit }) => {
             type="password"
             size="small"
             margin="normal"
+            value={userData.confirmNewPassword}
             onChange={handleChange}
           />
-        </Grid>
-        <Grid item xs={12}>
+
+
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
             تغییر رمز عبور
           </Button>
-        </Grid>
+
       </Grid>
     </form>
   );

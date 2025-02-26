@@ -10,12 +10,12 @@ const DeleteForm = ({ userData, handleDelete, onCancel }) => {
         آیا مطمئن هستید که می‌خواهید کاربر "{userData.nameFamily}" را حذف کنید؟
       </Typography>
       <Grid container spacing={2} justifyContent="flex-end">
-        <Grid item>
+        <Grid >
           <Button variant="contained" color="error" onClick={() => handleDelete(userData)}>
             حذف
           </Button>
         </Grid>
-        <Grid item>
+        <Grid >
           <Button variant="outlined" color="primary" onClick={onCancel}>
             لغو
           </Button>

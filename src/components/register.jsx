@@ -16,27 +16,7 @@ const Register = () => {
   const [mode, setMode] = useState(MODES.DEFAULT);
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
-  const [userDataDefult, setUserDataDefult] = useState({
-    code: "",
-    nameFamily: "",
-    userName: "",
-    password: "",
-    imagePath: "",
-  });
-
-  
-  const [userDataEdit, setUserDataEdit] = useState({
-    code:'',
-    userName: "",
-    nameFamily: "",
-    imagePath: "",
-  });
-
-  const [userDataEditPass, setUserDataEditPass] = useState({
-    code: "",
-    userName: "",
-    password: "",
-  });
+  const [userData, setUserData] = useState({});
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -130,21 +110,20 @@ const Register = () => {
     setPageSize(newPageSize);
   };
 
-  const handleDelete = (row) => {
+  const onDelete = (row) => {
     console.log("Deleting row:", row);
-
-    setUserDataEdit({
-      code:'',
+    setUserData({
+      code: row.code,
       userName: row.userName,
       nameFamily: row.nameFamily,
-      imagePath: row.imagePath,
     });
     setMode(MODES.DELETE);
   };
 
-  const handleEdit = (row) => {
-    setUserDataEdit({
-      code:'',
+  const onEdit = (row) => {
+    console.log("edit row:", row);
+    setUserData({
+      code: row.code,
       userName: row.userName,
       nameFamily: row.nameFamily,
       imagePath: row.imagePath,
@@ -152,9 +131,28 @@ const Register = () => {
     setMode(MODES.EDIT);
   };
 
+  const onEditPass = (row) => {
+    console.log("edit pass : ", row);
+    setUserData({
+      code: row.code,
+      userName: row.userName,
+    });
+    setMode(MODES.EDITEPASS);
+  };
+
+  const handleDelete = (row) => {
+    console.log("Delete row:", row);
+    setMode(MODES.DELETE);
+  };
+
+  const handleEdit = (row) => {
+    console.log("Deleting row:", row);
+    setMode(MODES.EDIT);
+  };
+
   const handleEditPass = (row) => {
     setMode(MODES.EDITEPASS);
-    console.log("row edit pass : ", row);
+    console.log("edit pass : ", row);
   };
 
   const handleChange1 = async (value_) => {
@@ -164,10 +162,10 @@ const Register = () => {
 
     try {
       const response = await axios.post("/api/users", formData);
-      setUserDataDefult({ ...userDataDefult, imagePath: response.data });
+      setUserData({ ...userData, imagePath: response.data });
       setErrors({});
     } catch (error) {
-      setUserDataDefult({ ...userDataDefult, imagePath: "" });
+      setUserData({ ...userData, imagePath: "" });
       const error_ = error.response.data.error;
       const errorMessages = { file: error_ };
       setErrors(errorMessages);
@@ -176,16 +174,16 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserDataDefult({ ...userDataDefult, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("e : ", e.target);
+    console.log("userData : ", userData);
     try {
-      await schemaEdit.validate(userDataDefult, { abortEarly: false });
-      const response = await axios.post("/api/users/register", userDataDefult);
-      setUserDataDefult({ ...userDataDefult, imagePath: response.data.imagePath });
+      await schemaEdit.validate(userData, { abortEarly: false });
+      const response = await axios.post("/api/users/register", userData);
+      setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
     } catch (err) {
       if (err.name === "ValidationError") {
@@ -200,12 +198,12 @@ const Register = () => {
   let formComponent;
   if (mode === MODES.DELETE) {
     formComponent = (
-      <DeleteForm userDataEdit={userDataEdit} handleDelete={handleDelete} onCancel={() => setMode(MODES.DEFAULT)} />
+      <DeleteForm userData={userData} handleDelete={handleDelete} onCancel={() => setMode(MODES.DEFAULT)} />
     );
   } else if (mode === MODES.EDIT) {
     formComponent = (
       <EditForm
-        userData={userDataEdit}
+        userData={userData}
         handleChange={handleChange}
         handleChange1={handleChange1}
         imageFile={imageFile}
@@ -214,7 +212,7 @@ const Register = () => {
     );
   } else if (mode === MODES.EDITEPASS) {
     console.log("EDITEPASS");
-    formComponent = <EditPasswordForm handleChange={handleChange} handleSubmit={handleSubmit} />;
+    formComponent = <EditPasswordForm userData={userData} handleChange={handleChange} handleSubmit={handleSubmit} />;
   }
   return (
     <>
@@ -253,9 +251,9 @@ const Register = () => {
           columns={columns}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
-          onEditPass={handleEditPass}
+          onDelete={onDelete}
+          onEdit={onEdit}
+          onEditPass={onEditPass}
           count={count}
         />
       </Box>
