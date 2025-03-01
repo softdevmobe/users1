@@ -138,18 +138,20 @@ const Register = () => {
   };
 
   const handleSubmitDelete = (row) => {
-    console.log("Delete row:", row);
+    console.log("Delete row:", userData);
     setMode(MODES.DELETE);
   };
 
-  const handleSubmitEdit = (row) => {
-    console.log("Deleting row:", row);
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    console.log("Edit row:", userData);
     setMode(MODES.EDIT);
   };
 
-  const handleSubmitEditPass = (row) => {
+  const handleSubmitEditPass = async (e) => {
+    e.preventDefault();
     setMode(MODES.EDITEPASS);
-    console.log("edit pass : ", row);
+    console.log("edit pass : ", userData);
   };
 
   const handleChange1 = async (value_) => {
