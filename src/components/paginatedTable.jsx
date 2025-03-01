@@ -12,7 +12,9 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 export default function PaginatedTable({
   rows,
   columns,
@@ -22,6 +24,7 @@ export default function PaginatedTable({
   onDelete,
   onEdit,
   onEditPass,
+  onAddUser,
 }) {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(10);
@@ -43,6 +46,11 @@ export default function PaginatedTable({
   };
 
   const displayedRows = rows; // rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const handleAddUser = () => {
+    if (onAddUser) {
+      onAddUser();
+    }
+  };
 
   const handleDelete = (row) => {
     if (onDelete) {
@@ -63,6 +71,12 @@ export default function PaginatedTable({
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-start", pr: 3 }}>
+        <IconButton aria-label="add" onClick={handleAddUser}>
+          {" "}
+          <PersonAddAltIcon fontSize="large" />
+        </IconButton>
+      </Box>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

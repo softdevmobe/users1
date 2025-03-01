@@ -138,6 +138,10 @@ const Register = () => {
     setMode(MODES.EDITEPASS);
   };
 
+  const onAddUser = () => {
+    setMode(MODES.DEFAULT);
+  };
+
   const handleSubmitDelete = (row) => {
     console.log("Delete row:", userData);
     setMode(MODES.DELETE);
@@ -256,6 +260,7 @@ const Register = () => {
           onEdit={onEdit}
           onEditPass={onEditPass}
           count={count}
+          onAddUser={onAddUser}
         />
       </Box>
     </>
