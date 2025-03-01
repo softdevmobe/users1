@@ -120,6 +120,7 @@ const Register = () => {
   };
 
   const onEdit = (row) => {
+    console.log("row : ", row);
     setUserData({
       code: row.code,
       userName: row.userName,
