@@ -111,7 +111,6 @@ const Register = () => {
   };
 
   const onDelete = (row) => {
-    console.log("Deleting row:", row);
     setUserData({
       code: row.code,
       userName: row.userName,
@@ -121,7 +120,6 @@ const Register = () => {
   };
 
   const onEdit = (row) => {
-    console.log("edit row:", row);
     setUserData({
       code: row.code,
       userName: row.userName,
@@ -132,7 +130,6 @@ const Register = () => {
   };
 
   const onEditPass = (row) => {
-    console.log("edit pass : ", row);
     setUserData({
       code: row.code,
       userName: row.userName,
@@ -140,17 +137,17 @@ const Register = () => {
     setMode(MODES.EDITEPASS);
   };
 
-  const handleDelete = (row) => {
+  const handleSubmitDelete = (row) => {
     console.log("Delete row:", row);
     setMode(MODES.DELETE);
   };
 
-  const handleEdit = (row) => {
+  const handleSubmitEdit = (row) => {
     console.log("Deleting row:", row);
     setMode(MODES.EDIT);
   };
 
-  const handleEditPass = (row) => {
+  const handleSubmitEditPass = (row) => {
     setMode(MODES.EDITEPASS);
     console.log("edit pass : ", row);
   };
@@ -198,7 +195,7 @@ const Register = () => {
   let formComponent;
   if (mode === MODES.DELETE) {
     formComponent = (
-      <DeleteForm userData={userData} handleDelete={handleDelete} onCancel={() => setMode(MODES.DEFAULT)} />
+      <DeleteForm userData={userData} handleSubmitDelete={handleSubmitDelete} onCancel={() => setMode(MODES.DEFAULT)} />
     );
   } else if (mode === MODES.EDIT) {
     formComponent = (
@@ -207,12 +204,13 @@ const Register = () => {
         handleChange={handleChange}
         handleChange1={handleChange1}
         imageFile={imageFile}
-        handleSubmit={handleSubmit}
+        handleSubmitEdit={handleSubmitEdit}
       />
     );
   } else if (mode === MODES.EDITEPASS) {
-    console.log("EDITEPASS");
-    formComponent = <EditPasswordForm userData={userData} handleChange={handleChange} handleSubmit={handleSubmit} />;
+    formComponent = (
+      <EditPasswordForm userData={userData} handleChange={handleChange} handleSubmitEditPass={handleSubmitEditPass} />
+    );
   }
   return (
     <>

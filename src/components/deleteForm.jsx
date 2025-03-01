@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Typography, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
-const DeleteForm = ({ userData, handleDelete, onCancel }) => {
+const DeleteForm = ({ userData, handleSubmitDelete, onCancel }) => {
 
   return (
     <Box sx={{ p: 2 }}>
@@ -11,7 +11,7 @@ const DeleteForm = ({ userData, handleDelete, onCancel }) => {
       </Typography>
       <Grid container spacing={2} justifyContent="flex-end">
         <Grid >
-          <Button variant="contained" color="error" onClick={() => handleDelete(userData)}>
+          <Button variant="contained" color="error" onClick={() => handleSubmitDelete(userData)}>
             حذف
           </Button>
         </Grid>

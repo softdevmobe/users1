@@ -2,9 +2,9 @@ import React from "react";
 import { TextField, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
-const EditPasswordForm = ({ userData,handleChange, handleSubmit }) => {
+const EditPasswordForm = ({ userData,handleChange, handleSubmitEditPass }) => {
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitEditPass}>
       <Grid container>
 
           <TextField
