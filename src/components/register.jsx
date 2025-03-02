@@ -223,8 +223,10 @@ const Register = () => {
     <>
       <Box
         sx={{
+          marginTop: 3,
           width: "50%",
-          m: "auto",
+          marginRight: "auto",
+          marginLeft: "auto",
           p: 3,
           border: "1px solid #ddd",
           borderRadius: 2,

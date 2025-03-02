@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoginIcon from "@mui/icons-material/Login";
 const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +34,7 @@ const LoginForm = () => {
         image: response.data.imagePath,
       };
 
-      localStorage.setItem("user", JSON.stringify({user}));
+      localStorage.setItem("user", JSON.stringify({ user }));
       navigate("/");
     } catch (error) {
       setError(error.response.data);
@@ -46,7 +47,7 @@ const LoginForm = () => {
       sx={{
         maxWidth: 400,
         margin: "auto",
-        mt: 10,
+        mt: 4,
         mb: 10,
         p: 3,
         border: "1px solid #ddd",
@@ -55,20 +56,22 @@ const LoginForm = () => {
         textAlign: "center",
       }}
     >
-      {error && (
-          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-            {error}
-          </Typography>
-        )}
-      <Typography variant="h5" gutterBottom>
-        ورود
+      <Typography variant="div" gutterBottom>
+        <LoginIcon />
       </Typography>
+      {error && (
+        <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+          {error}
+        </Typography>
+      )}
+
       <form onSubmit={handleSubmit}>
         <TextField
           label="نام کاربری"
           type="userName"
           fullWidth
           margin="normal"
+          size="small"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
         />
@@ -77,10 +80,11 @@ const LoginForm = () => {
           type="password"
           fullWidth
           margin="normal"
+          size="small"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        
+
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           ورود
         </Button>

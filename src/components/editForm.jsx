@@ -7,6 +7,9 @@ import Grid from "@mui/material/Grid2";
 const EditForm = ({ userData, handleChange, handleChange1, imageFile, handleSubmitEdit }) => {
   return (
     <form onSubmit={handleSubmitEdit}>
+      <Grid>
+
+    
       <TextField
         label="نام و نام خانوادگی"
         fullWidth
@@ -26,7 +29,8 @@ const EditForm = ({ userData, handleChange, handleChange1, imageFile, handleSubm
         value={userData.userName}
         onChange={handleChange}
       />
-
+       <Grid container spacing={2} >
+ <Grid size={9}>
       <MuiFileInput
         fullWidth
         value={imageFile}
@@ -35,12 +39,16 @@ const EditForm = ({ userData, handleChange, handleChange1, imageFile, handleSubm
         margin="normal"
         variant="outlined"
       />
-
-      <Avatar margin="normal" alt="User Avatar" src={userData.imagePath} sx={{ width: 56, height: 56, m: 1.5 }} />
-
+      </Grid>
+<Grid size={3}>
+<Avatar margin="normal" alt="User Avatar" src={userData.imagePath} sx={{ width: 56, height: 56, m: 1.5 }} />
+</Grid>
+</Grid> 
+      
       <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
         اصلاح
       </Button>
+      </Grid>
     </form>
   );
 };

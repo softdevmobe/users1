@@ -71,19 +71,22 @@ export default function PaginatedTable({
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <Box sx={{ display: "flex", justifyContent: "flex-start", pr: 3 }}>
-        <IconButton aria-label="add" onClick={handleAddUser}>
-          {" "}
-          <PersonAddAltIcon fontSize="large" />
-        </IconButton>
-      </Box>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
-                <TableCell key={column.id}>{column.label}</TableCell>
-              ))}
+              {columns.map((column) => {
+                if (column.id === "action")
+                  return (
+                    <TableCell key={column.id} sx={{padding:0}}>
+                      {column.label}{" "}
+                      <IconButton aria-label="add" onClick={handleAddUser}>
+                        <PersonAddAltIcon fontSize="large" />
+                      </IconButton>
+                    </TableCell>
+                  );
+                else return <TableCell key={column.id} sx={{padding:0}}>{column.label}</TableCell>;
+              })}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -94,14 +97,14 @@ export default function PaginatedTable({
                     return (
                       <TableCell
                         key={column.id}
-                        sx={{ display: "flex", justifyContent: "left", alignContent: "center", m: 0 }}
+                        sx={{ display: "flex", justifyContent: "left", alignContent: "center", m: 0,p:1 }}
                       >
                         <Avatar alt="Remy Sharp" src={row[column.id]} />
                       </TableCell>
                     );
                   } else if (column.id === "action") {
                     return (
-                      <TableCell key={column.id}>
+                      <TableCell key={column.id} sx={{  justifyContent: "left", alignContent: "center", m: 0,p:1 }} >
                         {column.actions.includes("edit") && (
                           <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
                             <EditIcon />
@@ -121,7 +124,7 @@ export default function PaginatedTable({
                       </TableCell>
                     );
                   } else {
-                    return <TableCell key={column.id}>{row[column.id]}</TableCell>;
+                    return <TableCell key={column.id} sx={{  justifyContent: "left", alignContent: "center", m: 0,p:1 }}>{row[column.id]}</TableCell>;
                   }
                 })}
               </TableRow>
