@@ -17,6 +17,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
   const [userData, setUserData] = useState({});
+  const [selectedRow, setSelectedRow] = useState({});
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -120,13 +121,7 @@ const Register = () => {
   };
 
   const onEdit = (row) => {
-    console.log("row : ", row);
-    setUserData({
-      code: row.code,
-      userName: row.userName,
-      nameFamily: row.nameFamily,
-      imagePath: row.imagePath,
-    });
+    setSelectedRow(row);
     setMode(MODES.EDIT);
   };
 
@@ -207,7 +202,7 @@ const Register = () => {
   } else if (mode === MODES.EDIT) {
     formComponent = (
       <EditForm
-        userData={userData}
+        selectedRow={selectedRow}
         handleChange={handleChange}
         handleChange1={handleChange1}
         imageFile={imageFile}
