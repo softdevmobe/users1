@@ -5,9 +5,10 @@ import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import * as yup from "yup";
-const EditForm = ({ selectedRow, handleChange1, imageFile, handleSubmitEdit }) => {
+const EditForm = ({ selectedRow }) => {
   const [errors, setErrors] = useState({});
   const [userData, setUserData] = useState(selectedRow);
+  const [imageFile, setImageFile] = useState(null);
   useEffect(() => {
     setUserData(selectedRow);
   }, [selectedRow]);
@@ -27,12 +28,29 @@ const EditForm = ({ selectedRow, handleChange1, imageFile, handleSubmitEdit }) =
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
+
+  const handleChange1 = async (value_) => {
+    setImageFile(value_);
+    const formData = new FormData();
+    formData.append("image", value_);
+
+    try {
+      const response = await axios.post("/api/users", formData);
+      setUserData({ ...userData, imagePathNew: response.data });
+      setErrors({});
+    } catch (error) {
+      setUserData({ ...userData, imagePath: "" });
+      const error_ = error.response.data.error;
+      const errorMessages = { file: error_ };
+      setErrors(errorMessages);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("userData insaid : ", userData);
     try {
       await schema.validate(userData, { abortEarly: false });
-      const response = await axios.post("/api/users/register", userData);
+      const response = await axios.post("/api/users/update", userData);
       setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
     } catch (err) {
@@ -42,61 +60,65 @@ const EditForm = ({ selectedRow, handleChange1, imageFile, handleSubmitEdit }) =
           errorMessages[error.path] = error.message;
         });
         setErrors(errorMessages);
-      }
-      else{
-        setErrors(err.name);
+      } else {
+        setErrors([err.message]);
       }
     }
   };
   return (
     <>
-    {Object.keys(errors).map((key) => (
-          <p key={key} style={{ color: "red", fontSize: 10 }}>
-            {errors[key]}
-          </p>
-        ))}
-    <form onSubmit={handleSubmit}>
-      <Grid>
-        <TextField
-          label="نام و نام خانوادگی"
-          fullWidth
-          name="nameFamily"
-          size="small"
-          margin="normal"
-          value={userData.nameFamily}
-          onChange={handleChange}
-        />
+      {Object.keys(errors).map((key) => (
+        <p key={key} style={{ color: "red", fontSize: 10 }}>
+          {errors[key]}
+        </p>
+      ))}
+      <form onSubmit={handleSubmit}>
+        <Grid>
+          <TextField
+            label="نام و نام خانوادگی"
+            fullWidth
+            name="nameFamily"
+            size="small"
+            margin="normal"
+            value={userData.nameFamily}
+            onChange={handleChange}
+          />
 
-        <TextField
-          label="نام کاربری"
-          fullWidth
-          name="userName"
-          size="small"
-          margin="normal"
-          value={userData.userName}
-          onChange={handleChange}
-        />
-        <Grid container spacing={2}>
-          <Grid size={9}>
-            <MuiFileInput
-              fullWidth
-              value={imageFile}
-              onChange={handleChange1}
-              placeholder="عکس"
-              margin="normal"
-              variant="outlined"
-            />
+          <TextField
+            label="نام کاربری"
+            fullWidth
+            name="userName"
+            size="small"
+            margin="normal"
+            value={userData.userName}
+            onChange={handleChange}
+          />
+          <Grid container spacing={2}>
+            <Grid size={9}>
+              <MuiFileInput
+                fullWidth
+                value={imageFile}
+                onChange={handleChange1}
+                placeholder="عکس"
+                margin="normal"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid size={3}>
+              <Avatar
+                margin="normal"
+                alt="User Avatar"
+                src={userData.imagePath}
+                sx={{ width: 56, height: 56, m: 1.5 }}
+              />
+            </Grid>
           </Grid>
-          <Grid size={3}>
-            <Avatar margin="normal" alt="User Avatar" src={userData.imagePath} sx={{ width: 56, height: 56, m: 1.5 }} />
-          </Grid>
+
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
+            اصلاح
+          </Button>
         </Grid>
-
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} fullWidth>
-          اصلاح
-        </Button>
-      </Grid>
-    </form>
+      </form>
     </>
   );
 };

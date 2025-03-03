@@ -15,7 +15,7 @@ const MODES = {
 const Register = () => {
   const [mode, setMode] = useState(MODES.DEFAULT);
   const [errors, setErrors] = useState({});
-  const [imageFile, setImageFile] = useState(null);
+
   const [userData, setUserData] = useState({});
   const [selectedRow, setSelectedRow] = useState({});
 
@@ -142,33 +142,11 @@ const Register = () => {
     setMode(MODES.DELETE);
   };
 
-  const handleSubmitEdit = async (e) => {
-    e.preventDefault();
-    console.log("Edit row:", userData);
-    setMode(MODES.EDIT);
-  };
-
+  
   const handleSubmitEditPass = async (e) => {
     e.preventDefault();
     setMode(MODES.EDITEPASS);
     console.log("edit pass : ", userData);
-  };
-
-  const handleChange1 = async (value_) => {
-    setImageFile(value_);
-    const formData = new FormData();
-    formData.append("image", value_);
-
-    try {
-      const response = await axios.post("/api/users", formData);
-      setUserData({ ...userData, imagePath: response.data });
-      setErrors({});
-    } catch (error) {
-      setUserData({ ...userData, imagePath: "" });
-      const error_ = error.response.data.error;
-      const errorMessages = { file: error_ };
-      setErrors(errorMessages);
-    }
   };
 
   const handleChange = (e) => {
@@ -201,13 +179,7 @@ const Register = () => {
     );
   } else if (mode === MODES.EDIT) {
     formComponent = (
-      <EditForm
-        selectedRow={selectedRow}
-        handleChange={handleChange}
-        handleChange1={handleChange1}
-        imageFile={imageFile}
-        handleSubmitEdit={handleSubmitEdit}
-      />
+      <EditForm selectedRow={selectedRow}/>
     );
   } else if (mode === MODES.EDITEPASS) {
     formComponent = (
