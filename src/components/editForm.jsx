@@ -5,7 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import * as yup from "yup";
-const EditForm = ({ selectedRow }) => {
+const EditForm = ({ selectedRow, setMode }) => {
   const [errors, setErrors] = useState({});
   const [userData, setUserData] = useState(selectedRow);
   const [imageFile, setImageFile] = useState(null);
@@ -53,6 +53,7 @@ const EditForm = ({ selectedRow }) => {
       const response = await axios.post("/api/users/update", userData);
       setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
+      setMode("DEFAULT");
     } catch (err) {
       if (err.name === "ValidationError") {
         const errorMessages = {};

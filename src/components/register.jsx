@@ -36,22 +36,24 @@ const Register = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post("/api/users/users", { page, pageSize });
-        if (response.status !== 200) {
-          const errorData = await response.json();
-          setErrors(errorData.message || errorData.statusText);
-          return;
+        if (mode == MODES.DEFAULT) {
+          const response = await axios.post("/api/users/users", { page, pageSize });
+          if (response.status !== 200) {
+            const errorData = await response.json();
+            setErrors(errorData.message || errorData.statusText);
+            return;
+          }
+          const dataUser = await response.data.user;
+          setRows(dataUser.recordset);
+          setCount(dataUser.output.count);
         }
-        const dataUser = await response.data.user;
-        setRows(dataUser.recordset);
-        setCount(dataUser.output.count);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [page, pageSize]);
+  }, [page, pageSize, mode]);
 
   const schema = yup.object().shape({
     nameFamily: yup
@@ -142,7 +144,6 @@ const Register = () => {
     setMode(MODES.DELETE);
   };
 
-  
   const handleSubmitEditPass = async (e) => {
     e.preventDefault();
     setMode(MODES.EDITEPASS);
@@ -178,9 +179,7 @@ const Register = () => {
       <DeleteForm userData={userData} handleSubmitDelete={handleSubmitDelete} onCancel={() => setMode(MODES.DEFAULT)} />
     );
   } else if (mode === MODES.EDIT) {
-    formComponent = (
-      <EditForm selectedRow={selectedRow}/>
-    );
+    formComponent = <EditForm selectedRow={selectedRow} setMode={setMode} />;
   } else if (mode === MODES.EDITEPASS) {
     formComponent = (
       <EditPasswordForm userData={userData} handleChange={handleChange} handleSubmitEditPass={handleSubmitEditPass} />
