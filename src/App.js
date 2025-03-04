@@ -1,13 +1,11 @@
 import React from "react";
-import Users from "./components/users";
-import User from "./components/user";
-import Register from "./components/register";
+// import User from "./components/user_";
+import UserCreate from "./components/userCreate";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
-import ProtecedRoute from "./components/protectedRote";
+// import ProtecedRoute from "./components/protectedRote";
 import Logout from "./components/logout";
-import Product from "./components/Product";
-import Courses from "./components/courses";
+
 import LoginForm from "./components/loginForm";
 
 import { Routes, Route } from "react-router-dom";
@@ -21,7 +19,8 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<AppBarResponsive />}>
-            <Route path="/user/:userId" element={<User />} />
+            {/* به عنوان مثال پارامتر userId  و تگ ProtecedRoute کد نمونه 
+            <Route path="/user/:userId" element={<User_ />} />
             <Route
               path="/users"
               element={
@@ -29,13 +28,11 @@ function App() {
                   <Users />
                 </ProtecedRoute>
               }
-            />
+            /> */}
 
-            <Route path="/Courses" element={<Courses />} />
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/insertUser" element={<UserCreate />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/product" element={<Product />} />
             <Route path="/excelSpecifications" element={<ExcelSpecifications />} />
             <Route path="/appBarSignedIn" element={<AppBarSignedIn />} />
             <Route index element={<Home />} />

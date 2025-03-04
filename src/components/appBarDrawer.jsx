@@ -7,7 +7,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -16,8 +16,8 @@ import Container from "@mui/material/Container";
 import CustomLink from "./customLink";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseIcon from "@mui/icons-material/Close";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 const NAVIGATION = [
   {
     kind: "header",
@@ -44,7 +44,6 @@ const NAVIGATION = [
     icon: <PersonAddAlt1Icon />,
   },
   {
-
     kind: "header",
     title: "Analytics",
   },
@@ -97,18 +96,17 @@ export default function AppBarDrawer() {
   );
 
   return (
-    <div >
+    <div>
       <IconButton onClick={toggleDrawer(true)}>
-      <MenuIcon  />
+        <MenuIcon />
       </IconButton>
-   
+
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={"right"}>
-      <Box sx={{display:'flex', justifyContent:'flex-end'}}>
-      <IconButton onClick={toggleDrawer(false)}>
-      <CloseIcon  />
-      </IconButton>
-      </Box>
-      
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <IconButton onClick={toggleDrawer(false)}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
 
         {DrawerList}
       </Drawer>

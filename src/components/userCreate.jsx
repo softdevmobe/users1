@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
 import PaginatedTable from "./paginatedTable";
-import EditForm from "./editForm";
-import DeleteForm from "./deleteForm";
-import EditPasswordForm from "./editPasswordForm";
+import EditForm from "./userEdit";
+import DeleteForm from "./userDelete";
+import EditPasswordForm from "./userChangePassword";
 import * as yup from "yup";
 const MODES = {
   DEFAULT: "DEFAULT",
@@ -12,7 +12,7 @@ const MODES = {
   DELETE: "DELETE",
   EDITEPASS: "EDITEPASS",
 };
-const Register = () => {
+const UserCreate = () => {
   const [mode, setMode] = useState(MODES.DEFAULT);
   const [errors, setErrors] = useState({});
 
@@ -36,7 +36,7 @@ const Register = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (mode == MODES.DEFAULT) {
+        if (mode === MODES.DEFAULT) {
           const response = await axios.post("/api/users/users", { page, pageSize });
           if (response.status !== 200) {
             const errorData = await response.json();
@@ -235,4 +235,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UserCreate;

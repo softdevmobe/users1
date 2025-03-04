@@ -1,6 +1,6 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from "../src/components/axiosConfig";
 import React, { Component } from "react";
-import CustomInput from "./customInput";
+import CustomInput from "../src/components/customInput";
 import axios from "axios";
 import { NumericFormat } from "react-number-format";
 class Product extends Component {
