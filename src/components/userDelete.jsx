@@ -19,7 +19,7 @@ const UserDelete= ({ selectedRow, setMode }) => {
       const response = await axios.post("/api/users/deleteUser", userData);
       // setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
-      setMode("DEFAULT");
+      setMode("add");
     } catch (err) {
       if (err.name === "ValidationError") {
         const errorMessages = {};
@@ -44,7 +44,7 @@ const UserDelete= ({ selectedRow, setMode }) => {
           </Button>
         </Grid>
         <Grid>
-          <Button variant="outlined" color="primary" onClick={() => setMode("DEFAULT")}>
+          <Button variant="outlined" color="primary" onClick={() => setMode("add")}>
             لغو
           </Button>
         </Grid>

@@ -31,7 +31,7 @@ const User = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-   
+        if (mode === "add") {
           const response = await axios.post("/api/users/getUsers", { page, pageSize });
           if (response.status !== 200) {
             const errorData = await response.json();
@@ -41,14 +41,14 @@ const User = () => {
           const dataUser = await response.data.user;
           setRows(dataUser.recordset);
           setCount(dataUser.output.count);
-
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [page, pageSize]);
+  }, [page, pageSize, mode]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);

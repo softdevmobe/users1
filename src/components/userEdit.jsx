@@ -53,7 +53,7 @@ const UserEdit = ({ selectedRow, setMode }) => {
       const response = await axios.post("/api/users/updateUser", userData);
       setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
-      setMode("DEFAULT");
+      setMode("add");
     } catch (err) {
       if (err.name === "ValidationError") {
         const errorMessages = {};

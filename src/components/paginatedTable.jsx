@@ -56,7 +56,7 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
                   return (
                     <TableCell key={column.id} sx={{ padding: 0 }}>
                       {column.label}{" "}
-                      <IconButton aria-label="add" onClick={handleAction("add")}>
+                      <IconButton aria-label="add" onClick={()=>handleAction("add")}>
                         <PersonAddAltIcon fontSize="large" />
                       </IconButton>
                     </TableCell>
