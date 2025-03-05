@@ -45,7 +45,7 @@ const UserCreate = ({ selectedRow, setMode }) => {
 
     try {
       const response = await axios.post("/api/users/uploudImageUser", formData);
-      setUserData({ ...userData, imagePathNew: response.data });
+      setUserData({ ...userData, imagePath: response.data });
       setErrors({});
     } catch (error) {
       setUserData({ ...userData, imagePath: "" });

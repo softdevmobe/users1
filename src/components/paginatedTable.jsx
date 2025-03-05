@@ -12,20 +12,9 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import { Box, Button } from "@mui/material";
-
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-export default function PaginatedTable({
-  rows,
-  columns,
-  onPageChange,
-  onPageSizeChange,
-  count,
-  onDelete,
-  onEdit,
-  onEditPass,
-  onAddUser,
-}) {
+
+export default function PaginatedTable({ rows, columns, onPageChange, onPageSizeChange, count, onAction }) {
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(10);
 
@@ -46,28 +35,15 @@ export default function PaginatedTable({
   };
 
   const displayedRows = rows; // rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  const handleAddUser = () => {
-    if (onAddUser) {
-      onAddUser();
+
+
+  const handleAction = (action,row) => {
+    if (onAction) {
+      onAction(action,row);
     }
   };
 
-  const handleDelete = (row) => {
-    if (onDelete) {
-      onDelete(row);
-    }
-  };
 
-  const handleEdit = (row) => {
-    if (onEdit) {
-      onEdit(row);
-    }
-  };
-  const handleEditPass = (row) => {
-    if (onEditPass) {
-      onEditPass(row);
-    }
-  };
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -78,14 +54,19 @@ export default function PaginatedTable({
               {columns.map((column) => {
                 if (column.id === "action")
                   return (
-                    <TableCell key={column.id} sx={{padding:0}}>
+                    <TableCell key={column.id} sx={{ padding: 0 }}>
                       {column.label}{" "}
-                      <IconButton aria-label="add" onClick={handleAddUser}>
+                      <IconButton aria-label="add" onClick={handleAction("add")}>
                         <PersonAddAltIcon fontSize="large" />
                       </IconButton>
                     </TableCell>
                   );
-                else return <TableCell key={column.id} sx={{padding:0}}>{column.label}</TableCell>;
+                else
+                  return (
+                    <TableCell key={column.id} sx={{ padding: 0 }}>
+                      {column.label}
+                    </TableCell>
+                  );
               })}
             </TableRow>
           </TableHead>
@@ -97,34 +78,38 @@ export default function PaginatedTable({
                     return (
                       <TableCell
                         key={column.id}
-                        sx={{ display: "flex", justifyContent: "left", alignContent: "center", m: 0,p:1 }}
+                        sx={{ display: "flex", justifyContent: "left", alignContent: "center", m: 0, p: 1 }}
                       >
                         <Avatar alt="Remy Sharp" src={row[column.id]} />
                       </TableCell>
                     );
                   } else if (column.id === "action") {
                     return (
-                      <TableCell key={column.id} sx={{  justifyContent: "left", alignContent: "center", m: 0,p:1 }} >
+                      <TableCell key={column.id} sx={{ justifyContent: "left", alignContent: "center", m: 0, p: 1 }}>
                         {column.actions.includes("edit") && (
-                          <IconButton aria-label="edit" onClick={() => handleEdit(row)}>
+                          <IconButton aria-label="edit" onClick={() => handleAction("edit",row)}>
                             <EditIcon />
                           </IconButton>
                         )}
                         {column.actions.includes("delete") && (
-                          <IconButton aria-label="delete" onClick={() => handleDelete(row)}>
+                          <IconButton aria-label="delete" onClick={() => handleAction("delete",row)}>
                             <DeleteIcon />
                           </IconButton>
                         )}
 
                         {column.actions.includes("editPass") && (
-                          <IconButton aria-label="editPass" onClick={() => handleEditPass(row)}>
+                          <IconButton aria-label="editPass" onClick={() => handleAction("editPass",row)}>
                             <LockResetIcon />
                           </IconButton>
                         )}
                       </TableCell>
                     );
                   } else {
-                    return <TableCell key={column.id} sx={{  justifyContent: "left", alignContent: "center", m: 0,p:1 }}>{row[column.id]}</TableCell>;
+                    return (
+                      <TableCell key={column.id} sx={{ justifyContent: "left", alignContent: "center", m: 0, p: 1 }}>
+                        {row[column.id]}
+                      </TableCell>
+                    );
                   }
                 })}
               </TableRow>

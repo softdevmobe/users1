@@ -7,14 +7,9 @@ import UserDelete from "./userDelete";
 import UserCreate from "./userCreate";
 import UserEditPassword from "./userChangePassword";
 import * as yup from "yup";
-const MODES = {
-  DEFAULT: "DEFAULT",
-  EDIT: "EDIT",
-  DELETE: "DELETE",
-  EDITEPASS: "EDITEPASS",
-};
+
 const User = () => {
-  const [mode, setMode] = useState(MODES.DEFAULT);
+  const [mode, setMode] = useState("add");
   const [errors, setErrors] = useState({});
 
   const [userData, setUserData] = useState({});
@@ -36,7 +31,7 @@ const User = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (mode === MODES.DEFAULT) {
+        if (mode === "add") {
           const response = await axios.post("/api/users/getUsers", { page, pageSize });
           if (response.status !== 200) {
             const errorData = await response.json();
@@ -64,40 +59,30 @@ const User = () => {
     setPageSize(newPageSize);
   };
 
-  const onDelete = (row) => {
-    setSelectedRow({
-      userName: row.userName,
-      nameFamily: row.nameFamily,
-      imagePath: row.imagePath,
-    });
-    setMode(MODES.DELETE);
-  };
-
-  const onEdit = (row) => {
-    setSelectedRow(row);
-    setMode(MODES.EDIT);
-  };
-
-  const onEditPass = (row) => {
-    setUserData({
-      code: row.code,
-      userName: row.userName,
-    });
-    setMode(MODES.EDITEPASS);
-  };
-
-  const onAddUser = () => {
-    setMode(MODES.DEFAULT);
+  const onAction = (action, row) => {
+    if (row)
+      setSelectedRow({
+        userName: row.userName,
+        nameFamily: row.nameFamily,
+        imagePath: row.imagePath,
+      });
+    else
+      setSelectedRow({
+        userName: "",
+        nameFamily: "",
+        imagePath: "",
+      });
+    setMode(action);
   };
 
   let formComponent;
-  if (mode === MODES.DEFAULT) {
+  if (mode === "add") {
     formComponent = <UserCreate selectedRow={selectedRow} setMode={setMode} />;
-  } else if (mode === MODES.DELETE) {
+  } else if (mode === "delete") {
     formComponent = <UserDelete selectedRow={selectedRow} setMode={setMode} />;
-  } else if (mode === MODES.EDIT) {
+  } else if (mode === "edit") {
     formComponent = <UserEdit selectedRow={selectedRow} setMode={setMode} />;
-  } else if (mode === MODES.EDITEPASS) {
+  } else if (mode === "editPass") {
     formComponent = <UserEditPassword selectedRow={selectedRow} setMode={setMode} />;
   }
   return (
@@ -139,11 +124,8 @@ const User = () => {
           columns={columns}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
-          onDelete={onDelete}
-          onEdit={onEdit}
-          onEditPass={onEditPass}
           count={count}
-          onAddUser={onAddUser}
+          onAction={onAction}
         />
       </Box>
     </>
