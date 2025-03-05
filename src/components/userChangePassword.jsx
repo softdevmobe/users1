@@ -1,10 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import axios from "axios";
+import * as yup from "yup";
+const UserEditPassword = ({ selectedRow, setMode }) => {
+  const [errors, setErrors] = useState({});
+  const [userData, setUserData] = useState(selectedRow);
+  const schema = yup.object().shape({
+    currentPassword: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد"),
+    newPassword: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .min(3, "کلمه عبور کوچکتر از 3 نباشد")
+      .max(50, "کلمه عبور بزرگتر از 50 نباشد")
+      .notOneOf([yup.ref("currentPassword")], "رمز عبور جدید باید با رمزعبور قبلی متفاوت باشد ."),
+    confirmNewPassword: yup
+      .string()
+      .required("کلمه عبور نمی تواند خالی باشد ")
+      .oneOf([yup.ref("newPassword")], "رمز عبور جدید و تایید رمز عبور جدید باید یکسان باشد ."),
+  });
 
-const EditPasswordForm = ({ userData,handleChange, handleSubmitEditPass }) => {
+
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await schema.validate(userData, { abortEarly: false });
+      const response = await axios.post("/api/users/updateUser", userData);
+      setUserData({ ...userData, imagePath: response.data.imagePath });
+      setErrors({});
+      setMode("DEFAULT");
+    } catch (err) {
+      if (err.name === "ValidationError") {
+        const errorMessages = {};
+        err.inner.forEach((error) => {
+          errorMessages[error.path] = error.message;
+        });
+        setErrors(errorMessages);
+      } else {
+        setErrors([err.message]);
+      }
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmitEditPass}>
+    <form onSubmit={handleSubmit}>
       <Grid container>
 
           <TextField
@@ -52,4 +102,4 @@ const EditPasswordForm = ({ userData,handleChange, handleSubmitEditPass }) => {
   );
 };
 
-export default EditPasswordForm;
+export default UserEditPassword;

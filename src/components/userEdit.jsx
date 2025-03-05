@@ -5,7 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import * as yup from "yup";
-const EditForm = ({ selectedRow, setMode }) => {
+const UserEdit = ({ selectedRow, setMode }) => {
   const [errors, setErrors] = useState({});
   const [userData, setUserData] = useState(selectedRow);
   const [imageFile, setImageFile] = useState(null);
@@ -35,7 +35,7 @@ const EditForm = ({ selectedRow, setMode }) => {
     formData.append("image", value_);
 
     try {
-      const response = await axios.post("/api/users", formData);
+      const response = await axios.post("/api/users/uploudImageUser", formData);
       setUserData({ ...userData, imagePathNew: response.data });
       setErrors({});
     } catch (error) {
@@ -50,7 +50,7 @@ const EditForm = ({ selectedRow, setMode }) => {
     e.preventDefault();
     try {
       await schema.validate(userData, { abortEarly: false });
-      const response = await axios.post("/api/users/update", userData);
+      const response = await axios.post("/api/users/updateUser", userData);
       setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
       setMode("DEFAULT");
@@ -124,4 +124,4 @@ const EditForm = ({ selectedRow, setMode }) => {
   );
 };
 
-export default EditForm;
+export default UserEdit;

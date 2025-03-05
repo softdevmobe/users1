@@ -39,7 +39,7 @@ const NAVIGATION = [
     icon: <LoginOutlinedIcon />,
   },
   {
-    segment: "register",
+    segment: "user",
     title: "ایجاد کاربر",
     icon: <PersonAddAlt1Icon />,
   },

@@ -1,6 +1,6 @@
 import React from "react";
 // import User from "./components/user_";
-import UserCreate from "./components/userCreate";
+import User from "./components/user";
 import Home from "./components/home";
 import NotFound from "./components/notFound";
 // import ProtecedRoute from "./components/protectedRote";
@@ -31,7 +31,7 @@ function App() {
             /> */}
 
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/insertUser" element={<UserCreate />} />
+            <Route path="/user" element={<User />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/excelSpecifications" element={<ExcelSpecifications />} />
             <Route path="/appBarSignedIn" element={<AppBarSignedIn />} />
