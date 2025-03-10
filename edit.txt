@@ -1,49 +1,57 @@
-using OfficeOpenXml;
 using System;
 using System.Data;
+using System.Data.OleDb;
 
 class Program
 {
     static void Main()
     {
         string filePath = "path_to_your_excel_file.xlsx";
-        DataTable dt = new DataTable();
+        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filePath + ";Extended Properties='Excel 12.0 Xml;HDR=YES;'";
 
-        using (var package = new ExcelPackage(new System.IO.FileInfo(filePath)))
+        using (OleDbConnection connection = new OleDbConnection(connectionString))
         {
-            var workbook = package.Workbook;
-            foreach (var worksheet in workbook.Worksheets)
+            connection.Open();
+            DataTable dt = new DataTable();
+
+            // دریافت نام شیت‌ها
+            DataTable schemaTable = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            foreach (DataRow row in schemaTable.Rows)
             {
-                if (dt.Columns.Count == 0)
+                string sheetName = row["TABLE_NAME"].ToString();
+
+                // خواندن داده‌ها از هر شیت
+                using (OleDbCommand command = new OleDbCommand($"SELECT * FROM [{sheetName}]", connection))
                 {
-                    // اضافه کردن ستون‌ها
-                    foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
                     {
-                        dt.Columns.Add(firstRowCell.Text);
+                        DataTable tempTable = new DataTable();
+                        adapter.Fill(tempTable);
+
+                        // اگر DataTable خالی است، ساختار آن را تنظیم کنید
+                        if (dt.Columns.Count == 0)
+                        {
+                            dt = tempTable.Clone();
+                        }
+
+                        // اضافه کردن داده‌ها به DataTable اصلی
+                        foreach (DataRow dataRow in tempTable.Rows)
+                        {
+                            dt.ImportRow(dataRow);
+                        }
                     }
                 }
-
-                // اضافه کردن داده‌ها
-                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
-                {
-                    var newRow = dt.NewRow();
-                    for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
-                    {
-                        newRow[col - 1] = worksheet.Cells[row, col].Text;
-                    }
-                    dt.Rows.Add(newRow);
-                }
             }
-        }
 
-        // نمایش داده‌ها
-        foreach (DataRow row in dt.Rows)
-        {
-            foreach (DataColumn col in dt.Columns)
+            // نمایش داده‌ها
+            foreach (DataRow row in dt.Rows)
             {
-                Console.Write(row[col] + "\t");
+                foreach (DataColumn col in dt.Columns)
+                {
+                    Console.Write(row[col] + "\t");
+                }
+                Console.WriteLine();
             }
-            Console.WriteLine();
         }
     }
 }
