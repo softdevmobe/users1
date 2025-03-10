@@ -1,214 +1,49 @@
+using OfficeOpenXml;
+using System;
+using System.Data;
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Box } from "@mui/material";
-import PaginatedTable from "./paginatedTable";
-import EditForm from "./EditForm";
-import DeleteForm from "./DeleteForm";
-import EditPasswordForm from "./EditPasswordForm";
+class Program
+{
+    static void Main()
+    {
+        string filePath = "path_to_your_excel_file.xlsx";
+        DataTable dt = new DataTable();
 
-const Register = () => {
-  const [isEdit, setIsEdit] = useState(false);
-  const [isDelete, setIsDelete] = useState(false); // حالت برای نمایش فرم حذف
-  const [selectedRow, setSelectedRow] = useState(null); // ردیف انتخاب‌شده برای حذف
-  const [errors, setErrors] = useState({});
-  const [imageFile, setImageFile] = useState(null);
-  const [userData, setUserData] = useState({
-    nameFamily: "",
-    userName: "",
-    password: "",
-    imagePath: "",
-  });
-  const [rows, setRows] = useState([]);
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
-  const [count, setCount] = useState(10);
+        using (var package = new ExcelPackage(new System.IO.FileInfo(filePath)))
+        {
+            var workbook = package.Workbook;
+            foreach (var worksheet in workbook.Worksheets)
+            {
+                if (dt.Columns.Count == 0)
+                {
+                    // اضافه کردن ستون‌ها
+                    foreach (var firstRowCell in worksheet.Cells[1, 1, 1, worksheet.Dimension.End.Column])
+                    {
+                        dt.Columns.Add(firstRowCell.Text);
+                    }
+                }
 
-  const columns = [
-    { id: "code", label: "شناسه" },
-    { id: "nameFamily", label: "نام" },
-    { id: "userName", label: "یوزر" },
-    { id: "roleCode", label: "roleCode" },
-    { id: "imagePath", label: "imagePath" },
-    { id: "action", label: "عملیات", actions: ["edit", "delete", "editPass"] },
-  ];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post("/api/users/users", { page, pageSize });
-        if (response.status !== 200) {
-          const errorData = await response.json();
-          setErrors(errorData.message || errorData.statusText);
-          return;
+                // اضافه کردن داده‌ها
+                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                {
+                    var newRow = dt.NewRow();
+                    for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
+                    {
+                        newRow[col - 1] = worksheet.Cells[row, col].Text;
+                    }
+                    dt.Rows.Add(newRow);
+                }
+            }
         }
-        const dataUser = await response.data.user;
-        setRows(dataUser.recordset);
-        setCount(dataUser.output.count);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchData();
-  }, [page, pageSize]);
-
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
-
-  const handlePageSizeChange = (newPageSize) => {
-    setPage(0);
-    setPageSize(newPageSize);
-  };
-
-  const handleDelete = (row) => {
-    console.log("Deleting row:", row);
-    // ارسال درخواست حذف به سرور
-    axios
-      .delete(`/api/users/${row.code}`)
-      .then((response) => {
-        console.log("User deleted:", response.data);
-        // به‌روزرسانی لیست کاربران پس از حذف
-        setRows(rows.filter((r) => r.code !== row.code));
-        setIsDelete(false); // بستن فرم حذف
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-      });
-  };
-
-  const handleEdit = (row) => {
-    setUserData({
-      nameFamily: row.nameFamily,
-      userName: row.userName,
-      imagePath: row.imagePath,
-    });
-    setIsEdit(true);
-  };
-
-  const handleEditPass = (row) => {
-    console.log("row edit pass : ", row);
-  };
-
-  const handleChange1 = async (value_) => {
-    setImageFile(value_);
-    const formData = new FormData();
-    formData.append("image", value_);
-
-    try {
-      const response = await axios.post("/api/users", formData);
-      setUserData({ ...userData, imagePath: response.data });
-      setErrors({});
-    } catch (error) {
-      setUserData({ ...userData, imagePath: "" });
-      const error_ = error.response.data.error;
-      const errorMessages = { file: error_ };
-      setErrors(errorMessages);
+        // نمایش داده‌ها
+        foreach (DataRow row in dt.Rows)
+        {
+            foreach (DataColumn col in dt.Columns)
+            {
+                Console.Write(row[col] + "\t");
+            }
+            Console.WriteLine();
+        }
     }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await schema.validate(userData, { abortEarly: false });
-      const response = await axios.post("/api/users/register", userData);
-      setUserData({ ...userData, imagePath: response.data.imagePath });
-      setErrors({});
-    } catch (err) {
-      if (err.name === "ValidationError") {
-        const errorMessages = {};
-        err.inner.forEach((error) => {
-          errorMessages[error.path] = error.message;
-        });
-        setErrors(errorMessages);
-      }
-    }
-  };
-
-  // تعیین فرم مورد نظر با استفاده از if و else
-  let formComponent;
-  if (isDelete) {
-    formComponent = (
-      <DeleteForm
-        row={selectedRow}
-        handleDelete={handleDelete}
-        onCancel={() => setIsDelete(false)}
-      />
-    );
-  } else if (isEdit) {
-    formComponent = (
-      <EditForm
-        userData={userData}
-        handleChange={handleChange}
-        handleChange1={handleChange1}
-        imageFile={imageFile}
-        handleSubmit={handleSubmit}
-      />
-    );
-  } else {
-    formComponent = (
-      <EditPasswordForm handleChange={handleChange} handleSubmit={handleSubmit} />
-    );
-  }
-
-  return (
-    <>
-      <Box
-        sx={{
-          width: "50%",
-          m: "auto",
-          p: 3,
-          border: "1px solid #ddd",
-          borderRadius: 2,
-          boxShadow: 3,
-          textAlign: "center",
-        }}
-      >
-        {Object.keys(errors).map((key) => (
-          <p key={key} style={{ color: "red", fontSize: 10 }}>
-            {errors[key]}
-          </p>
-        ))}
-
-        {formComponent}
-      </Box>
-      <Box
-        sx={{
-          width: "95%",
-          m: "25px auto 2px auto",
-          p: 0,
-          border: "1px solid #ddd",
-          borderRadius: 2,
-          boxShadow: 3,
-          textAlign: "center",
-        }}
-      >
-        <PaginatedTable
-          rows={rows}
-          columns={columns}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          onDelete={(row) => {
-            setSelectedRow(row); // تنظیم ردیف انتخاب‌شده
-            setIsDelete(true); // نمایش فرم حذف
-          }}
-          onEdit={handleEdit}
-          onEditPass={handleEditPass}
-          count={count}
-        />
-      </Box>
-    </>
-  );
-};
-
-export default Register;
-
-
-
-
+}
