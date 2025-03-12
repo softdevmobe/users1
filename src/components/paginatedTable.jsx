@@ -36,14 +36,11 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
 
   const displayedRows = rows; // rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-
-  const handleAction = (action,row) => {
+  const handleAction = (action, row) => {
     if (onAction) {
-      onAction(action,row);
+      onAction(action, row);
     }
   };
-
-
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -56,7 +53,7 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
                   return (
                     <TableCell key={column.id} sx={{ padding: 0 }}>
                       {column.label}{" "}
-                      <IconButton aria-label="add" onClick={()=>handleAction("add")}>
+                      <IconButton aria-label="add" onClick={() => handleAction("add")}>
                         <PersonAddAltIcon fontSize="large" />
                       </IconButton>
                     </TableCell>
@@ -87,18 +84,18 @@ export default function PaginatedTable({ rows, columns, onPageChange, onPageSize
                     return (
                       <TableCell key={column.id} sx={{ justifyContent: "left", alignContent: "center", m: 0, p: 1 }}>
                         {column.actions.includes("edit") && (
-                          <IconButton aria-label="edit" onClick={() => handleAction("edit",row)}>
+                          <IconButton aria-label="edit" onClick={() => handleAction("edit", row)}>
                             <EditIcon />
                           </IconButton>
                         )}
                         {column.actions.includes("delete") && (
-                          <IconButton aria-label="delete" onClick={() => handleAction("delete",row)}>
+                          <IconButton aria-label="delete" onClick={() => handleAction("delete", row)}>
                             <DeleteIcon />
                           </IconButton>
                         )}
 
                         {column.actions.includes("editPass") && (
-                          <IconButton aria-label="editPass" onClick={() => handleAction("editPass",row)}>
+                          <IconButton aria-label="editPass" onClick={() => handleAction("editPass", row)}>
                             <LockResetIcon />
                           </IconButton>
                         )}
