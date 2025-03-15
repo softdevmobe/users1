@@ -1,24 +1,43 @@
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import { NextResponse } from 'next/server';
+import httpProxy from 'next-http-proxy-middleware';
 
-const apiProxy = createProxyMiddleware({
-  target: 'https://api.example.com', // آدرس سرور مقصد
-  changeOrigin: true,
-  pathRewrite: {
-    '^/api': '', // حذف پیشوند `/api` از آدرس
-    '^/uploads': '/uploads', // نگه داشتن مسیر `/uploads` بدون تغییر
-  },
-});
-
-export default function handler(req, res) {
-  apiProxy(req, res, (err) => {
-    if (err) {
-      throw err;
-    }
+export async function POST(req, res) {
+  return httpProxy(req, res, {
+    target: 'https://api.example.com', // آدرس سرور مقصد
+    changeOrigin: true,
+    pathRewrite: { '^/api': '' }, // حذف پیشوند `/api` از آدرس
   });
 }
 
-export const config = {
-  api: {
-    bodyParser: false, // غیرفعال کردن پارسینگ بدنه برای پروکسی
-  },
-};
+export async function GET(req, res) {
+  return httpProxy(req, res, {
+    target: 'https://api.example.com', // آدرس سرور مقصد
+    changeOrigin: true,
+    pathRewrite: { '^/api': '' }, // حذف پیشوند `/api` از آدرس
+  });
+}
+
+// برای سایر متدها (PUT, DELETE و غیره) نیز به همین شکل عمل کنید.
+
+
+
+
+
+import { NextResponse } from 'next/server';
+import httpProxy from 'next-http-proxy-middleware';
+
+export async function POST(req, res) {
+  return httpProxy(req, res, {
+    target: 'https://storage.example.com', // آدرس سرور مقصد برای آپلودها
+    changeOrigin: true,
+    pathRewrite: { '^/uploads': '' }, // حذف پیشوند `/uploads` از آدرس
+  });
+}
+
+export async function GET(req, res) {
+  return httpProxy(req, res, {
+    target: 'https://storage.example.com', // آدرس سرور مقصد برای آپلودها
+    changeOrigin: true,
+    pathRewrite: { '^/uploads': '' }, // حذف پیشوند `/uploads` از آدرس
+  });
+}
