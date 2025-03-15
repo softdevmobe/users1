@@ -1,42 +1,23 @@
 import { NextResponse } from 'next/server';
-import httpProxy from 'http-proxy';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
-const proxy = httpProxy.createProxyServer();
+export async function middleware(req) {
+  if (req.nextUrl.pathname.startsWith('/api')) {
+    const proxy = createProxyMiddleware({
+      target: 'http://localhost:3001', // آدرس سرور Express.js
+      changeOrigin: true,
+    });
 
-export async function POST(request) {
-  const url = new URL(request.url);
-  const target = 'http://localhost:5500' + url.pathname.replace('/api', '');
-
-  return new Promise((resolve, reject) => {
-    proxy.web(
-      request,
-      { target, changeOrigin: true },
-      (err) => {
+    return new Promise((resolve, reject) => {
+      proxy(req.nextUrl.toRequest(), null, (err) => {
         if (err) {
-          reject(new Error('Proxy error'));
+          reject(err);
         } else {
           resolve(NextResponse.next());
         }
-      }
-    );
-  });
-}
+      });
+    });
+  }
 
-export async function GET(request) {
-  const url = new URL(request.url);
-  const target = 'http://localhost:5500' + url.pathname.replace('/api', '');
-
-  return new Promise((resolve, reject) => {
-    proxy.web(
-      request,
-      { target, changeOrigin: true },
-      (err) => {
-        if (err) {
-          reject(new Error('Proxy error'));
-        } else {
-          resolve(NextResponse.next());
-        }
-      }
-    );
-  });
+  return NextResponse.next();
 }
