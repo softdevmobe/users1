@@ -1,57 +1,24 @@
-using System;
-using System.Data;
-using System.Data.OleDb;
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
-class Program
-{
-    static void Main()
-    {
-        string filePath = "path_to_your_excel_file.xlsx";
-        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filePath + ";Extended Properties='Excel 12.0 Xml;HDR=YES;'";
+const apiProxy = createProxyMiddleware({
+  target: 'https://api.example.com', // آدرس سرور مقصد
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': '', // حذف پیشوند `/api` از آدرس
+    '^/uploads': '/uploads', // نگه داشتن مسیر `/uploads` بدون تغییر
+  },
+});
 
-        using (OleDbConnection connection = new OleDbConnection(connectionString))
-        {
-            connection.Open();
-            DataTable dt = new DataTable();
-
-            // دریافت نام شیت‌ها
-            DataTable schemaTable = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            foreach (DataRow row in schemaTable.Rows)
-            {
-                string sheetName = row["TABLE_NAME"].ToString();
-
-                // خواندن داده‌ها از هر شیت
-                using (OleDbCommand command = new OleDbCommand($"SELECT * FROM [{sheetName}]", connection))
-                {
-                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
-                    {
-                        DataTable tempTable = new DataTable();
-                        adapter.Fill(tempTable);
-
-                        // اگر DataTable خالی است، ساختار آن را تنظیم کنید
-                        if (dt.Columns.Count == 0)
-                        {
-                            dt = tempTable.Clone();
-                        }
-
-                        // اضافه کردن داده‌ها به DataTable اصلی
-                        foreach (DataRow dataRow in tempTable.Rows)
-                        {
-                            dt.ImportRow(dataRow);
-                        }
-                    }
-                }
-            }
-
-            // نمایش داده‌ها
-            foreach (DataRow row in dt.Rows)
-            {
-                foreach (DataColumn col in dt.Columns)
-                {
-                    Console.Write(row[col] + "\t");
-                }
-                Console.WriteLine();
-            }
-        }
+export default function handler(req, res) {
+  apiProxy(req, res, (err) => {
+    if (err) {
+      throw err;
     }
+  });
 }
+
+export const config = {
+  api: {
+    bodyParser: false, // غیرفعال کردن پارسینگ بدنه برای پروکسی
+  },
+};
