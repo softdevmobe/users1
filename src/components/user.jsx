@@ -6,13 +6,13 @@ import UserEdit from "./userEdit";
 import UserDelete from "./userDelete";
 import UserCreate from "./userCreate";
 import UserEditPassword from "./userChangePassword";
-import * as yup from "yup";
+// import * as yup from "yup";
 
 const User = () => {
   const [mode, setMode] = useState("add");
   const [errors, setErrors] = useState({});
 
-  const [userData, setUserData] = useState({});
+  // const [userData, setUserData] = useState({});
   const [selectedRow, setSelectedRow] = useState({});
 
   const [rows, setRows] = useState([]);
