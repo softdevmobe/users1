@@ -8,7 +8,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
