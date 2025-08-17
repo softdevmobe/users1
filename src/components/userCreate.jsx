@@ -59,7 +59,7 @@ const UserCreate = ({ selectedRow, setMode }) => {
     e.preventDefault();
     try {
       await schema.validate(userData, { abortEarly: false });
-      const response = await axios.post("/api/users/createUser", userData);
+      const response = await axios.post("/api/users/insertUser", userData);
       setUserData({ ...userData, imagePath: response.data.imagePath });
       setErrors({});
       setMode("add");
