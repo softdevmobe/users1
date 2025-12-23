@@ -1,23 +1,42 @@
-import { NextResponse } from 'next/server';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
+import { useState } from "react";
 
-export async function middleware(req) {
-  if (req.nextUrl.pathname.startsWith('/api')) {
-    const proxy = createProxyMiddleware({
-      target: 'http://localhost:3001', // آدرس سرور Express.js
-      changeOrigin: true,
-    });
+const initialData = [
+  { name: "A", value: 40 },
+  { name: "B", value: 60 },
+  { name: "C", value: 20 },
+];
 
-    return new Promise((resolve, reject) => {
-      proxy(req.nextUrl.toRequest(), null, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(NextResponse.next());
+export default function Chart() {
+  const [data, setData] = useState(initialData);
+
+  return (
+    <>
+      <button
+        onClick={() =>
+          setData([
+            { name: "A", value: Math.random() * 100 },
+            { name: "B", value: Math.random() * 100 },
+            { name: "C", value: Math.random() * 100 },
+          ])
         }
-      });
-    });
-  }
+      >
+        تغییر داده
+      </button>
 
-  return NextResponse.next();
+      <BarChart width={400} height={250} data={data}>
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Bar dataKey="value" fill="#8884d8" />
+      </BarChart>
+    </>
+  );
 }
+
+
+<Bar
+  dataKey="value"
+  isAnimationActive={true}
+  animationDuration={600}
+  animationEasing="ease-out"
+/>
