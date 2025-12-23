@@ -1,42 +1,26 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
-import { useState } from "react";
+Module not found: Can't resolve 'decimal.js-light'
+./node_modules/recharts/es6/util/scale/getNiceTickValues.js (6:1)
 
-const initialData = [
-  { name: "A", value: 40 },
-  { name: "B", value: 60 },
-  { name: "C", value: 20 },
-];
+Module not found: Can't resolve 'decimal.js-light'
+  4 |  * @date 2015-09-17
+  5 |  */
+> 6 | import Decimal from 'decimal.js-light';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import { compose, range, map } from './util/utils';
+  8 | import { getDigitCount, rangeStep } from './util/arithmetic';
+  9 | /**
 
-export default function Chart() {
-  const [data, setData] = useState(initialData);
+Import traces:
+  Client Component Browser:
+    ./node_modules/recharts/es6/util/scale/getNiceTickValues.js [Client Component Browser]
+    ./node_modules/recharts/es6/state/selectors/axisSelectors.js [Client Component Browser]
+    ./node_modules/recharts/es6/cartesian/XAxis.js [Client Component Browser]
+    ./src/app/chart/page.jsx [Client Component Browser]
+    ./src/app/chart/page.jsx [Server Component]
 
-  return (
-    <>
-      <button
-        onClick={() =>
-          setData([
-            { name: "A", value: Math.random() * 100 },
-            { name: "B", value: Math.random() * 100 },
-            { name: "C", value: Math.random() * 100 },
-          ])
-        }
-      >
-        تغییر داده
-      </button>
-
-      <BarChart width={400} height={250} data={data}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Bar dataKey="value" fill="#8884d8" />
-      </BarChart>
-    </>
-  );
-}
-
-
-<Bar
-  dataKey="value"
-  isAnimationActive={true}
-  animationDuration={600}
-  animationEasing="ease-out"
-/>
+  Client Component SSR:
+    ./node_modules/recharts/es6/util/scale/getNiceTickValues.js [Client Component SSR]
+    ./node_modules/recharts/es6/state/selectors/axisSelectors.js [Client Component SSR]
+    ./node_modules/recharts/es6/cartesian/XAxis.js [Client Component SSR]
+    ./src/app/chart/page.jsx [Client Component SSR]
+    ./src/app/chart/page.jsx [Server Component]
